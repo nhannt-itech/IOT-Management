@@ -17,6 +17,7 @@ namespace IOTManagementGroup7.DataAccess.Data
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<TV> TVs { get; set; }
         public DbSet<Fridge> Fridges { get; set; }
+        public DbSet<Camera> Cameras { get; set; }
 
 
     }
