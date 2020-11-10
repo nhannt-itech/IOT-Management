@@ -9,6 +9,9 @@ namespace IOTManagementGroup7.DataAccess.Repository.IRepository
         ILightRepository Light { get; }
 
         ISP_Call SP_Call { get; }
+
+        ITVRepository TV { get; }
+        IFridgeRepository Fridge { get; }
         void Save();
     }
 }
