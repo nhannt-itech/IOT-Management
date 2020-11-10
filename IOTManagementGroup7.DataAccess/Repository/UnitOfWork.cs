@@ -15,10 +15,11 @@ namespace IOTManagementGroup7.DataAccess.Repository
             Light = new LightRepository(_db);
             TV = new TVRepository(_db);
             Fridge = new FridgeRepository(_db);
+            ApplicationUser = new ApplicationUserRepository(_db);
             SP_Call = new SP_Call(_db);
         }
 
-
+        public IApplicationUserRepository ApplicationUser { get; private set; }
         public ILightRepository Light { get; private set; }
         public ITVRepository TV { get; private set; }
         public IFridgeRepository Fridge { get; private set; }
