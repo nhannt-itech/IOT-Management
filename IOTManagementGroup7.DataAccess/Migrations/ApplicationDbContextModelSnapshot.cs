@@ -19,27 +19,6 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("IOTManagementGroup7.Models.Fridge", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.Property<double>("Temperature")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Fridges");
-                });
-
             modelBuilder.Entity("IOTManagementGroup7.Models.Light", b =>
                 {
                     b.Property<int>("Id")
@@ -70,28 +49,40 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                     b.ToTable("Lights");
                 });
 
-            modelBuilder.Entity("IOTManagementGroup7.Models.TV", b =>
+            modelBuilder.Entity("IOTManagementGroup7.Models.Television", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Channel")
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CurrentChannel")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Status")
+                    b.Property<bool>("PowerStatus")
                         .HasColumnType("bit");
+
+                    b.Property<bool>("RecordingStatus")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SourceCode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Volume")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("TVs");
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("Television");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -310,6 +301,15 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
+                });
+
+            modelBuilder.Entity("IOTManagementGroup7.Models.Television", b =>
+                {
+                    b.HasOne("IOTManagementGroup7.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

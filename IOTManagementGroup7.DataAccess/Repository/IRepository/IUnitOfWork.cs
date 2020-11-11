@@ -10,9 +10,6 @@ namespace IOTManagementGroup7.DataAccess.Repository.IRepository
         ITelevisionRepository Television { get; }
         IApplicationUserRepository ApplicationUser { get; }
         ISP_Call SP_Call { get; }
-
-        ITVRepository TV { get; }
-        IFridgeRepository Fridge { get; }
         void Save();
     }
 }

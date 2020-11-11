@@ -18,7 +18,6 @@ namespace IOTManagementGroup7.DataAccess.Repository
             SP_Call = new SP_Call(_db);
         }
 
-
         public ILightRepository Light { get; private set; }
         public ITelevisionRepository Television { get; private set; }
         public IApplicationUserRepository ApplicationUser { get; private set; }

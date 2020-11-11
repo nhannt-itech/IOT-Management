@@ -39,11 +39,33 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    Discriminator = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", nullable: true),
+                    Address = table.Column<string>(nullable: true),
+                    ImageUrl = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Lights",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PositionName = table.Column<string>(nullable: true),
+                    Status = table.Column<bool>(nullable: false),
+                    PowerConsumption = table.Column<string>(nullable: true),
+                    VoltageRange = table.Column<string>(nullable: true),
+                    Dim = table.Column<int>(nullable: false),
+                    Type = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Lights", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -152,6 +174,31 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Television",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true),
+                    PowerStatus = table.Column<bool>(nullable: false),
+                    CurrentChannel = table.Column<string>(nullable: true),
+                    RecordingStatus = table.Column<bool>(nullable: false),
+                    Volume = table.Column<int>(nullable: false),
+                    SourceCode = table.Column<string>(nullable: true),
+                    ApplicationUserId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Television", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Television_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -190,6 +237,11 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Television_ApplicationUserId",
+                table: "Television",
+                column: "ApplicationUserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -208,6 +260,12 @@ namespace IOTManagementGroup7.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Lights");
+
+            migrationBuilder.DropTable(
+                name: "Television");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
