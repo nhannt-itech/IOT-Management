@@ -1,4 +1,4 @@
-﻿@model IOTManagementGroup7.Models.Camera
+﻿@model IOTManagementGroup7.Models.ViewModels.CameraVM
 
 
 @{
@@ -10,9 +10,10 @@
 <form method="post">
     <div class="row p-3 border">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        @if (Model.Id != 0)
+        @if (Model.Camera.Id != 0)
         {
             title = "Edit Camera";
+            <input type="hidden" asp-for="Camera.Id" />
         }
         <div class="col-12 border-bottom">
             <h2 class="text-primary">@title</h2>
@@ -20,72 +21,78 @@
         <div class="col-8 pt-4">
             <div class="form-group row">
                 <div class="col-4">
-                    <label asp-for="ApplicationUserId"></label>
+                    UserName
                 </div>
                 <div class="col-8">
-                    <input asp-for="ApplicationUserId" class="form-control" />
-                    <span asp-validation-for="ApplicationUserId" class="text-danger"></span>
+                    @Html.DropDownListFor(m => m.Camera.ApplicationUserId, Model.ApplicationUserList, "-Select a UserName",
+                   new { @class = "form-control" })
+                    <span asp-validation-for="Camera.ApplicationUserId" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group row">
                 <div class="col-4">
-                    <label asp-for="Name"></label>
+                    <label asp-for="Camera.Name"></label>
                 </div>
                 <div class="col-8">
-                    <input asp-for="Name" class="form-control" />
-                    <span asp-validation-for="Name" class="text-danger"></span>
+                    <input asp-for="Camera.Name" class="form-control" />
+                    <span asp-validation-for="Camera.Name" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group row">
                 <div class="col-4">
-                    <label asp-for="PowerStatus"></label>
+                    <label asp-for="Camera.PowerStatus"></label>
                 </div>
                 <div class="col-8">
-                    <input asp-for="PowerStatus" class="form-control" />
-                    <span asp-validation-for="PowerStatus" class="text-danger"></span>
+                    <input asp-for="Camera.PowerStatus" class="form-control" />
+                    <span asp-validation-for="Camera.PowerStatus" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group row">
                 <div class="col-4">
-                    <label asp-for="ConnectionStatus"></label>
+                    <label asp-for="Camera.ConnectionStatus"></label>
                 </div>
                 <div class="col-8">
-                    <input asp-for="ConnectionStatus" class="form-control" />
-                    <span asp-validation-for="ConnectionStatus" class="text-danger"></span>
+                    <input asp-for="Camera.ConnectionStatus" class="form-control" />
+                    <span asp-validation-for="Camera.ConnectionStatus" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group row">
                 <div class="col-4">
-                    <label asp-for="NightVersionStatus"></label>
+                    <label asp-for="Camera.NightVersionStatus"></label>
                 </div>
                 <div class="col-8">
-                    <input asp-for="NightVersionStatus" class="form-control" />
-                    <span asp-validation-for="NightVersionStatus" class="text-danger"></span>
+                    <select asp-for="Camera.NightVersionStatus" class="form-control">
+                        <option>AUTO</option>
+                        <option>ON</option>
+                        <option>OFF</option>
+                    </select>
+                </div>
+                <span asp-validation-for="Camera.NightVersionStatus" class="text-danger"></span>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Camera.TimelapsRecordingStatus"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Camera.TimelapsRecordingStatus" class="form-control" />
+                    <span asp-validation-for="Camera.TimelapsRecordingStatus" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group row">
                 <div class="col-4">
-                    <label asp-for="TimelapsRecordingStatus"></label>
+                    <label asp-for="Camera.SourceCode"></label>
                 </div>
                 <div class="col-8">
-                    <input asp-for="TimelapsRecordingStatus" class="form-control" />
-                    <span asp-validation-for="TimelapsRecordingStatus" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-4">
-                    <label asp-for="SourceCode"></label>
-                </div>
-                <div class="col-8">
-                    <input asp-for="SourceCode" class="form-control" />
-                    <span asp-validation-for="SourceCode" class="text-danger"></span>
+                    <input asp-for="Camera.SourceCode" class="form-control" />
+                    <span asp-validation-for="Camera.SourceCode" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group row">
                 <div class="col-8 offset-4">
-                    @if (Model.Id != 0)
+                    @if (Model.Camera.Id != 0)
                     {
-                        <partial name="_EditAndBackToListButton" model="Model.Id" />
+                        <partial name="_EditAndBackToListButton" model="Model.Camera.Id" />
                     }
                     else
                     {

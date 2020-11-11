@@ -1,4 +1,5 @@
-﻿using IOTManagementGroup7.DataAccess.Data;
+﻿
+using IOTManagementGroup7.DataAccess.Data;
 using IOTManagementGroup7.DataAccess.Repository.IRepository;
 using IOTManagementGroup7.Models;
 using System;
@@ -8,17 +9,17 @@ using System.Text;
 
 namespace IOTManagementGroup7.DataAccess.Repository
 {
-    public class TVRepository : Repository<TV>, ITVRepository
+    public class ApplicationUserRepository : Repository<ApplicationUser>, IApplicationUserRepository
     {
         private readonly ApplicationDbContext _db;
-        public TVRepository(ApplicationDbContext db) : base(db)
+        public ApplicationUserRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;
         }
 
-        public void Update(TV tV)
+        public void Update(ApplicationUser applicationUser)
         {
-            _db.Update(tV);
+            _db.Update(applicationUser);
         }
     }
 }

@@ -10,6 +10,7 @@ namespace IOTManagementGroup7.Models
     {
         [Key]
         public int Id { get; set; }
+        [Required]
         public string ApplicationUserId { get; set; }
         [ForeignKey("ApplicationUserId")]
         public ApplicationUser ApplicationUser { get; set; }
@@ -19,5 +20,8 @@ namespace IOTManagementGroup7.Models
         public string NightVersionStatus { get; set; }
         public bool TimelapsRecordingStatus { get; set; }
         public string SourceCode { get; set; }
+
+        
+        
     }
 }

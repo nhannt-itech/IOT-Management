@@ -10,13 +10,13 @@ function loadDataTable() {
             "url": "/Admin/Camera/GetAll"
         },
         "columns": [
-            { "data": "applicationUserId", "width": "30%" },
-            { "data": "name", "width": "10%" },
-            { "data": "powerStatus", "width": "10%" },
+            { "data": "applicationUser.userName", "width": "15%" },
+            { "data": "name", "width": "15%" },
+            { "data": "powerStatus", "width": "15%" },
             { "data": "connectionStatus", "width": "10%" },
             { "data": "nightVersionStatus", "width": "10%" },
             { "data": "timelapsRecordingStatus", "width": "15%" },
-            { "data": "sourceCode", "width": "15%" },
+            { "data": "sourceCode", "width": "20%" },
 
             {
                 "data": "id",

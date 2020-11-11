@@ -13,10 +13,10 @@ namespace IOTManagementGroup7.DataAccess.Data
             : base(options)
         {
         }
-        public DbSet<Light> Lights { get; set; }
+
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
-        public DbSet<TV> TVs { get; set; }
-        public DbSet<Fridge> Fridges { get; set; }
+
+
         public DbSet<Camera> Cameras { get; set; }
 
 

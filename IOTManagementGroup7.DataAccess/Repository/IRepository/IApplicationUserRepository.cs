@@ -5,8 +5,8 @@ using System.Text;
 
 namespace IOTManagementGroup7.DataAccess.Repository.IRepository
 {
-    public interface ITVRepository :IRepository<TV>
+    public interface IApplicationUserRepository : IRepository<ApplicationUser>
     {
-        void Update(TV tV);
+        void Update(ApplicationUser applicationUser);
     }
 }
