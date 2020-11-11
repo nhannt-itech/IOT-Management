@@ -54,8 +54,11 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
         }
 
         [BindProperty]
+        public LoginPopup LoginPopup { get; set; }
+
         public InputModel Input { get; set; }
         public string ReturnUrl { get; set; }
+        public string ErrorMessage { get; set; }
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
         public class InputModel
@@ -101,10 +104,6 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
             applicationUser = _db.ApplicationUsers.FirstOrDefault(x => x.Id == id);
             return View(applicationUser);
         }
-
-        
-
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -182,12 +181,12 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
                         values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    await _emailSender.SendEmailAsync(input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
                     //-------------------------------Send Email End-------------------------------
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        return RedirectToPage("RegisterConfirmation", new { email = input.Email, returnUrl = returnUrl });
                     }
                     else
                     {
@@ -210,9 +209,51 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return PartialView("_Register", Input);
+            return PartialView("_Register", input);
         }
 
+        [HttpGet]
+        public async Task<ActionResult> Login(string returnUrl = null)
+        {
+            if (!string.IsNullOrEmpty(ErrorMessage))
+            {
+                ModelState.AddModelError(string.Empty, ErrorMessage);
+            }
+            returnUrl = returnUrl ?? Url.Content("~/");
+            // Clear the existing external cookie to ensure a clean login process
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ReturnUrl = returnUrl;
+            return PartialView("_Login", LoginPopup);
+        }
+        [HttpPost]
+        public async Task<ActionResult> Login(LoginPopup loginPopup, string returnUrl = null)
+        {
+            returnUrl = returnUrl ?? Url.Content("~/");
+
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(loginPopup.Email, loginPopup.Password, loginPopup.RememberMe, lockoutOnFailure: false);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User logged in.");
+                    if (result.IsLockedOut)
+                    {
+                        _logger.LogWarning("User account locked out.");
+                        return Redirect("~/Identity/Account/Lockout");
+                    }
+                    return LocalRedirect(returnUrl);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    return Redirect("~/Identity/Account/Login");
+
+                    return PartialView("_Login", loginPopup);
+                }
+            }
+            return Redirect("~/Identity/Account/Login");
+        }
 
         #region API_Calls
         public IActionResult GetAll()
@@ -281,6 +322,13 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
         {
             string MatchEmailPattern = @"(?=^[^\s]{6,}$)(?=.*\d)(?=.*[a-zA-Z])";
             return Json(Regex.IsMatch(Password, MatchEmailPattern));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> loginUser(string Email, string Password)
+        {
+            var result = await _signInManager.PasswordSignInAsync(Email, Password, true, lockoutOnFailure: false);
+            return Json(result.Succeeded);
         }
         #endregion
     }

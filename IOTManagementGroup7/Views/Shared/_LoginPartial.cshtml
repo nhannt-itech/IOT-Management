@@ -24,8 +24,12 @@
             <a class="nav-link text-dark popup" data-url="/Admin/User/Register" data-toggle="modal" data-target="#modal-create-edit-user" id="UserModel">Register</a>
             <partial name="_Modal" />
         </li>
+        @*<li class="nav-item">
+                <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            </li>*@
         <li class="nav-item">
-            <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            <a class="nav-link text-dark popup" data-url="/Admin/User/Login" data-toggle="modal" data-target="#modal-create-edit-user" id="UserModel">Login</a>
+            <partial name="_Modal" />
         </li>
     }
 </ul>
