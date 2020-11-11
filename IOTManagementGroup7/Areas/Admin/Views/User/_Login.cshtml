@@ -1,4 +1,4 @@
-﻿@model IOTManagementGroup7.Models.LoginPopup
+﻿@model IOTManagementGroup7.Areas.Admin.Controllers.UserController.LoginPopupModel
 @using IOTManagementGroup7.Utility
 
 <!--Modal Body Start-->
@@ -25,10 +25,6 @@
                                 <label asp-for="Password" class="col-3"></label>
                                 <input asp-for="Password" class="form-control col-9" />
                                 <span asp-validation-for="Password" class="text-danger offset-1"></span>
-                            </div> <br />
-                            <div class="form-group row">
-                                <label asp-for="RememberMe" class="col-3"></label>
-                                <input asp-for="RememberMe" class="form-control col-9" />
                             </div> <br />
                             @*<div class="modal-footer">
                                     <button data-dismiss="modal" id="cancel" class="btn btn-default" type="button">Cancel</button>

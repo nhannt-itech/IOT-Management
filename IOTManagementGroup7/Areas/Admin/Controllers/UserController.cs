@@ -52,16 +52,12 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
             _roleManager = roleManager;
             _unitOfWork = unitOfWork;
         }
-
-        [BindProperty]
-        public LoginPopup LoginPopup { get; set; }
-
-        public InputModel Input { get; set; }
+        public LoginPopupModel LoginPopup { get; set; }
+        public RegisterPopupModel RegisterPopup { get; set; }
         public string ReturnUrl { get; set; }
         public string ErrorMessage { get; set; }
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
-
-        public class InputModel
+        public class RegisterPopupModel
         {
             [Required]
             [EmailAddress]
@@ -92,19 +88,30 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
             public string Address { get; set; }
             public string Role { get; set; }
         }
+        public class LoginPopupModel
+        {
+            [Required]
+            [EmailAddress]
+            public string Email { get; set; }
 
+            [Required]
+            [DataType(DataType.Password)]
+            [Remote("loginUser", "User", HttpMethod = "POST", ErrorMessage = "Your Email or Password is Incorrect", AdditionalFields = "Email")]
+            public string Password { get; set; }
+
+            [Display(Name = "Remember me?")]
+            public bool RememberMe { get; set; }
+        }
         public IActionResult Index()
         {
             return View();
         }
-
         public IActionResult Update(string? id)
         {
             ApplicationUser applicationUser = new ApplicationUser();
             applicationUser = _db.ApplicationUsers.FirstOrDefault(x => x.Id == id);
             return View(applicationUser);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Update(ApplicationUser applicationUser)
@@ -130,12 +137,16 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
             {
                 await _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer));
             }
+            if (!await _roleManager.RoleExistsAsync(SD.Role_Manager))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(SD.Role_Manager));
+            }
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            return PartialView("_Register",Input);
+            return PartialView("_Register", RegisterPopup);
         }
         [HttpPost]
-        public async Task<ActionResult> Register(InputModel input, string returnUrl = null)
+        public async Task<ActionResult> Register(RegisterPopupModel registerPopup, string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -143,14 +154,14 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
             {
                 var user = new ApplicationUser()
                 {
-                    UserName = input.Email,
-                    Email = input.Email,
-                    Name = input.Name,
-                    PhoneNumber = input.PhoneNumber,
-                    Address = input.Address,
-                    Role = input.Role
+                    UserName = registerPopup.Email,
+                    Email = registerPopup.Email,
+                    Name = registerPopup.Name,
+                    PhoneNumber = registerPopup.PhoneNumber,
+                    Address = registerPopup.Address,
+                    Role = registerPopup.Role
                 };
-                var result = await _userManager.CreateAsync(user, input.Password);
+                var result = await _userManager.CreateAsync(user, registerPopup.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
@@ -181,12 +192,12 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
                         values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(input.Email, "Confirm your email",
+                    await _emailSender.SendEmailAsync(registerPopup.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
                     //-------------------------------Send Email End-------------------------------
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = input.Email, returnUrl = returnUrl });
+                        return RedirectToPage("RegisterConfirmation", new { email = registerPopup.Email, returnUrl = returnUrl });
                     }
                     else
                     {
@@ -209,7 +220,7 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return PartialView("_Register", input);
+            return PartialView("_Register", registerPopup);
         }
 
         [HttpGet]
@@ -227,7 +238,7 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
             return PartialView("_Login", LoginPopup);
         }
         [HttpPost]
-        public async Task<ActionResult> Login(LoginPopup loginPopup, string returnUrl = null)
+        public async Task<ActionResult> Login(LoginPopupModel loginPopup, string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
 
@@ -248,8 +259,7 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                     return Redirect("~/Identity/Account/Login");
-
-                    return PartialView("_Login", loginPopup);
+                    //return PartialView("_Login", loginPopup);
                 }
             }
             return Redirect("~/Identity/Account/Login");
@@ -328,6 +338,7 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
         public async Task<ActionResult> loginUser(string Email, string Password)
         {
             var result = await _signInManager.PasswordSignInAsync(Email, Password, true, lockoutOnFailure: false);
+            await _signInManager.SignOutAsync();
             return Json(result.Succeeded);
         }
         #endregion
