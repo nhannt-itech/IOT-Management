@@ -20,10 +20,11 @@ namespace IOTManagementGroup7.DataAccess.Repository
             SP_Call = new SP_Call(_db);
         }
 
-
         public ILightRepository Light { get; private set; }
-        public ITVRepository TV { get; private set; }
-        public IFridgeRepository Fridge { get; private set; }
+        public ITelevisionRepository Television { get; private set; }
+        public IApplicationUserRepository ApplicationUser { get; private set; }
+        public ICameraRepository Camera { get; private set; }
+
         public ISP_Call SP_Call { get; private set; }
 
         public void Dispose()

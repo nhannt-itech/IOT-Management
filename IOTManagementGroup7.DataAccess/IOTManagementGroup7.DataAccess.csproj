@@ -5,17 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20201103065759_AddLightToDB.cs" />
-    <Compile Remove="Migrations\20201103065759_AddLightToDB.Designer.cs" />
-    <Compile Remove="Migrations\20201110040749_AddAppliancesToDb.cs" />
-    <Compile Remove="Migrations\20201110040749_AddAppliancesToDb.Designer.cs" />
-    <Compile Remove="Migrations\20201110040817_FixAddAppliancesToDb.cs" />
-    <Compile Remove="Migrations\20201110040817_FixAddAppliancesToDb.Designer.cs" />
-    <Compile Remove="Migrations\20201111010139_addCamera.cs" />
-    <Compile Remove="Migrations\20201111010139_addCamera.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="Repository\IRepository\ISP_Call.cs~RF5cb8426.TMP" />
   </ItemGroup>
 
