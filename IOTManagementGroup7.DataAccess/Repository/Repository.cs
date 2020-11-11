@@ -1,5 +1,6 @@
 ﻿using IOTManagementGroup7.DataAccess.Data;
 using IOTManagementGroup7.DataAccess.Repository.IRepository;
+using IOTManagementGroup7.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -88,5 +89,7 @@ namespace IOTManagementGroup7.DataAccess.Repository
         {
             dbSet.RemoveRange(entity);
         }
+
+        
     }
 }
