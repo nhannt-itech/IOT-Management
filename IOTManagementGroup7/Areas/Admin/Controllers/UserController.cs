@@ -1,14 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text;
+using System.Text.Encodings.Web;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using IOTManagementGroup7.Areas.Identity.Pages.Account;
 using IOTManagementGroup7.DataAccess.Data;
 using IOTManagementGroup7.DataAccess.Repository.IRepository;
 using IOTManagementGroup7.Models;
 using IOTManagementGroup7.Utility;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace IOTManagementGroup7.Areas.Admin.Controllers
 {
@@ -17,24 +28,84 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
     public class UserController : Controller
     {
         private readonly ApplicationDbContext _db;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly ILogger<RegisterModel> _logger;
+        private readonly IEmailSender _emailSender;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUnitOfWork _unitOfWork;
-
-        public UserController(ApplicationDbContext db, IUnitOfWork unitOfWork)
+        public UserController(
+            ApplicationDbContext db,
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager,
+            ILogger<RegisterModel> logger,
+            IEmailSender emailSender,
+            RoleManager<IdentityRole> roleManager,
+            IUnitOfWork unitOfWork)
         {
             _db = db;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _logger = logger;
+
+            _emailSender = emailSender;
+            _roleManager = roleManager;
             _unitOfWork = unitOfWork;
+        }
+
+        [BindProperty]
+        public InputModel Input { get; set; }
+        public string ReturnUrl { get; set; }
+        public IList<AuthenticationScheme> ExternalLogins { get; set; }
+
+        public class InputModel
+        {
+            [Required]
+            [EmailAddress]
+            [Display(Name = "Email")]
+            [Remote("isExists", "User", HttpMethod = "POST", ErrorMessage = "User name is already taken")]
+            public string Email { get; set; }
+
+            [Required]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Remote("checkPassword", "User", HttpMethod = "POST", ErrorMessage = "Must contains at least one digit and at least one lower case or upper case")]
+            [DataType(DataType.Password)]
+            [Display(Name = "Password")]
+            public string Password { get; set; }
+
+            [DataType(DataType.Password)]
+            [Display(Name = "Confirm password")]
+            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            public string ConfirmPassword { get; set; }
+
+            [Required]
+            [Display(Name = "Name")]
+            public string Name { get; set; }
+
+            [Display(Name = "Phone")]
+            public string PhoneNumber { get; set; }
+
+            [Display(Name = "Address")]
+            public string Address { get; set; }
+            public string Role { get; set; }
         }
 
         public IActionResult Index()
         {
             return View();
         }
+
         public IActionResult Update(string? id)
         {
             ApplicationUser applicationUser = new ApplicationUser();
-            applicationUser = _db.ApplicationUsers.FirstOrDefault(x=>x.Id == id);
+            applicationUser = _db.ApplicationUsers.FirstOrDefault(x => x.Id == id);
             return View(applicationUser);
         }
+
+        
+
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Update(ApplicationUser applicationUser)
@@ -48,6 +119,100 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public async Task<ActionResult> Register(string returnUrl = null)
+        {
+            if (!await _roleManager.RoleExistsAsync(SD.Role_Admin))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin));
+            }
+            if (!await _roleManager.RoleExistsAsync(SD.Role_Customer))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer));
+            }
+            ReturnUrl = returnUrl;
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            return PartialView("_Register",Input);
+        }
+        [HttpPost]
+        public async Task<ActionResult> Register(InputModel input, string returnUrl = null)
+        {
+            returnUrl = returnUrl ?? Url.Content("~/");
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser()
+                {
+                    UserName = input.Email,
+                    Email = input.Email,
+                    Name = input.Name,
+                    PhoneNumber = input.PhoneNumber,
+                    Address = input.Address,
+                    Role = input.Role
+                };
+                var result = await _userManager.CreateAsync(user, input.Password);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User created a new account with password.");
+
+                    if (!await _roleManager.RoleExistsAsync(SD.Role_Admin))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin));
+                    }
+                    if (!await _roleManager.RoleExistsAsync(SD.Role_Customer))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer));
+                    }
+
+                    if (user.Role == null)
+                    {
+                        await _userManager.AddToRoleAsync(user, SD.Role_Customer);
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, user.Role);
+                    }
+                    //------------------------------Send Email-----------------------------------
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    var callbackUrl = Url.Page(
+                        "/Account/ConfirmEmail",
+                        pageHandler: null,
+                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                        protocol: Request.Scheme);
+
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    //-------------------------------Send Email End-------------------------------
+                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                    {
+                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                    }
+                    else
+                    {
+                        if (user.Role == null)
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                            return LocalRedirect(returnUrl);
+                        }
+                        else
+                        {
+                            // admin is registering a new user
+                            return RedirectToAction("Index", "User", new { Area = "Admin" });
+                        }
+                    }
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return PartialView("_Register", Input);
+        }
+
 
         #region API_Calls
         public IActionResult GetAll()
@@ -97,6 +262,25 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
             _db.ApplicationUsers.Remove(userObj);
             _db.SaveChanges();
             return Json(new { success = true, message = "Delete successful!" });
+        }
+        #endregion
+
+        #region ErrorValidationModel
+        [HttpPost]
+        public JsonResult isExists(string Email)
+        {
+            int isExist = _db.ApplicationUsers.Count(x => x.Email == Email);
+            if (isExist == 0)
+                return Json(true);
+            else
+                return Json(false);
+        }
+
+        [HttpPost]
+        public JsonResult checkPassword(string Password)
+        {
+            string MatchEmailPattern = @"(?=^[^\s]{6,}$)(?=.*\d)(?=.*[a-zA-Z])";
+            return Json(Regex.IsMatch(Password, MatchEmailPattern));
         }
         #endregion
     }
