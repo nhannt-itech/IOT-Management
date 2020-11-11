@@ -22,6 +22,7 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
+                        
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
@@ -74,6 +75,41 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://kit.fontawesome.com/e19c476714.js"></script>
 
+    <script type="text/javascript">
+        (function ($) {
+            function Index() {
+                var $this = this;
+                function initialize() {
+
+                    $(".popup").on('click', function (e) {
+                        modelPopup(this);
+                    });
+
+                    function modelPopup(reff) {
+                        var url = $(reff).data('url');
+
+                        $.get(url).done(function (data) {
+                            debugger;
+                            $('#modal-create-edit-user').find(".modal-dialog").html(data);
+                            $('#modal-create-edit-user > .modal', data).modal("show");
+                        });
+
+                    }
+                }
+
+                $this.init = function () {
+                    initialize();
+                };
+            }
+            $(function () {
+                var self = new Index();
+                self.init();
+            });
+        }(jQuery));
+    </script>
+
     @RenderSection("Scripts", required: false)
+
 </body>
+
 </html>

@@ -54,6 +54,7 @@ namespace IOTManagementGroup7.Areas.Identity.Pages.Account
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
+
         public class InputModel
         {
             [Required]
@@ -85,6 +86,8 @@ namespace IOTManagementGroup7.Areas.Identity.Pages.Account
             public IEnumerable<SelectListItem> RoleList { get; set; }
 
         }
+
+
 
         public async Task OnGetAsync(string returnUrl = null)
         {
