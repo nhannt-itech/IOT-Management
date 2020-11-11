@@ -67,7 +67,7 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
                 }
                 else
                 {
-                    _unitOfWork.Fridge.Add(fridgeVM.Fridge);
+                    _unitOfWork.Fridge.Update(fridgeVM.Fridge);
                 }
                 _unitOfWork.Save();
                 return RedirectToAction(nameof(Index));
