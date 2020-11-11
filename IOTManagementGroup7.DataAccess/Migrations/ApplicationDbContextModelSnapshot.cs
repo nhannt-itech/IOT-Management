@@ -21,8 +21,10 @@ namespace IOTManagementGroup7.DataAccess.Migrations
 
             modelBuilder.Entity("IOTManagementGroup7.Models.Camera", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
