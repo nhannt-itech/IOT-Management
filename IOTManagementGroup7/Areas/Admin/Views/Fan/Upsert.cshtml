@@ -1,0 +1,101 @@
+﻿
+
+@model IOTManagementGroup7.Models.ViewModels.FanVM
+
+
+@{
+    ViewData["Title"] = "Upsert";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var title = "Create Fan";
+}
+
+<form method="post">
+    <div class="row p-3 border">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @if (Model.Fan.Id != 0)
+        {
+            title = "Edit Fan";
+            <input type="hidden" asp-for="Fan.Id" />
+        }
+        <div class="col-12 border-bottom">
+            <h2 class="text-primary">@title</h2>
+        </div>
+        <div class="col-8 pt-4">
+            <div class="form-group row">
+                <div class="col-4">
+                    UserName
+                </div>
+                <div class="col-8">
+                    @Html.DropDownListFor(m => m.Fan.ApplicationUserId, Model.ApplicationUserList, "-Select a UserName",
+                   new { @class = "form-control" })
+                    <span asp-validation-for="Fan.ApplicationUserId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Fan.Name"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Fan.Name" class="form-control" />
+                    <span asp-validation-for="Fan.Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Fan.PowerStatus"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Fan.PowerStatus" class="form-control" />
+                    <span asp-validation-for="Fan.PowerStatus" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Fan.ConnectionStatus"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Fan.ConnectionStatus" class="form-control" />
+                    <span asp-validation-for="Fan.ConnectionStatus" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Fan.Speed"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Fan.Speed" class="form-control" />
+                    <span asp-validation-for="Fan.Speed" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Fan.SourceCode"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Fan.SourceCode" class="form-control" />
+                    <span asp-validation-for="Fan.SourceCode" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-8 offset-4">
+                    @if (Model.Fan.Id != 0)
+                    {
+                        <partial name="_EditAndBackToListButton" model="Model.Fan.Id" />
+                    }
+                    else
+                    {
+                        <partial name="_CreateAndBackToListButton" />
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
