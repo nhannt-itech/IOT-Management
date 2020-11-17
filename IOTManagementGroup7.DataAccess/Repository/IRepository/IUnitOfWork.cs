@@ -6,6 +6,7 @@ namespace IOTManagementGroup7.DataAccess.Repository.IRepository
 {
     public interface IUnitOfWork : IDisposable
     {
+        IAirConditionerRepository AirConditioner { get; }
         IFanRepository Fan { get; }
         ILightRepository Light { get; }
         ITelevisionRepository Television { get; }

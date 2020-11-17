@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace IOTManagementGroup7.DataAccess.Migrations
 {
-    public partial class Initial : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -85,6 +85,29 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                         name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AirConditioners",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ApplicationUserId = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    PowerStatus = table.Column<bool>(nullable: false),
+                    Temperature = table.Column<float>(nullable: false),
+                    SourceCode = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AirConditioners", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AirConditioners_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -296,6 +319,11 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AirConditioners_ApplicationUserId",
+                table: "AirConditioners",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
                 column: "RoleId");
@@ -362,6 +390,9 @@ namespace IOTManagementGroup7.DataAccess.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AirConditioners");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
