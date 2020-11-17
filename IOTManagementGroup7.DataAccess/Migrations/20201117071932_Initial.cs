@@ -224,6 +224,28 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Fridge",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true),
+                    Temperature = table.Column<double>(nullable: false),
+                    SourceCode = table.Column<string>(nullable: true),
+                    ApplicationUserId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Fridge", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Fridge_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Television",
                 columns: table => new
                 {
@@ -323,6 +345,11 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                 column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Fridge_ApplicationUserId",
+                table: "Fridge",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Television_ApplicationUserId",
                 table: "Television",
                 column: "ApplicationUserId");
@@ -355,6 +382,9 @@ namespace IOTManagementGroup7.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "Fans");
+
+            migrationBuilder.DropTable(
+                name: "Fridge");
 
             migrationBuilder.DropTable(
                 name: "Lights");
