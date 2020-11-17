@@ -24,13 +24,14 @@ using Microsoft.Extensions.Logging;
 namespace IOTManagementGroup7.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [AllowAnonymous]
     //[Authorize(Roles = SD.Role_Admin)]
     public class UserController : Controller
     {
         private readonly ApplicationDbContext _db;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly ILogger<RegisterModel> _logger;
+        private readonly ILogger<UserController> _logger;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUnitOfWork _unitOfWork;
@@ -38,7 +39,7 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
             ApplicationDbContext db,
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
-            ILogger<RegisterModel> logger,
+            ILogger<UserController> logger,
             IEmailSender emailSender,
             RoleManager<IdentityRole> roleManager,
             IUnitOfWork unitOfWork)
@@ -61,8 +62,8 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
         {
             [Required]
             [EmailAddress]
-            [Display(Name = "Email")]
             [Remote("isExists", "User", HttpMethod = "POST", ErrorMessage = "User name is already taken")]
+            [Display(Name = "Email")]
             public string Email { get; set; }
 
             [Required]
