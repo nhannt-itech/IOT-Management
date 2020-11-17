@@ -35,12 +35,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Admin" asp-controller="Camera" asp-action="Index">Camera</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Admin" asp-controller="Fan" asp-action="Index">Fan</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Admin" asp-controller="AirConditioner" asp-action="Index">Air Conditioner</a>
-                        </li>
+                        
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Admin" asp-controller="User" asp-action="Index">User</a>
                         </li>
@@ -52,6 +47,15 @@
                                 <a class="dropdown-item" asp-area="Admin" asp-controller="Television" asp-action="Index">Television</a>
                                 <a class="dropdown-item" asp-area="Admin" asp-controller="WashingMachine" asp-action="Index">Washing Machine</a>
                                 <a class="dropdown-item" asp-area="Admin" asp-controller="Fridge" asp-action="Index">Fridge</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Refrigeration
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" asp-area="Admin" asp-controller="Fan" asp-action="Index">Fan</a>
+                                <a class="dropdown-item" asp-area="Admin" asp-controller="AirConditioner" asp-action="Index">Air-Conditioner</a>
                             </div>
                         </li>
                     </ul>
