@@ -27,7 +27,6 @@ namespace IOTManagementGroup7.DataAccess.Repository
         public IWashingMachineRepository WashingMachine { get; private set; }
         public IApplicationUserRepository ApplicationUser { get; private set; }
         public ICameraRepository Camera { get; private set; }
-
         public ISP_Call SP_Call { get; private set; }
 
         public void Dispose()
