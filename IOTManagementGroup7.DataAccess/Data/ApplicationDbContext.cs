@@ -13,6 +13,7 @@ namespace IOTManagementGroup7.DataAccess.Data
             : base(options)
         {
         }
+        public DbSet<Fan> Fans { get; set; }
         public DbSet<Light> Lights { get; set; }
         public DbSet<Television> Television { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }

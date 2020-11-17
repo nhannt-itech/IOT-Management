@@ -13,13 +13,14 @@ namespace IOTManagementGroup7.DataAccess.Repository
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
+            Fan = new FanRepository(_db);
             Light = new LightRepository(_db);
             Television = new TelevisionRepository(_db);
             Camera = new CameraRepository(_db);
             ApplicationUser = new ApplicationUserRepository(_db);
             SP_Call = new SP_Call(_db);
         }
-
+        public IFanRepository Fan { get; private set; }
         public ILightRepository Light { get; private set; }
         public ITelevisionRepository Television { get; private set; }
         public IApplicationUserRepository ApplicationUser { get; private set; }
