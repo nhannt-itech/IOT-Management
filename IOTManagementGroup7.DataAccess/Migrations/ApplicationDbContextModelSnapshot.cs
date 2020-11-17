@@ -55,6 +55,39 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                     b.ToTable("Cameras");
                 });
 
+            modelBuilder.Entity("IOTManagementGroup7.Models.Fan", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("ConnectionStatus")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PowerStatus")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SourceCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Speed")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("Fans");
+                });
+
             modelBuilder.Entity("IOTManagementGroup7.Models.Light", b =>
                 {
                     b.Property<int>("Id")
@@ -340,6 +373,15 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                 });
 
             modelBuilder.Entity("IOTManagementGroup7.Models.Camera", b =>
+                {
+                    b.HasOne("IOTManagementGroup7.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("IOTManagementGroup7.Models.Fan", b =>
                 {
                     b.HasOne("IOTManagementGroup7.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
