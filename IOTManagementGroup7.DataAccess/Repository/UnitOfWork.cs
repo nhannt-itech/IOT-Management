@@ -17,12 +17,14 @@ namespace IOTManagementGroup7.DataAccess.Repository
             Light = new LightRepository(_db);
             Television = new TelevisionRepository(_db);
             Camera = new CameraRepository(_db);
+            WashingMachine = new WashingMachineRepository(_db);
             ApplicationUser = new ApplicationUserRepository(_db);
             SP_Call = new SP_Call(_db);
         }
         public IFanRepository Fan { get; private set; }
         public ILightRepository Light { get; private set; }
         public ITelevisionRepository Television { get; private set; }
+        public IWashingMachineRepository WashingMachine { get; private set; }
         public IApplicationUserRepository ApplicationUser { get; private set; }
         public ICameraRepository Camera { get; private set; }
 

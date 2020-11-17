@@ -9,6 +9,7 @@ namespace IOTManagementGroup7.DataAccess.Repository.IRepository
         IFanRepository Fan { get; }
         ILightRepository Light { get; }
         ITelevisionRepository Television { get; }
+        IWashingMachineRepository WashingMachine { get; }
         IApplicationUserRepository ApplicationUser { get; }
         ICameraRepository Camera { get; }
         ISP_Call SP_Call { get; }

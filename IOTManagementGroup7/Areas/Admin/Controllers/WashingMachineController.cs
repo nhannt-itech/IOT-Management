@@ -13,11 +13,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace IOTManagementGroup7.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class TelevisionController : Controller
+    public class WashingMachineController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ApplicationDbContext _db;
-        public TelevisionController(IUnitOfWork unitOfWork, ApplicationDbContext db)
+        public WashingMachineController(IUnitOfWork unitOfWork, ApplicationDbContext db)
         {
             _unitOfWork = unitOfWork;
             _db = db;
@@ -32,9 +32,9 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
         public IActionResult Upsert(int? id)
         {
 
-            TelevisionVM televisionVM = new TelevisionVM()
+            WashingMachineVM washingMachineVM = new WashingMachineVM()
             {
-                Television = new Television(),
+                WashingMachine = new WashingMachine(),
                 ApplicationUserList = _unitOfWork.ApplicationUser.GetAll().Select(i => new SelectListItem
                 {
                     Text = i.UserName,
@@ -44,70 +44,69 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
 
             if (id == null)
             {
-                return View(televisionVM);
+                return View(washingMachineVM);
             }
-            televisionVM.Television = _unitOfWork.Television.Get(id.GetValueOrDefault());
-            if (televisionVM.Television == null)
+            washingMachineVM.WashingMachine = _unitOfWork.WashingMachine.Get(id.GetValueOrDefault());
+            if (washingMachineVM.WashingMachine == null)
             {
                 return NotFound();
             }
-            return View(televisionVM);
+            return View(washingMachineVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Upsert(TelevisionVM televisionVM)
+        public IActionResult Upsert(WashingMachineVM washingMachineVM)
         {
             if (ModelState.IsValid)
             {
-               
-                if (televisionVM.Television.Id == 0)
+                if (washingMachineVM.WashingMachine.Id == 0)
                 {
-                    _unitOfWork.Television.Add(televisionVM.Television);
+                    _unitOfWork.WashingMachine.Add(washingMachineVM.WashingMachine);
 
                 }
                 else
                 {
-                    _unitOfWork.Television.Update(televisionVM.Television);
+                    _unitOfWork.WashingMachine.Update(washingMachineVM.WashingMachine);
                 }
                 _unitOfWork.Save();
                 return RedirectToAction(nameof(Index));
             }
             else
             {
-                televisionVM.ApplicationUserList = _unitOfWork.ApplicationUser.GetAll().Select(i => new SelectListItem
+                washingMachineVM.ApplicationUserList = _unitOfWork.ApplicationUser.GetAll().Select(i => new SelectListItem
                 {
                     Text = i.UserName,
                     Value = i.Id.ToString()
                 });
                 
-                if (televisionVM.Television.Id != 0)
+                if (washingMachineVM.WashingMachine.Id != 0)
                 {
-                    televisionVM.Television = _unitOfWork.Television.Get(televisionVM.Television.Id);
+                    washingMachineVM.WashingMachine = _unitOfWork.WashingMachine.Get(washingMachineVM.WashingMachine.Id);
                 }
             }
           
 
-            return View(televisionVM);
+            return View(washingMachineVM);
         }
 
         #region API_Calls
 
         public IActionResult GetAll()
         {
-            var allObj = _unitOfWork.Television.GetAll(includeProperties: "ApplicationUser");
+            var allObj = _unitOfWork.WashingMachine.GetAll(includeProperties: "ApplicationUser");
             return Json(new { data = allObj });
         }
 
         [HttpDelete]
         public IActionResult Delete(int? id)
         {
-            var obj = _unitOfWork.Television.Get(id.GetValueOrDefault());
+            var obj = _unitOfWork.WashingMachine.Get(id.GetValueOrDefault());
             if (obj == null)
             {
                 return Json(new { success = false, message = "Error When Delete!" });
             }
-            _unitOfWork.Television.Remove(obj);
+            _unitOfWork.WashingMachine.Remove(obj);
             _unitOfWork.Save();
             return Json(new { success = true, message = "Delete successful!" });
         }
