@@ -1,40 +1,33 @@
 ﻿@model IOTManagementGroup7.Areas.Admin.Controllers.UserController.LoginPopupModel
 
-
 <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="LoginModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="RegisterModalLabel">Đăng nhập tài khoản</h5>
+                <h5 class="modal-title" id="RegisterModalLabel" style="margin: 0 auto;">LOGIN ACCOUNT</h5>
             </div>
             <div class="modal-body">
                 <form id="form_signin" asp-area="Admin" asp-controller="User" asp-action="Login" method="post">
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                     <div class="form-group row">
                         <label asp-for="Email" class="col-3"></label>
-                        <input asp-for="Email" id="Email" name="Email" class="form-control col-9" />
+                        <input asp-for="Email" id="Email" name="Email" class="form-control col-8" />
                         <span asp-validation-for="Email" class="text-danger offset-1"></span>
                     </div> <br />
                     <div class="form-group row">
                         <label asp-for="Password" class="col-3"></label>
-                        <input class="form-control col-9" type="password" data-val="true" data-val-remote="Your email or password is incorrect!"
-                               data-val-remote-additionalfields="*.Email,*.Password" data-val-remote-url="/Admin/User/loginUser"
+                        <input asp-for="Password" class="form-control col-8" type="password" data-val="true" data-val-remote="Your email or password is incorrect!"
+                               data-val-remote-additionalfields="*.Email,*.Password" data-val-remote-url="/Admin/User/isPasswordCorrect"
                                id="Password" name="Password">
                         <span asp-validation-for="Password" class="text-danger offset-1"></span>
                     </div> <br />
-                    <button type="submit" id="form_signin_submit" onclick="form_submit()" class="btn btn-primary col-6 offset-md-3">Sign In</button>
+                    <button type="submit" class="btn btn-primary col-6 offset-md-3">Sign In</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    function form_submit() {
-        if ($('#form_signin').valid()) {
-            document.getElementById("form_signin").submit();
-        };
-    }
-</script>
+
 
 
 

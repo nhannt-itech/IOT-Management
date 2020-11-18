@@ -4,7 +4,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="RegisterModalLabel">Đăng ký tài khoản</h5>
+                <h5 class="modal-title" id="RegisterModalLabel" style="margin: 0 auto;">REGISTER ACCOUNT</h5>
             </div>
             <div class="modal-body">
                 <form id="form_signup" asp-area="Admin" asp-controller="User" asp-action="Register" method="post" enctype="multipart/form-data">
@@ -12,28 +12,29 @@
                     <div class="form-group row">
                         @*https://stackoverflow.com/questions/23521427/validation-remote-validation-with-knockout-js-in-vb-net-mvc*@
                         <label asp-for="Name" class="col-3"></label>
-                        <input asp-for="Name" class="form-control col-9" />
+                        <input asp-for="Name" class="form-control col-8" />
                         <span asp-validation-for="Name" class="text-danger offset-1"></span>
                     </div> <br />
                     <div class="form-group row">
                         <label asp-for="Email" class="col-3"></label>
-                        @*<input asp-for="Email" class="form-control col-9" />*@
-                        <input class="form-control col-9" type="text" data-val="true" data-val-remote="Email is existed."
-                               data-val-remote-additionalfields="*.Email" data-val-remote-url="/Admin/User/isExists"
-                               id="Email" name="Email">
+                        <input asp-for="Email" class="form-control col-8" type="text" data-val="true" data-val-remote="Email is already exists."
+                               data-val-remote-additionalfields="*.Email" data-val-remote-url="/Admin/User/isEmailExists"
+                               id="Email" name="Email" value="">
                         <span asp-validation-for="Email" class="text-danger offset-1"></span>
                     </div> <br />
                     <div class="form-group row">
                         <label asp-for="Password" class="col-3"></label>
-                        <input asp-for="Password" class="form-control col-9" />
+                        <input asp-for="Password" class="form-control col-8" type="password" data-val="true" data-val-remote="Must contains at least one digit and at least one lower case or upper case."
+                               data-val-remote-additionalfields="*.Password" data-val-remote-url="/Admin/User/isPasswordFine"
+                               id="Password" name="Password" value="">
                         <span asp-validation-for="Password" class="text-danger offset-1"></span>
                     </div> <br />
                     <div class="form-group row">
                         <label asp-for="ConfirmPassword" class="col-3"></label>
-                        <input asp-for="ConfirmPassword" class="form-control col-9" />
+                        <input asp-for="ConfirmPassword" class="form-control col-8" />
                         <span asp-validation-for="ConfirmPassword" class="text-danger offset-1"></span>
                     </div> <br />
-                    <button type="button" form="form_signup" onclick="form_submit_signup()" class="btn btn-primary col-6 offset-md-3">Sign Up</button>
+                    <button type="submit" onclick="form_submit_signup()" class="btn btn-primary col-6 offset-md-3">Sign Up</button>
                 </form>
             </div>
         </div>

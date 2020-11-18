@@ -24,14 +24,13 @@ using Microsoft.Extensions.Logging;
 namespace IOTManagementGroup7.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [AllowAnonymous]
     //[Authorize(Roles = SD.Role_Admin)]
     public class UserController : Controller
     {
         private readonly ApplicationDbContext _db;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly ILogger<UserController> _logger;
+        private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUnitOfWork _unitOfWork;
@@ -39,7 +38,7 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
             ApplicationDbContext db,
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
-            ILogger<UserController> logger,
+            ILogger<RegisterModel> logger,
             IEmailSender emailSender,
             RoleManager<IdentityRole> roleManager,
             IUnitOfWork unitOfWork)
@@ -62,7 +61,6 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
         {
             [Required]
             [EmailAddress]
-            [Remote("isExists", "User", HttpMethod = "POST", ErrorMessage = "User name is already taken")]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
@@ -259,11 +257,11 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return Redirect("~/Identity/Account/Login");
-                    //return PartialView("_Login", loginPopup);
+                    //return Redirect("~/Identity/Account/Login");
+                    return PartialView("_Login", LoginPopup);
                 }
             }
-            return Redirect("~/Identity/Account/Login");
+            return PartialView("_Login", LoginPopup);
         }
 
         #region API_Calls
@@ -319,7 +317,7 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
 
         #region ErrorValidationModel
         [AcceptVerbs("Get", "Post")]
-        public JsonResult isExists(string Email)
+        public JsonResult isEmailExists(string Email)
         {
             int isExist = _db.ApplicationUsers.Count(x => x.Email == Email);
             if (isExist == 0)
@@ -328,19 +326,19 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
                 return Json(false);
         }
 
-        [HttpPost]
-        public JsonResult checkPassword(string Password)
+        [AcceptVerbs("Get", "Post")]
+        public JsonResult isPasswordFine(string Password)
         {
             string MatchEmailPattern = @"(?=^[^\s]{6,}$)(?=.*\d)(?=.*[a-zA-Z])";
             return Json(Regex.IsMatch(Password, MatchEmailPattern));
         }
 
-        [HttpPost]
-        public JsonResult loginUser(string Email, string Password)
+        [AcceptVerbs("Get", "Post")]
+        public async Task<ActionResult> isPasswordCorrect(string Email, string Password)
         {
-            var result =  _signInManager.PasswordSignInAsync(Email, Password, true, lockoutOnFailure: false);
-            _signInManager.SignOutAsync();
-            return Json(result.IsCompletedSuccessfully);
+            var user = _unitOfWork.ApplicationUser.GetFirstOrDefault(x => x.Email == Email);
+            var result = await _signInManager.UserManager.CheckPasswordAsync(user, Password);
+            return Json(result);
         }
         #endregion
     }
