@@ -318,7 +318,7 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
         #endregion
 
         #region ErrorValidationModel
-        [HttpPost]
+        [AcceptVerbs("Get", "Post")]
         public JsonResult isExists(string Email)
         {
             int isExist = _db.ApplicationUsers.Count(x => x.Email == Email);
@@ -336,11 +336,11 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> loginUser(string Email, string Password)
+        public JsonResult loginUser(string Email, string Password)
         {
-            var result = await _signInManager.PasswordSignInAsync(Email, Password, true, lockoutOnFailure: false);
-            await _signInManager.SignOutAsync();
-            return Json(result.Succeeded);
+            var result =  _signInManager.PasswordSignInAsync(Email, Password, true, lockoutOnFailure: false);
+            _signInManager.SignOutAsync();
+            return Json(result.IsCompletedSuccessfully);
         }
         #endregion
     }

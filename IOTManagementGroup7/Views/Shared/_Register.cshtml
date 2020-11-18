@@ -10,13 +10,17 @@
                 <form id="form_signup" asp-area="Admin" asp-controller="User" asp-action="Register" method="post" enctype="multipart/form-data">
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                     <div class="form-group row">
+                        @*https://stackoverflow.com/questions/23521427/validation-remote-validation-with-knockout-js-in-vb-net-mvc*@
                         <label asp-for="Name" class="col-3"></label>
                         <input asp-for="Name" class="form-control col-9" />
                         <span asp-validation-for="Name" class="text-danger offset-1"></span>
                     </div> <br />
                     <div class="form-group row">
                         <label asp-for="Email" class="col-3"></label>
-                        <input asp-for="Email" class="form-control col-9" />
+                        @*<input asp-for="Email" class="form-control col-9" />*@
+                        <input class="form-control col-9" type="text" data-val="true" data-val-remote="Email is existed."
+                               data-val-remote-additionalfields="*.Email" data-val-remote-url="/Admin/User/isExists"
+                               id="Email" name="Email">
                         <span asp-validation-for="Email" class="text-danger offset-1"></span>
                     </div> <br />
                     <div class="form-group row">
@@ -29,41 +33,18 @@
                         <input asp-for="ConfirmPassword" class="form-control col-9" />
                         <span asp-validation-for="ConfirmPassword" class="text-danger offset-1"></span>
                     </div> <br />
-                    <button type="submit" onclick="form_submit()" class="btn btn-primary col-6 offset-md-3">Sign Up</button>
+                    <button type="button" form="form_signup" onclick="form_submit_signup()" class="btn btn-primary col-6 offset-md-3">Sign Up</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
 <script type="text/javascript">
-    function form_submit() {
-        $.validator.setDefaults({
-            onkeyup: false
-        })
-        if ($("#form_signup").valid()) {
-            var form = $('#form_signup');
+    function form_submit_signup() {
+        if ($('#form_signup').valid()) {
             document.getElementById("form_signup").submit();
-            //$.ajax({
-            //    cache: false,
-            //    async: true,
-            //    type: "POST",
-            //    url: form.attr('action'),
-            //    data: form.serialize(),
-            //    success: function (data) {
-            //        if (!data.success) {
-            //            toastr.error(data.message);
-            //            toastr.success(data.message);
-            //        }
-            //        else {
-            //            $('#RegisterModal').modal('hide');
-            //        }
-            //    }
-            //});
-        }
+        };
     }
-
-
 </script>
 
 
