@@ -38,10 +38,32 @@
 
 <script type="text/javascript">
     function form_submit() {
+        $.validator.setDefaults({
+            onkeyup: false
+        })
         if ($("#form_signup").valid()) {
+            var form = $('#form_signup');
             document.getElementById("form_signup").submit();
+            //$.ajax({
+            //    cache: false,
+            //    async: true,
+            //    type: "POST",
+            //    url: form.attr('action'),
+            //    data: form.serialize(),
+            //    success: function (data) {
+            //        if (!data.success) {
+            //            toastr.error(data.message);
+            //            toastr.success(data.message);
+            //        }
+            //        else {
+            //            $('#RegisterModal').modal('hide');
+            //        }
+            //    }
+            //});
         }
     }
+
+
 </script>
 
 
