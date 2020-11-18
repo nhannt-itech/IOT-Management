@@ -28,11 +28,6 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
 
             return View();
         }
-
-
-
-
-
         public IActionResult Upsert(int? id)
         {
             AirConditionerVM airConditionerVM = new AirConditionerVM()
@@ -89,10 +84,7 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
                     airConditionerVM.AirConditioner = _unitOfWork.AirConditioner.Get(airConditionerVM.AirConditioner.Id);
                 }
             }
-
-
             return View(airConditionerVM);
-
         }
 
         #region API_Calls
