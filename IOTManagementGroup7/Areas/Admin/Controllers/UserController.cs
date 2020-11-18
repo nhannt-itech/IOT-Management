@@ -62,7 +62,6 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
-            [Remote("isExists", "User", HttpMethod = "POST", ErrorMessage = "User name is already taken")]
             public string Email { get; set; }
 
             [Required]
@@ -258,11 +257,11 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return Redirect("~/Identity/Account/Login");
-                    //return PartialView("_Login", loginPopup);
+                    //return Redirect("~/Identity/Account/Login");
+                    return PartialView("_Login", LoginPopup);
                 }
             }
-            return Redirect("~/Identity/Account/Login");
+            return PartialView("_Login", LoginPopup);
         }
 
         #region API_Calls
@@ -317,8 +316,8 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
         #endregion
 
         #region ErrorValidationModel
-        [HttpPost]
-        public JsonResult isExists(string Email)
+        [AcceptVerbs("Get", "Post")]
+        public JsonResult isEmailExists(string Email)
         {
             int isExist = _db.ApplicationUsers.Count(x => x.Email == Email);
             if (isExist == 0)
@@ -327,19 +326,19 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
                 return Json(false);
         }
 
-        [HttpPost]
-        public JsonResult checkPassword(string Password)
+        [AcceptVerbs("Get", "Post")]
+        public JsonResult isPasswordFine(string Password)
         {
             string MatchEmailPattern = @"(?=^[^\s]{6,}$)(?=.*\d)(?=.*[a-zA-Z])";
             return Json(Regex.IsMatch(Password, MatchEmailPattern));
         }
 
-        [HttpPost]
-        public async Task<ActionResult> loginUser(string Email, string Password)
+        [AcceptVerbs("Get", "Post")]
+        public async Task<ActionResult> isPasswordCorrect(string Email, string Password)
         {
-            var result = await _signInManager.PasswordSignInAsync(Email, Password, true, lockoutOnFailure: false);
-            await _signInManager.SignOutAsync();
-            return Json(result.Succeeded);
+            var user = _unitOfWork.ApplicationUser.GetFirstOrDefault(x => x.Email == Email);
+            var result = await _signInManager.UserManager.CheckPasswordAsync(user, Password);
+            return Json(result);
         }
         #endregion
     }
