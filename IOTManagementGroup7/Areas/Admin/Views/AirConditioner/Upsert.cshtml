@@ -1,0 +1,87 @@
+﻿@model IOTManagementGroup7.Models.ViewModels.AirConditionerVM
+
+
+@{
+    ViewData["Title"] = "Upsert";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var title = "Create Air-Conditioner";
+}
+
+<form method="post">
+    <div class="row p-3 border">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @if (Model.AirConditioner.Id != 0)
+        {
+            title = "Edit Air-Conditioner";
+            <input type="hidden" asp-for="AirConditioner.Id" />
+        }
+        <div class="col-12 border-bottom">
+            <h2 class="text-primary">@title</h2>
+        </div>
+        <div class="col-8 pt-4">
+            <div class="form-group row">
+                <div class="col-4">
+                    UserName
+                </div>
+                <div class="col-8">
+                    @Html.DropDownListFor(m => m.AirConditioner.ApplicationUserId, Model.ApplicationUserList, "-Select a UserName",
+                   new { @class = "form-control" })
+                    <span asp-validation-for="AirConditioner.ApplicationUserId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="AirConditioner.Name"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="AirConditioner.Name" class="form-control" />
+                    <span asp-validation-for="AirConditioner.Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="AirConditioner.PowerStatus"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="AirConditioner.PowerStatus" class="form-control" />
+                    <span asp-validation-for="AirConditioner.PowerStatus" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="AirConditioner.Temperature"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="AirConditioner.Temperature" class="form-control" />
+                    <span asp-validation-for="AirConditioner.Temperature" class="text-danger"></span>
+                </div>
+            </div>      
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="AirConditioner.SourceCode"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="AirConditioner.SourceCode" class="form-control" />
+                    <span asp-validation-for="AirConditioner.SourceCode" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-8 offset-4">
+                    @if (Model.AirConditioner.Id != 0)
+                    {
+                        <partial name="_EditAndBackToListButton" model="Model.AirConditioner.Id" />
+                    }
+                    else
+                    {
+                        <partial name="_CreateAndBackToListButton" />
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
