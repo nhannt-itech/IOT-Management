@@ -7,7 +7,7 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+            <a id="manage" class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
         </li>
         <li class="nav-item">
             <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
@@ -25,13 +25,13 @@
             </li>*@
 
         <li class="nav-item">
-            <a class="nav-link text-dark" id="register" data-toggle="modal" data-target="#RegisterModal">Register</a>
+            <a class="nav-link text-light" id="register" data-toggle="modal" data-target="#RegisterModal">Register</a>
             <div id="reg-partial">
                 <partial name="_Register" />
             </div>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" id="login" data-toggle="modal" data-target="#LoginModal">Login</a>
+            <a class="nav-link text-light" id="login" data-toggle="modal" data-target="#LoginModal">Login</a>
             <div id="log-partial">
                 <partial name="_Login" />
             </div>
