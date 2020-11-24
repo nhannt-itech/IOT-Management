@@ -10,5 +10,7 @@ namespace IOTManagementGroup7.Models.ViewModels
     {
         public Light Light { get; set; }
         public IEnumerable<SelectListItem> ApplicationUserList { get; set; }
+        public IEnumerable<SelectListItem> PositionList { get; set; }
+
     }
 }
