@@ -24,7 +24,7 @@ namespace IOTManagementGroup7.Utility
         private Task Execute(string sendGridKey, string subject, string message, string email)
         {
             var client = new SendGridClient(sendGridKey);
-            var from = new EmailAddress("nhannt.itech@gmail.com", "IOTManagementGroup7");
+            var from = new EmailAddress("18110328@student.hcmute.edu.vn", "IOTManagementGroup7");
             var to = new EmailAddress(email, "End User");
             var msg = MailHelper.CreateSingleEmail(from, to, subject, "", message);
             return client.SendEmailAsync(msg);
