@@ -27,6 +27,9 @@
                 </div>
             </div>
             <div class="form-group row">
+                <input asp-for="Light.Id" class="form-control" hidden/>
+            </div>
+            <div class="form-group row">
                 <div class="col-4">
                     <label asp-for="Light.Position"></label>
                 </div>
@@ -77,7 +80,7 @@
                     <label id="demo"></label>
                 </div>
                 <div class="col-8">
-                    <input asp-for="Light.Dim" type="range" min="1" max="100" value="50" class="col-12" id="myRange" />
+                    <input asp-for="Light.Dim" type="range" min="1" max="100" class="col-12" id="myRange" />
                     <span asp-validation-for="Light.Dim" class="text-danger"></span>
                 </div>
             </div>
