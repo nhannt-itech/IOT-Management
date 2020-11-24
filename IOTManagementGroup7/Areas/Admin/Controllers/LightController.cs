@@ -26,6 +26,10 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
 
         public IActionResult Upsert(int? id)
         {
+            List<string> lPosition = new List<string>();
+            lPosition.Add("Interior");
+            lPosition.Add("Exterior");
+
             LightVM lightVM = new LightVM()
             {
                 Light = new Light(),
@@ -33,8 +37,13 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
                 {
                     Text = i.UserName,
                     Value = i.Id.ToString()
+                }),
+                PositionList = lPosition.Select(i => new SelectListItem
+                {
+                    Text = i,
+                    Value = i
                 })
-            };
+        };
 
             if (id == null)
             {
@@ -52,6 +61,15 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Upsert(LightVM lightVM)
         {
+            List<string> lPosition = new List<string>();
+            lPosition.Add("Interior");
+            lPosition.Add("Exterior");
+            lightVM.PositionList = lPosition.Select(i => new SelectListItem
+            {
+                Text = i,
+                Value = i
+            });
+
             if (ModelState.IsValid)
             {
                 if (lightVM.Light.Id == 0)
