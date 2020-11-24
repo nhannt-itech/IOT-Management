@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace IOTManagementGroup7.Models
@@ -9,13 +10,22 @@ namespace IOTManagementGroup7.Models
     {
         [Key]
         public int Id { get; set; }
-        public string PositionName { get; set; }
-        public bool Status { get; set; }
-        public string PowerConsumption { get; set; }
+        [Required]
+        public string ApplicationUserId { get; set; }
+        [ForeignKey("ApplicationUserId")]
+        public ApplicationUser ApplicationUser { get; set; }
+        [Required]
+        public string Position { get; set; }
+        [Required]
+        public string Name { get; set; }
+        public bool PowerStatus { get; set; }
+        public bool ConnectionStatus { get; set; }
+        [Required]
         public string VoltageRange { get; set; }
-
+        [Required]
         [Range(0,100)]
         public int Dim { get; set; }
-        public string Type { get; set; } //Vị trí trong hay ngoài
+        [Required]
+        public string SourceCode { get; set; }
     }
 }

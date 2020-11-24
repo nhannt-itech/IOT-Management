@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using IOTManagementGroup7.DataAccess.Repository.IRepository;
 using IOTManagementGroup7.Models;
+using IOTManagementGroup7.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace IOTManagementGroup7.Areas.Admin.Controllers
 {
@@ -24,46 +26,66 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
 
         public IActionResult Upsert(int? id)
         {
-            Light light = new Light();
+            LightVM lightVM = new LightVM()
+            {
+                Light = new Light(),
+                ApplicationUserList = _unitOfWork.ApplicationUser.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.UserName,
+                    Value = i.Id.ToString()
+                })
+            };
+
             if (id == null)
             {
-                return View(light);
+                return View(lightVM);
             }
-
-            light = _unitOfWork.Light.Get(id.GetValueOrDefault()); //use int? id --> GetValueOrDefault
-
-            if (light == null)
+            lightVM.Light = _unitOfWork.Light.Get(id.GetValueOrDefault());
+            if (lightVM.Light == null)
             {
                 return NotFound();
             }
-            return View(light);
+            return View(lightVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Upsert(Light light)
+        public IActionResult Upsert(LightVM lightVM)
         {
             if (ModelState.IsValid)
             {
-                if (light.Id == 0)
+                if (lightVM.Light.Id == 0)
                 {
-                    _unitOfWork.Light.Add(light);
+                    _unitOfWork.Light.Add(lightVM.Light);
                 }
                 else
                 {
-                    _unitOfWork.Light.Update(light);
+                    _unitOfWork.Light.Update(lightVM.Light);
                 }
                 _unitOfWork.Save();
                 return RedirectToAction(nameof(Index));
             }
-            return View(light);
+            else
+            {
+                lightVM.ApplicationUserList = _unitOfWork.ApplicationUser.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.UserName,
+                    Value = i.Id.ToString()
+                });
+
+                if (lightVM.Light.Id != 0)
+                {
+                    lightVM.Light = _unitOfWork.Light.Get(lightVM.Light.Id);
+                }
+            }
+            return View(lightVM);
         }
 
         #region API_Calls
 
         public IActionResult GetAll()
         {
-            var allObj = _unitOfWork.Light.GetAll();
+            var allObj = _unitOfWork.Light.GetAll(includeProperties: "ApplicationUser");
             return Json(new { data = allObj });
         }
 

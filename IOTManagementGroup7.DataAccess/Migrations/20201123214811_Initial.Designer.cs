@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IOTManagementGroup7.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201118220135_Initial")]
+    [Migration("20201123214811_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -154,25 +154,38 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("ConnectionStatus")
+                        .HasColumnType("bit");
+
                     b.Property<int>("Dim")
                         .HasColumnType("int");
 
-                    b.Property<string>("PositionName")
+                    b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PowerConsumption")
+                    b.Property<string>("Position")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Status")
+                    b.Property<bool>("PowerStatus")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Type")
+                    b.Property<string>("SourceCode")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("VoltageRange")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Lights");
                 });
@@ -495,6 +508,15 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                 });
 
             modelBuilder.Entity("IOTManagementGroup7.Models.Fridge", b =>
+                {
+                    b.HasOne("IOTManagementGroup7.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("IOTManagementGroup7.Models.Light", b =>
                 {
                     b.HasOne("IOTManagementGroup7.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()

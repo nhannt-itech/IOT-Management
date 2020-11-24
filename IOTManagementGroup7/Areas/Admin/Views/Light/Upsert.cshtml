@@ -1,4 +1,4 @@
-﻿@model IOTManagementGroup7.Models.Light
+﻿@model IOTManagementGroup7.Models.ViewModels.LightVM
 
 @{
     ViewData["Title"] = "Upsert";
@@ -6,75 +6,96 @@
 }
 
 <form method="post">
-    <div class="row p-3 border">
+    <div class="row p-3 border col-6 offset-md-3">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        @if (Model.Id != 0)
+        @if (Model.Light.Id != 0)
         {
             title = "Edit Light";
         }
         <div class="col-12 border-bottom">
             <h2 class="text-primary">@title</h2>
         </div>
-        <div class="col-8 pt-4">
+        <div class="col-12 pt-4">
             <div class="form-group row">
                 <div class="col-4">
-                    <label asp-for="PositionName"></label>
+                    <label>User Name</label>
                 </div>
                 <div class="col-8">
-                    <input asp-for="PositionName" class="form-control" />
-                    <span asp-validation-for="PositionName" class="text-danger"></span>
+                    @Html.DropDownListFor(m => m.Light.ApplicationUserId, Model.ApplicationUserList, "-Select a UserName",
+                   new { @class = "form-control" })
+                    <span asp-validation-for="Light.ApplicationUserId" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group row">
                 <div class="col-4">
-                    <label asp-for="Status"></label>
-                </div>
-                <div class="col-1">
-                    <input asp-for="Status" class="form-control" />
-                    <span asp-validation-for="Status" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-4">
-                    <label asp-for="PowerConsumption"></label>
+                    <label asp-for="Light.Position"></label>
                 </div>
                 <div class="col-8">
-                    <input asp-for="PowerConsumption" class="form-control" />
-                    <span asp-validation-for="PowerConsumption" class="text-danger"></span>
+                    <input asp-for="Light.Position" class="form-control" />
+                    <span asp-validation-for="Light.Position" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group row">
                 <div class="col-4">
-                    <label asp-for="VoltageRange"></label>
+                    <label asp-for="Light.Name"></label>
                 </div>
                 <div class="col-8">
-                    <input asp-for="VoltageRange" class="form-control" />
-                    <span asp-validation-for="VoltageRange" class="text-danger"></span>
+                    <input asp-for="Light.Name" class="form-control" />
+                    <span asp-validation-for="Light.Name" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group row">
                 <div class="col-4">
-                    <label asp-for="Dim"></label>
+                    <label>Power</label>
                 </div>
                 <div class="col-8">
-                    <input asp-for="Dim" class="form-control" />
-                    <span asp-validation-for="Dim" class="text-danger"></span>
+                    <input asp-for="Light.PowerStatus" data-on="Turn On" data-off="Turn Off" checked data-toggle="toggle" data-onstyle="success" data-offstyle="danger" class="form-control" />
+                    <span asp-validation-for="Light.PowerStatus" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group row">
                 <div class="col-4">
-                    <label asp-for="Type"></label>
+                    <label>Connection</label>
                 </div>
                 <div class="col-8">
-                    <input asp-for="Type" class="form-control" />
-                    <span asp-validation-for="Type" class="text-danger"></span>
+                    <input asp-for="Light.ConnectionStatus" data-on="Turn On" data-off="Turn Off" checked data-toggle="toggle" data-onstyle="success" data-offstyle="danger" class="form-control" />
+                    <span asp-validation-for="Light.ConnectionStatus" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group row">
-                <div class="col-8 offset-4">
-                    @if (Model.Id != 0)
+                <div class="col-4">
+                    <label>Voltage Range</label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Light.VoltageRange" class="form-control" />
+                    <span asp-validation-for="Light.VoltageRange" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label>Dim: </label>
+                    <label id="demo"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Light.Dim" type="range" min="1" max="100" value="50" class="col-12" id="myRange" />
+                    <span asp-validation-for="Light.Dim" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label>Source Code: </label>
+                    <label id="demo"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Light.SourceCode" class="form-control" />
+                    <span asp-validation-for="Light.SourceCode" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-8 offset-2">
+                    @if (Model.Light.Id != 0)
                     {
-                        <partial name="_EditAndBackToListButton" model="Model.Id" />
+                        <partial name="_EditAndBackToListButton" model="Model.Light.Id" />
                     }
                     else
                     {
@@ -90,3 +111,13 @@
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
 }
+
+<script>
+    var slider = document.getElementById("myRange");
+    var output = document.getElementById("demo");
+    output.innerHTML = slider.value;
+
+    slider.oninput = function () {
+        output.innerHTML = this.value;
+    }
+</script>

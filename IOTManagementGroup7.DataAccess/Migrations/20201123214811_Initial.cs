@@ -51,24 +51,6 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Lights",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PositionName = table.Column<string>(nullable: true),
-                    Status = table.Column<bool>(nullable: false),
-                    PowerConsumption = table.Column<string>(nullable: true),
-                    VoltageRange = table.Column<string>(nullable: true),
-                    Dim = table.Column<int>(nullable: false),
-                    Type = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Lights", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -269,6 +251,32 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Lights",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ApplicationUserId = table.Column<string>(nullable: false),
+                    Position = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    PowerStatus = table.Column<bool>(nullable: false),
+                    ConnectionStatus = table.Column<bool>(nullable: false),
+                    VoltageRange = table.Column<string>(nullable: false),
+                    Dim = table.Column<int>(nullable: false),
+                    SourceCode = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Lights", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Lights_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Television",
                 columns: table => new
                 {
@@ -375,6 +383,11 @@ namespace IOTManagementGroup7.DataAccess.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Fridge_ApplicationUserId",
                 table: "Fridge",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Lights_ApplicationUserId",
+                table: "Lights",
                 column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(

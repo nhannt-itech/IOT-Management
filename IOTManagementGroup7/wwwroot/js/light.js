@@ -10,13 +10,12 @@ function loadDataTable() {
             "url": "/Admin/Light/GetAll"
         },
         "columns": [
-            { "data": "positionName", "width": "30%" },
-            { "data": "status", "width": "10%" },
-            { "data": "powerConsumption", "width": "10%" },
+            { "data": "applicationUser.userName", "width": "30%" },
+            { "data": "name", "width": "10%" },
+            { "data": "powerStatus", "width": "10%" },
+            { "data": "connectionStatus", "width": "10%" },
             { "data": "voltageRange", "width": "10%" },
-            { "data": "dim", "width": "10%" },
-            { "data": "type", "width": "15%" },
-
+            { "data": "dim", "width": "15%" },
             {
                 "data": "id",
                 "render": function (data) {
