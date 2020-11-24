@@ -1,24 +1,21 @@
 ﻿@model IOTManagementGroup7.Models.ViewModels.LightVM
-
 @{
     ViewData["Title"] = "Upsert";
     var title = "Create Light";
 }
-
 <form method="post">
     <div class="row p-3 border col-6 offset-md-3">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         @if (Model.Light.Id != 0)
         {
             title = "Edit Light";
+            <input asp-for="Light.Id" class="form-control" hidden />
+
         }
         <div class="col-12 border-bottom">
             <h2 class="text-primary">@title</h2>
         </div>
         <div class="col-12 pt-4">
-            <div class="form-group row">
-                <input asp-for="Light.Id" class="form-control" hidden />
-            </div>
             <div class="form-group row">
                 <div class="col-4">
                     <label>User Name</label>
@@ -114,14 +111,7 @@
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/rangeslider.js"></script>
 }
 
-<script>
-    var slider = document.getElementById("myRange");
-    var output = document.getElementById("demo");
-    output.innerHTML = slider.value;
 
-    slider.oninput = function () {
-        output.innerHTML = this.value;
-    }
-</script>

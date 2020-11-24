@@ -7,7 +7,7 @@
 }
 
 <form method="post">
-    <div class="row p-3 border">
+    <div class="row p-3 border col-6 offset-md-3">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         @if (Model.Camera.Id != 0)
         {
@@ -17,7 +17,7 @@
         <div class="col-12 border-bottom">
             <h2 class="text-primary">@title</h2>
         </div>
-        <div class="col-8 pt-4">
+        <div class="col-12 pt-4">
             <div class="form-group row">
                 <div class="col-4">
                     UserName
@@ -39,19 +39,19 @@
             </div>
             <div class="form-group row">
                 <div class="col-4">
-                    <label asp-for="Camera.PowerStatus"></label>
+                    <label>Power</label>
                 </div>
                 <div class="col-8">
-                    <input asp-for="Camera.PowerStatus" class="form-control" />
+                    <input asp-for="Camera.PowerStatus" data-on="Turn On" data-off="Turn Off" checked data-toggle="toggle" data-offstyle="danger" class="form-control" />
                     <span asp-validation-for="Camera.PowerStatus" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group row">
                 <div class="col-4">
-                    <label asp-for="Camera.ConnectionStatus"></label>
+                    <label>Connection</label>
                 </div>
                 <div class="col-8">
-                    <input asp-for="Camera.ConnectionStatus" class="form-control" />
+                    <input asp-for="Camera.ConnectionStatus" data-on="Turn On" data-off="Turn Off" checked data-toggle="toggle" data-offstyle="danger" class="form-control" />
                     <span asp-validation-for="Camera.ConnectionStatus" class="text-danger"></span>
                 </div>
             </div>
@@ -68,16 +68,16 @@
                 </div>
                 <span asp-validation-for="Camera.NightVersionStatus" class="text-danger"></span>
             </div>
-
             <div class="form-group row">
                 <div class="col-4">
-                    <label asp-for="Camera.TimelapsRecordingStatus"></label>
+                    <label>TimelapsRecording</label>
                 </div>
                 <div class="col-8">
-                    <input asp-for="Camera.TimelapsRecordingStatus" class="form-control" />
+                    <input asp-for="Camera.TimelapsRecordingStatus" type="checkbox" checked data-toggle="toggle" data-on="<i class='fa fa-play'></i> Play" data-off="<i class='fa fa-pause'></i> Pause" class="form-control" />
                     <span asp-validation-for="Camera.TimelapsRecordingStatus" class="text-danger"></span>
                 </div>
             </div>
+
             <div class="form-group row">
                 <div class="col-4">
                     <label asp-for="Camera.SourceCode"></label>
@@ -88,7 +88,7 @@
                 </div>
             </div>
             <div class="form-group row">
-                <div class="col-8 offset-4">
+                <div class="col-8 offset-2">
                     @if (Model.Camera.Id != 0)
                     {
                         <partial name="_EditAndBackToListButton" model="Model.Camera.Id" />
@@ -106,4 +106,5 @@
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/rangeslider.js"></script>
 }
