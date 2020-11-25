@@ -21,10 +21,9 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace IOTManagementGroup7.Areas.Admin.Controllers
+namespace IOTManagementGroup7.Areas.Customer.Controllers
 {
-    [Area("Admin")]
-    //[Authorize(Roles = SD.Role_Admin)]
+    [Area("Customer")]
     public class UserController : Controller
     {
         private readonly ApplicationDbContext _db;

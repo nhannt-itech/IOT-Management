@@ -1,4 +1,4 @@
-﻿@model IOTManagementGroup7.Areas.Admin.Controllers.UserController.LoginPopupModel
+﻿@model IOTManagementGroup7.Areas.Customer.Controllers.UserController.LoginPopupModel
 
 <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="LoginModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -7,7 +7,7 @@
                 <h5 class="modal-title" id="RegisterModalLabel" style="margin: 0 auto;">LOGIN ACCOUNT</h5>
             </div>
             <div class="modal-body">
-                <form id="form_signin" asp-area="Admin" asp-controller="User" asp-action="Login" method="post">
+                <form id="form_signin" asp-area="Customer" asp-controller="User" asp-action="Login" method="post">
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                     <div class="form-group row">
                         <label asp-for="Email" class="col-3"></label>
@@ -17,7 +17,7 @@
                     <div class="form-group row">
                         <label asp-for="Password" class="col-3"></label>
                         <input asp-for="Password" class="form-control col-8" type="password" data-val="true" data-val-remote="Your email or password is incorrect!"
-                               data-val-remote-additionalfields="*.Email,*.Password" data-val-remote-url="/Admin/User/isPasswordCorrect"
+                               data-val-remote-additionalfields="*.Email,*.Password" data-val-remote-url="/Customer/User/isPasswordCorrect"
                                id="Password" name="Password">
                         <span asp-validation-for="Password" class="text-danger offset-1"></span>
                     </div> <br />

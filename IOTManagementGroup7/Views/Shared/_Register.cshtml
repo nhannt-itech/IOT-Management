@@ -1,4 +1,4 @@
-﻿@model IOTManagementGroup7.Areas.Admin.Controllers.UserController.RegisterPopupModel
+﻿@model IOTManagementGroup7.Areas.Customer.Controllers.UserController.RegisterPopupModel
 
 <div class="modal fade" id="RegisterModal" tabindex="-1" role="dialog" aria-labelledby="RegisterModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -7,7 +7,7 @@
                 <h5 class="modal-title" id="RegisterModalLabel" style="margin: 0 auto;">REGISTER ACCOUNT</h5>
             </div>
             <div class="modal-body">
-                <form id="form_signup" asp-area="Admin" asp-controller="User" asp-action="Register" method="post" enctype="multipart/form-data">
+                <form id="form_signup" asp-area="Customer" asp-controller="User" asp-action="Register" method="post" enctype="multipart/form-data">
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                     <div class="form-group row">
                         @*https://stackoverflow.com/questions/23521427/validation-remote-validation-with-knockout-js-in-vb-net-mvc*@
@@ -18,14 +18,14 @@
                     <div class="form-group row">
                         <label asp-for="Email" class="col-3"></label>
                         <input asp-for="Email" class="form-control col-8" type="text" data-val="true" data-val-remote="Email is already exists."
-                               data-val-remote-additionalfields="*.Email" data-val-remote-url="/Admin/User/isEmailExists"
+                               data-val-remote-additionalfields="*.Email" data-val-remote-url="/Customer/User/isEmailExists"
                                id="Email" name="Email" value="">
                         <span asp-validation-for="Email" class="text-danger offset-1"></span>
                     </div> <br />
                     <div class="form-group row">
                         <label asp-for="Password" class="col-3"></label>
                         <input asp-for="Password" class="form-control col-8" type="password" data-val="true" data-val-remote="Must contains at least one digit and at least one lower case or upper case."
-                               data-val-remote-additionalfields="*.Password" data-val-remote-url="/Admin/User/isPasswordFine"
+                               data-val-remote-additionalfields="*.Password" data-val-remote-url="/Customer/User/isPasswordFine"
                                id="Password" name="Password" value="">
                         <span asp-validation-for="Password" class="text-danger offset-1"></span>
                     </div> <br />
