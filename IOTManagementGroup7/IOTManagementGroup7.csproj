@@ -31,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Controllers\" />
+    <Folder Include="wwwroot\asset\img\users\" />
   </ItemGroup>
 
 </Project>
