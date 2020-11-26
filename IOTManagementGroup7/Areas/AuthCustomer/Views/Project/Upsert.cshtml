@@ -1,0 +1,76 @@
+﻿@model IOTManagementGroup7.Models.Project
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@{
+    ViewData["Title"] = "Upsert";
+    var title = "Tạo Phòng";
+}
+
+<form method="post" enctype="multipart/form-data">
+    <div class="row p-3 border col-6 offset-md-3">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @if (Model.Id != "")
+        {
+            title = "Chỉnh Sửa Phòng";
+            <input type="hidden" asp-for="Id" />
+        }
+        <div class="col-12 border-bottom">
+            <h2 class="text-primary">@title @UserManager.GetUserName(User)</h2>
+        </div>
+        <div class="col-12 pt-4">
+            <div class="form-group row" hidden>
+                <div class="col-4">
+                    <label asp-for="ApplicationUserId">Id người dùng: </label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="ApplicationUserId" value="@UserManager.GetUserId(User)" class="form-control" readonly/>
+                    <span asp-validation-for="ApplicationUserId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Name">Tên phòng: </label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    Image
+                </div>
+                <div class="col-8">
+                    <input type="file" name="files" id="uploadBox" multiple class="form-control" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-8 offset-2">
+                    @if (Model.Id != "")
+                    {
+                        <div class="row">
+                            <div class="col">
+                                <button type="submit" class="btn btn-primary form-control" asp-route-id="@Model.Id">Update</button>
+                            </div>
+                            <div class="col">
+                                <a asp-action="Index" class="btn btn-success form-control">Back To List</a>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <div class="col">
+                                <button type="submit" class="btn btn-primary form-control">Create</button>
+                            </div>
+                            <div class="col">
+                                <a asp-action="Index" class="btn btn-success form-control">Back To List</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

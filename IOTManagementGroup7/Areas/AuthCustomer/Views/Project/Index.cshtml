@@ -1,0 +1,51 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model IOTManagementGroup7.Models.ViewModels.ProjectHomeVM
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="row">
+    <div class="col-6">
+        <h3 class="text-primary">Danh sách phòng <b class="text-danger">@UserManager.GetUserName(User)</b> quản lý </h3>
+    </div>
+    <div class="col-6 text-right">
+        <a class="btn btn-success text-light" id="upsert" asp-area="AuthCustomer" asp-controller="Project" asp-action="Upsert">
+            <i class="fas fa-plus"></i> &nbsp; Tạo phòng
+        </a>
+    </div>
+</div>
+<hr />
+<div class="row">
+    @foreach (var project in Model.Projects)
+    {
+        <div id="@project.Id" class="col-xl-3 col-lg-5">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3">
+                    <div class="row float-right">
+                        <a class="btn btn-primary text-light mr-1" asp-area="AuthCustomer" asp-controller="Project" asp-action="Upsert" asp-route-id="@project.Id">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a class="btn btn-danger text-light" onclick='Delete("/AuthCustomer/Project/Delete/@project.Id","@project.Id")'>
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <img src="@project.Image" class="chart-pie pt-4" />
+                    <hr>
+                    Người dùng: <code>@project.ApplicationUser.Name</code><br />
+                    Tên phòng: <code>@project.Name</code>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts{
+    <script src="~/js/project.js"></script>
+}

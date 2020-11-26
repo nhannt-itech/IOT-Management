@@ -31,8 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\AuthCustomer\Controllers\" />
-    <Folder Include="Areas\AuthCustomer\Views\" />
     <Folder Include="wwwroot\asset\img\users\" />
   </ItemGroup>
 
