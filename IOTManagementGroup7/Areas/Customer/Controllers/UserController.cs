@@ -135,9 +135,9 @@ namespace IOTManagementGroup7.Areas.Customer.Controllers
             {
                 await _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer));
             }
-            if (!await _roleManager.RoleExistsAsync(SD.Role_Manager))
+            if (!await _roleManager.RoleExistsAsync(SD.Role_Auth_Customer))
             {
-                await _roleManager.CreateAsync(new IdentityRole(SD.Role_Manager));
+                await _roleManager.CreateAsync(new IdentityRole(SD.Role_Auth_Customer));
             }
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();

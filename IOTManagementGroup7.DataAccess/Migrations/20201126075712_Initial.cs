@@ -51,6 +51,20 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DeviceType",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    OffImage = table.Column<string>(nullable: true),
+                    OnImage = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DeviceType", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -67,29 +81,6 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                         name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AirConditioners",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ApplicationUserId = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    PowerStatus = table.Column<bool>(nullable: false),
-                    Temperature = table.Column<float>(nullable: false),
-                    SourceCode = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AirConditioners", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AirConditioners_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -180,96 +171,19 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Cameras",
+                name: "Project",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ApplicationUserId = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    PowerStatus = table.Column<bool>(nullable: false),
-                    ConnectionStatus = table.Column<bool>(nullable: false),
-                    NightVersionStatus = table.Column<string>(nullable: true),
-                    TimelapsRecordingStatus = table.Column<bool>(nullable: false),
-                    SourceCode = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Cameras", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Cameras_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Fans",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ApplicationUserId = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    PowerStatus = table.Column<bool>(nullable: false),
-                    ConnectionStatus = table.Column<bool>(nullable: false),
-                    Speed = table.Column<int>(nullable: false),
-                    SourceCode = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Fans", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Fans_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Fridge",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
-                    Temperature = table.Column<double>(nullable: false),
-                    SourceCode = table.Column<string>(nullable: true),
-                    ApplicationUserId = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Fridge", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Fridge_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Lights",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ApplicationUserId = table.Column<string>(nullable: false),
-                    Position = table.Column<string>(nullable: false),
+                    Id = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: false),
-                    PowerStatus = table.Column<bool>(nullable: false),
-                    ConnectionStatus = table.Column<bool>(nullable: false),
-                    VoltageRange = table.Column<string>(nullable: false),
-                    Dim = table.Column<int>(nullable: false),
-                    SourceCode = table.Column<string>(nullable: false)
+                    Image = table.Column<string>(nullable: true),
+                    ApplicationUserId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Lights", x => x.Id);
+                    table.PrimaryKey("PK_Project", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Lights_AspNetUsers_ApplicationUserId",
+                        name: "FK_Project_AspNetUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -277,59 +191,56 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Television",
+                name: "Sensor",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
-                    PowerStatus = table.Column<bool>(nullable: false),
-                    CurrentChannel = table.Column<string>(nullable: true),
-                    RecordingStatus = table.Column<bool>(nullable: false),
-                    Volume = table.Column<int>(nullable: false),
+                    Id = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    MaxDevice = table.Column<int>(nullable: false),
                     SourceCode = table.Column<string>(nullable: true),
-                    ApplicationUserId = table.Column<string>(nullable: false)
+                    ProjectId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Television", x => x.Id);
+                    table.PrimaryKey("PK_Sensor", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Television_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
+                        name: "FK_Sensor_Project_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Project",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "WashingMachine",
+                name: "Device",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
-                    PowerStatus = table.Column<bool>(nullable: false),
-                    ProgramStatus = table.Column<string>(nullable: true),
-                    Weight = table.Column<double>(nullable: false),
-                    RemainingTime = table.Column<int>(nullable: false),
-                    SourceCode = table.Column<string>(nullable: true),
-                    ApplicationUserId = table.Column<string>(nullable: false)
+                    Id = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    PowerButton = table.Column<bool>(nullable: false),
+                    PowerStatus = table.Column<int>(nullable: false),
+                    SliderButton = table.Column<bool>(nullable: false),
+                    SliderMaxRange = table.Column<int>(nullable: false),
+                    SliderRange = table.Column<int>(nullable: false),
+                    SensorBoardId = table.Column<string>(nullable: false),
+                    DeviceTypeId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WashingMachine", x => x.Id);
+                    table.PrimaryKey("PK_Device", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_WashingMachine_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
+                        name: "FK_Device_DeviceType_DeviceTypeId",
+                        column: x => x.DeviceTypeId,
+                        principalTable: "DeviceType",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Device_Sensor_SensorBoardId",
+                        column: x => x.SensorBoardId,
+                        principalTable: "Sensor",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AirConditioners_ApplicationUserId",
-                table: "AirConditioners",
-                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -371,41 +282,28 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Cameras_ApplicationUserId",
-                table: "Cameras",
+                name: "IX_Device_DeviceTypeId",
+                table: "Device",
+                column: "DeviceTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Device_SensorBoardId",
+                table: "Device",
+                column: "SensorBoardId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Project_ApplicationUserId",
+                table: "Project",
                 column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Fans_ApplicationUserId",
-                table: "Fans",
-                column: "ApplicationUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Fridge_ApplicationUserId",
-                table: "Fridge",
-                column: "ApplicationUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Lights_ApplicationUserId",
-                table: "Lights",
-                column: "ApplicationUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Television_ApplicationUserId",
-                table: "Television",
-                column: "ApplicationUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_WashingMachine_ApplicationUserId",
-                table: "WashingMachine",
-                column: "ApplicationUserId");
+                name: "IX_Sensor_ProjectId",
+                table: "Sensor",
+                column: "ProjectId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "AirConditioners");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -422,25 +320,19 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Cameras");
-
-            migrationBuilder.DropTable(
-                name: "Fans");
-
-            migrationBuilder.DropTable(
-                name: "Fridge");
-
-            migrationBuilder.DropTable(
-                name: "Lights");
-
-            migrationBuilder.DropTable(
-                name: "Television");
-
-            migrationBuilder.DropTable(
-                name: "WashingMachine");
+                name: "Device");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "DeviceType");
+
+            migrationBuilder.DropTable(
+                name: "Sensor");
+
+            migrationBuilder.DropTable(
+                name: "Project");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

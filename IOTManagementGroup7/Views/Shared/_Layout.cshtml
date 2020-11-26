@@ -1,9 +1,4 @@
-﻿@using Microsoft.AspNetCore.Identity
-
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -66,7 +61,19 @@
                     <span>User Management</span>
                 </a>
             </li>
-            @*<li class="nav-item">
+            <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="" asp-action="Index">
+                    <i class="fas fa-home"></i>
+                    <span>Room Management</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-area="Admin" asp-controller="Light" asp-action="Index">
+                    <i class="fas fa-fw fa-lightbulb"></i>
+                    <span>Light</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" asp-area="Admin" asp-controller="Camera" asp-action="Index">
                     <i class="fas fa-fw fa-camera-retro "></i>
                     <span>Camera</span>
@@ -94,7 +101,7 @@
                         </a>
                     </div>
                 </div>
-            </li>*@
+            </li>
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThermometers" aria-expanded="true" aria-controls="collapseThermometers">
@@ -172,10 +179,7 @@
                                 </form>
                             </div>
                         </li>
-                        @if (SignInManager.IsSignedIn(User))
-                        {
-                            <partial name="_LoginPartial" />
-                        }
+                        <partial name="_LoginPartial" />
 
                         <!-- Nav Item - Alerts -->
                         <!--<li class="nav-item dropdown no-arrow mx-1">

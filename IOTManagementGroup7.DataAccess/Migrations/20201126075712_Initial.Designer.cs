@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IOTManagementGroup7.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201123214811_Initial")]
+    [Migration("20201126075712_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,245 +21,114 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("IOTManagementGroup7.Models.AirConditioner", b =>
+            modelBuilder.Entity("IOTManagementGroup7.Models.Device", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ApplicationUserId")
+                    b.Property<string>("DeviceTypeId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("PowerStatus")
+                    b.Property<bool>("PowerButton")
                         .HasColumnType("bit");
 
-                    b.Property<string>("SourceCode")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("PowerStatus")
+                        .HasColumnType("int");
 
-                    b.Property<float>("Temperature")
-                        .HasColumnType("real");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.ToTable("AirConditioners");
-                });
-
-            modelBuilder.Entity("IOTManagementGroup7.Models.Camera", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ApplicationUserId")
+                    b.Property<string>("SensorBoardId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<bool>("ConnectionStatus")
+                    b.Property<bool>("SliderButton")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("SliderMaxRange")
+                        .HasColumnType("int");
 
-                    b.Property<string>("NightVersionStatus")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PowerStatus")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SourceCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TimelapsRecordingStatus")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.ToTable("Cameras");
-                });
-
-            modelBuilder.Entity("IOTManagementGroup7.Models.Fan", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("ConnectionStatus")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PowerStatus")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SourceCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Speed")
+                    b.Property<int>("SliderRange")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("DeviceTypeId");
 
-                    b.ToTable("Fans");
+                    b.HasIndex("SensorBoardId");
+
+                    b.ToTable("Device");
                 });
 
-            modelBuilder.Entity("IOTManagementGroup7.Models.Fridge", b =>
+            modelBuilder.Entity("IOTManagementGroup7.Models.DeviceType", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OffImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OnImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DeviceType");
+                });
+
+            modelBuilder.Entity("IOTManagementGroup7.Models.Project", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ApplicationUserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SourceCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Temperature")
-                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("Fridge");
+                    b.ToTable("Project");
                 });
 
-            modelBuilder.Entity("IOTManagementGroup7.Models.Light", b =>
+            modelBuilder.Entity("IOTManagementGroup7.Models.Sensor", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<bool>("ConnectionStatus")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Dim")
+                    b.Property<int>("MaxDevice")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Position")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PowerStatus")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SourceCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("VoltageRange")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.ToTable("Lights");
-                });
-
-            modelBuilder.Entity("IOTManagementGroup7.Models.Television", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ApplicationUserId")
+                    b.Property<string>("ProjectId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CurrentChannel")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PowerStatus")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("RecordingStatus")
-                        .HasColumnType("bit");
-
                     b.Property<string>("SourceCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Volume")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("ProjectId");
 
-                    b.ToTable("Television");
-                });
-
-            modelBuilder.Entity("IOTManagementGroup7.Models.WashingMachine", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PowerStatus")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ProgramStatus")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("RemainingTime")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SourceCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Weight")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.ToTable("WashingMachine");
+                    b.ToTable("Sensor");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -480,7 +349,22 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
-            modelBuilder.Entity("IOTManagementGroup7.Models.AirConditioner", b =>
+            modelBuilder.Entity("IOTManagementGroup7.Models.Device", b =>
+                {
+                    b.HasOne("IOTManagementGroup7.Models.DeviceType", "DeviceType")
+                        .WithMany()
+                        .HasForeignKey("DeviceTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("IOTManagementGroup7.Models.Sensor", "Sensor")
+                        .WithMany()
+                        .HasForeignKey("SensorBoardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("IOTManagementGroup7.Models.Project", b =>
                 {
                     b.HasOne("IOTManagementGroup7.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
@@ -489,56 +373,11 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("IOTManagementGroup7.Models.Camera", b =>
+            modelBuilder.Entity("IOTManagementGroup7.Models.Sensor", b =>
                 {
-                    b.HasOne("IOTManagementGroup7.Models.ApplicationUser", "ApplicationUser")
+                    b.HasOne("IOTManagementGroup7.Models.Project", "Project")
                         .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("IOTManagementGroup7.Models.Fan", b =>
-                {
-                    b.HasOne("IOTManagementGroup7.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("IOTManagementGroup7.Models.Fridge", b =>
-                {
-                    b.HasOne("IOTManagementGroup7.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("IOTManagementGroup7.Models.Light", b =>
-                {
-                    b.HasOne("IOTManagementGroup7.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("IOTManagementGroup7.Models.Television", b =>
-                {
-                    b.HasOne("IOTManagementGroup7.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("IOTManagementGroup7.Models.WashingMachine", b =>
-                {
-                    b.HasOne("IOTManagementGroup7.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
+                        .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

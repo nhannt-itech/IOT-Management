@@ -27,13 +27,13 @@
         <li class="nav-item">
             <a class="nav-link text-light" id="register" data-toggle="modal" data-target="#RegisterModal">Register</a>
             <div id="reg-partial">
-                <partial name="_Register" />
+                <partial name="_Register" model="ViewBag.Regis"/>
             </div>
         </li>
         <li class="nav-item">
             <a class="nav-link text-light" id="login" data-toggle="modal" data-target="#LoginModal">Login</a>
             <div id="log-partial">
-                <partial name="_Login" />
+                <partial name="_Login" model="ViewBag.Login"/>
             </div>
         </li>
     }

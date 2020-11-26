@@ -13,7 +13,11 @@ namespace IOTManagementGroup7.DataAccess.Data
             : base(options)
         {
         }
-        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<Device> Device { get; set; }
+        public DbSet<DeviceType> DeviceType { get; set; }
+        public DbSet<Project> Project { get; set; }
+        public DbSet<Sensor> Sensor { get; set; }
     }
 }

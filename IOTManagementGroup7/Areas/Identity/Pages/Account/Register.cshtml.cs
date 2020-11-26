@@ -105,9 +105,9 @@ namespace IOTManagementGroup7.Areas.Identity.Pages.Account
             {
                 await _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer));
             }
-            if (!await _roleManager.RoleExistsAsync(SD.Role_Manager))
+            if (!await _roleManager.RoleExistsAsync(SD.Role_Auth_Customer))
             {
-                await _roleManager.CreateAsync(new IdentityRole(SD.Role_Manager));
+                await _roleManager.CreateAsync(new IdentityRole(SD.Role_Auth_Customer));
             }
             ReturnUrl = returnUrl;
             Input = new InputModel()
@@ -165,14 +165,14 @@ namespace IOTManagementGroup7.Areas.Identity.Pages.Account
                     {
                         await _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer));
                     }
-                    if (!await _roleManager.RoleExistsAsync(SD.Role_Manager))
+                    if (!await _roleManager.RoleExistsAsync(SD.Role_Auth_Customer))
                     {
-                        await _roleManager.CreateAsync(new IdentityRole(SD.Role_Manager));
+                        await _roleManager.CreateAsync(new IdentityRole(SD.Role_Auth_Customer));
                     }
 
                     if (user.Role == null)
                     {
-                        await _userManager.AddToRoleAsync(user, SD.Role_Manager);
+                        await _userManager.AddToRoleAsync(user, SD.Role_Auth_Customer);
                     }
                     else
                     {
