@@ -19,5 +19,8 @@ namespace IOTManagementGroup7.Models
         public string ProjectId { get; set; }
         [ForeignKey("ProjectId")]
         public Project Project { get; set; }
+
+        [NotMapped]
+        public IEnumerable<Device> Devices;
     }
 }

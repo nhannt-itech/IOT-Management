@@ -1,0 +1,135 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model IOTManagementGroup7.Models.ViewModels.SensorHomeVM
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="row">
+    <div class="col-8">
+        <h3 class="text-primary">Danh sách bảng điều khiển <b class="text-danger">Phòng: </b> của <b class="text-danger">@UserManager.GetUserName(User)</b> </h3>
+    </div>
+    <div class="col-4 text-right">
+        <a class="btn btn-success text-light" id="upsert" asp-area="AuthCustomer" asp-controller="Project" asp-action="Upsert">
+            <i class="fas fa-plus"></i> &nbsp; Tạo bảng điều khiển
+        </a>
+    </div>
+</div>
+<hr />
+
+@foreach (var sensor in Model.Sensors)
+{
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h3 class="m-0 font-weight-bold text-dark">
+                <i class="fas fa-chess-board"></i>
+                BẢNG ĐIỀU KHIỂN @sensor.Name
+            </h3>
+        </div>
+        <div class="row">
+            @foreach (var device in sensor.Devices)
+            {
+            <div class="col-xl-3 col-lg-5">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3">
+                        <h5 class="m-0 font-weight-bold text-primary">
+                            <i class="fas fa-wrench"></i>
+                            CÔNG CỤ @device.Name
+                        </h5>
+                    </div>
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <div class="chart-pie pt-4">
+                            <canvas id="myPieChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+}
+
+
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h3 class="m-0 font-weight-bold text-dark">
+            <i class="fas fa-chess-board"></i>
+            BẢNG ĐIỀU KHIỂN
+        </h3>
+    </div>
+    <div class="row">
+        <div class="col-xl-3 col-lg-5">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3">
+                    <h5 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-wrench"></i>
+                        CÔNG CỤ
+                    </h5>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-pie pt-4">
+                        <canvas id="myPieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-5">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3">
+                    <h5 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-wrench"></i>
+                        CÔNG CỤ
+                    </h5>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-pie pt-4">
+                        <canvas id="myPieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-5">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3">
+                    <h5 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-wrench"></i>
+                        CÔNG CỤ
+                    </h5>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-pie pt-4">
+                        <canvas id="myPieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-5">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3">
+                    <h5 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-wrench"></i>
+                        CÔNG CỤ
+                    </h5>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-pie pt-4">
+                        <canvas id="myPieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -36,7 +36,9 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    <img src="@project.Image" class="chart-pie pt-4" />
+                    <a asp-area="AuthCustomer" asp-controller="Sensor" asp-action="Index" asp-route-id="@project.Id ">
+                        <img src="@project.Image" class="chart-pie pt-4" />
+                    </a>
                     <hr>
                     Người dùng: <code>@project.ApplicationUser.Name</code><br />
                     Tên phòng: <code>@project.Name</code>
