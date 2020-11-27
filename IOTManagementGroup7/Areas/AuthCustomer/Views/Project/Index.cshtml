@@ -2,11 +2,9 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 @model IOTManagementGroup7.Models.ViewModels.ProjectHomeVM
-
 @{
     ViewData["Title"] = "Index";
 }
-
 <div class="row">
     <div class="col-6">
         <h3 class="text-primary">Danh sách phòng <b class="text-danger">@UserManager.GetUserName(User)</b> quản lý </h3>
