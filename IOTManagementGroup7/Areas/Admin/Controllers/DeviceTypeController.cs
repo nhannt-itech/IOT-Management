@@ -27,6 +27,69 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
+
+            if (_unitOfWork.DeviceType.GetAll().Count() == 0)
+            {
+                var obj1 = new DeviceType()
+                {
+                    Id = "D1",
+                    Name = "Quạt trần",
+                    OnImage = @"\images\deviceType\basic\FanOn.gif",
+                    OffImage = @"\images\deviceType\basic\FanOff.png"
+                };
+                _unitOfWork.DeviceType.Add(obj1);
+                _unitOfWork.Save();
+
+                var obj2 = new DeviceType()
+                {
+                    Id = "D2",
+                    Name = "Bóng đèn",
+                    OnImage = @"\images\deviceType\basic\lightOn.gif",
+                    OffImage = @"\images\deviceType\basic\lightOff.png"
+                };
+                _unitOfWork.DeviceType.Add(obj2);
+                _unitOfWork.Save();
+
+                var obj3 = new DeviceType()
+                {
+                    Id = "D3",
+                    Name = "Camera",
+                    OnImage = @"\images\deviceType\basic\cctvOn.gif",
+                    OffImage = @"\images\deviceType\basic\cctvOff.png"
+                };
+                _unitOfWork.DeviceType.Add(obj3);
+                _unitOfWork.Save();
+
+                var obj4 = new DeviceType()
+                {
+                    Id = "D4",
+                    Name = "Cổng nhà",
+                    OnImage = @"\images\deviceType\basic\saloonOn.gif",
+                    OffImage = @"\images\deviceType\basic\saloonOff.png"
+                };
+                _unitOfWork.DeviceType.Add(obj4);
+                _unitOfWork.Save();
+
+                var obj5 = new DeviceType()
+                {
+                    Id = "D5",
+                    Name = "Máy phun nước",
+                    OnImage = @"\images\deviceType\basic\wateringOn.gif",
+                    OffImage = @"\images\deviceType\basic\wateringOff.png"
+                };
+                _unitOfWork.DeviceType.Add(obj5);
+                _unitOfWork.Save();
+
+                var obj6 = new DeviceType()
+                {
+                    Id = "D6",
+                    Name = "Quạt đứng",
+                    OnImage = @"\images\deviceType\basic\fan1On.gif",
+                    OffImage = @"\images\deviceType\basic\fan1Off.png"
+                };
+                _unitOfWork.DeviceType.Add(obj6);
+                _unitOfWork.Save();
+            }
             return View();
         }
 
@@ -94,8 +157,8 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
             }
             else
             {//Nếu không có ảnh thì lấy ảnh cơ bản ^^
-                deviceType.OnImage = @"\images\deviceType\basic\" + "FanOn" + ".gif";
-                deviceType.OffImage = @"\images\deviceType\basic\" + "FanOff" + ".png";
+                deviceType.OnImage = @"\images\deviceType\basic\" + "defaultOn" + ".gif";
+                deviceType.OffImage = @"\images\deviceType\basic\" + "defaultOff" + ".png";
             }
             if (deviceType.Id == null)
             {
