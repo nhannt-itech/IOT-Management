@@ -23,10 +23,10 @@ namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
         {
             //id này là id của Phòng
             SensorHomeVM sensorHomeVM = new SensorHomeVM();
-            sensorHomeVM.Sensors = _unitOfWork.Sensor.GetAll(x=>x.ProjectId == id); //Bằng với id của phòng
-            foreach(var item in sensorHomeVM.Sensors)
+            sensorHomeVM.Sensors = _unitOfWork.Sensor.GetAll(x => x.ProjectId == id); //Bằng với id của phòng
+            foreach (var item in sensorHomeVM.Sensors)
             {
-                item.Devices = _unitOfWork.Device.GetAll(x => x.SensorBoardId == item.Id);
+                item.Devices = _unitOfWork.Device.GetAll(x => x.SensorBoardId == item.Id, includeProperties: "DeviceType");
             }
             return View(sensorHomeVM);
         }

@@ -35,10 +35,18 @@
                         <div class="card-header py-2">
                             @if (device.PowerButton == true)
                             {
-                                <div class="float-right">
-                                    <input id="@device.Id" class="PowerButton" type="checkbox" data-on="On" data-off="Off" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" />
-                                    @*BẬT TẮT CÔNG CỤ Ở ĐÂY*@
-                                </div>
+                                @if (device.PowerStatus == 1)
+                                {
+                                    <div class="float-right">
+                                        <input id="@device.Id" class="PowerButton" value="@device.PowerStatus" type="checkbox" onchange="TurnOnOff(@device.Id,'@device.DeviceType.OnImage','@device.DeviceType.OffImage')" data-on="On" data-off="Off" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" checked/>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="float-right">
+                                        <input id="@device.Id" class="PowerButton" value="@device.PowerStatus" type="checkbox" onchange="TurnOnOff(@device.Id,'@device.DeviceType.OnImage','@device.DeviceType.OffImage')" data-on="On" data-off="Off" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" />
+                                    </div>
+                                }
                             }
                             <div>
                                 <h5 class="mt-1 font-weight-bold text-primary">
@@ -49,16 +57,20 @@
                         </div>
                         <!-- Card Body -->
                         <div class="card-body">
-                            <div class="chart-pie pt-4">
-                                <canvas id="myPieChart"></canvas>
-                            </div>
-                            <hr />
+                            @if (@device.PowerStatus == 1)
+                            {
+                                <img class="chart-pie pt-4" src="@device.DeviceType.OnImage" alt="Alternate Text" />
+                            }
+                            else
+                            {
+                                <img class="chart-pie pt-4" src="@device.DeviceType.OffImage" alt="Alternate Text" />
+                            }
                             <div class="row">
-                                <label class="col-4">Dim: </label> 
+                                <label class="col-4">Dim: </label>
                                 <input type="range" min="1" max="100" class="col-8" id="myRange" />
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             }
@@ -77,7 +89,7 @@
                         <div class="card-body">
                             <a href="#">
                                 @*THÊM CÔNG CỤ MỚI Ở ĐÂY*@
-                                <img  class="chart-pie pt-4" src="~/images/sensor/basic/add.png" alt="Alternate Text" />
+                                <img class="chart-pie pt-4" src="~/images/sensor/basic/add.png" alt="Alternate Text" />
                             </a>
                         </div>
                     </div>
@@ -171,4 +183,5 @@
 
 @section Scripts{
     <script src="~/js/rangeslider.js"></script>
+    <script src="~/js/device.js"></script>
 }
