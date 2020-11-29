@@ -1,0 +1,100 @@
+﻿@model IOTManagementGroup7.Models.Device
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@{
+    ViewData["Title"] = "Upsert";
+    var title = "Tạo công cụ";
+}
+
+<form method="post" enctype="multipart/form-data">
+    <div class="row p-3 border col-6 offset-md-3">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @if (Model.Id != "")
+        {
+            title = "Chỉnh công cụ";
+            <input type="hidden" asp-for="Id" />
+        }
+        <div class="col-12 border-bottom">
+            <h4 class="text-dark">Công cụ: <b style="color:red">@Model.Name </b>
+            - Bảng: <b style="color:red">@Model.Sensor.Name</b> </h4>
+        </div>
+        <div class="col-12 pt-4">
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Name">Tên công cụ: </label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label>Nút hiển thị: </label>
+                </div>
+                <div class="col-7 row">
+                    <input asp-for="PowerButton" class="m-1 mr-2 ml-3 form-check-label" style="transform: scale(1.5)" />
+                    <label asp-for="PowerButton" class="mr-3">Button </label>
+                    <input asp-for="SliderButton" class="m-1  mr-2 form-check-label" style="transform: scale(1.5)" />
+                    <label asp-for="SliderButton" class="mr-3">Slider </label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="SliderMaxRange">Giá trị tối đa: </label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="SliderMaxRange" class="form-control" />
+                    <span asp-validation-for="SliderMaxRange" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="SensorBoardId">Bảng diều khiển: </label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="SensorBoardId" class="form-control" />
+                    <span asp-validation-for="SensorBoardId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="DeviceTypeId">Loại Thiết Bị: </label>
+                </div>
+                <div class="col-8">
+                    <span asp-validation-for="SensorBoardId" class="text-danger"></span>
+                    @Html.DropDownListFor(m => m.DeviceTypeId, Model.DeviceTypeList, "-Select Device Type",
+                   new { @class = "form-control" })
+                    <span asp-validation-for="DeviceTypeId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-8 offset-2">
+                    @if (Model.Id != "")
+                    {
+                        <div class="row">
+                            <div class="col">
+                                <button type="submit" class="btn btn-primary form-control" asp-route-id="@Model.Id">Update</button>
+                            </div>
+                            <div class="col">
+                                <a asp-controller="Sensor" asp-action="Index" asp-route-id="@Model.Sensor.ProjectId" class="btn btn-success form-control">Back To List</a>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <div class="col">
+                                <button type="submit" class="btn btn-primary form-control">Create</button>
+                            </div>
+                            <div class="col">
+                                <a asp-action="Index" class="btn btn-success form-control">Back To List</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
