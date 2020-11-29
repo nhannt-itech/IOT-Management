@@ -1,4 +1,7 @@
-﻿function TurnOnOff(id,on,off) {
+﻿
+
+
+function TurnOnOff(id, on, off) {
     $.ajax({
         type: "POST",
         url: "/AuthCustomer/Device/TurnOnOff/" + id,
@@ -14,3 +17,20 @@
         }
     });
 }
+
+
+function ChangeRangeSlider(id) {
+    var value = $('#' + id + '.myRangeInput').val();
+
+    $.ajax({
+        type: "POST",
+        url: "/AuthCustomer/Device/ChangeRangeSlider/?id=" + id + "&value=" + value,
+        success: function (data) {
+            if (data.success) {
+                $('#' + id + '.myRangeOutput').attr('value', "Pwr: " + value + "/" + data.maxvalue);
+            }
+        }
+    });
+}
+
+

@@ -33,10 +33,8 @@ namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
         public IActionResult Upsert(string? id)
         {
             Project project = _unitOfWork.Project.GetFirstOrDefault(x => x.Id == id);
-            if (project == null)
-            {
-                project = new Project()
-                {
+            if (project == null){
+                project = new Project(){
                     Id = ""
                 };
             }
@@ -47,33 +45,27 @@ namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Upsert(Project project)
         {
-            string webRootPath = _hostEnvironment.WebRootPath; //"C:\\Users\\MayXauGiaCao\\Desktop\\IOTManagementGroup7\\IOTManagementGroup7\\wwwroot"
-            var files = HttpContext.Request.Form.Files; //Lấy file ở trong Form
-            if (files.Count > 0)
-            {
+            string webRootPath = _hostEnvironment.WebRootPath; 
+            var files = HttpContext.Request.Form.Files; 
+            if (files.Count > 0){
                 string fileName = Guid.NewGuid().ToString();
                 var uploads = Path.Combine(webRootPath, @"images\project");
-                var extension = Path.GetExtension(files[0].FileName); // ".png"
-                if (project.Image != null && !project.Image.Contains("basic")){//Nếu như link ảnh của đối tượng khác null và không phải là basic thì xóa ảnh cũ
+                var extension = Path.GetExtension(files[0].FileName); 
+                if (project.Image != null && !project.Image.Contains("basic")){
                     var imagePath = Path.Combine(webRootPath, project.Image.TrimStart('\\'));
                     if (System.IO.File.Exists(imagePath)){
                         System.IO.File.Delete(imagePath);
                     }
                 }
                 using (var filesStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create)){
-                    //uploads: "C:\\Users\\MayXauGiaCao\\Desktop\\IOTManagementGroup7\\IOTManagementGroup7\\wwwroot\\images\\project"
-                    //filename: "6a9c2297-0ef2-4edf-938f-c19971ce8e26"
-                    //extension: ".png"
                     files[0].CopyTo(filesStreams);
                 }
                 project.Image = @"\images\project\" + fileName + extension;
             }
-            else{//Nếu không có ảnh thì lấy ảnh cơ bản ^^
+            else{
                 project.Image = @"\images\project\basic\" + "room" + ".png";
             }
-            if (project.Id == null)
-            {
-                //XỬ LÝ LẤY ID CAO NHẤT CỦA PROJECT
+            if (project.Id == null){
                 if (_unitOfWork.Project.GetAll().Count() == 0){
                     project.Id = "Pr1";
                 }
@@ -98,14 +90,12 @@ namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
         public IActionResult Delete(string? id)
         {
             var obj = _unitOfWork.Project.Get(id);
-            if (obj == null)
-            {
+            if (obj == null){
                 return Json(new { success = false, message = "Error When Delete!" });
             }
             _unitOfWork.Project.Remove(obj);
             _unitOfWork.Save();
             return Json(new { success = true, message = "Delete successful!" });
         }
-
     }
 }

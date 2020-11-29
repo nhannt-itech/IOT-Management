@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -28,5 +29,8 @@ namespace IOTManagementGroup7.Models
         public string DeviceTypeId { get; set; }
         [ForeignKey("DeviceTypeId")]
         public DeviceType DeviceType { get; set; }
+
+        [NotMapped]
+        public IEnumerable<SelectListItem> DeviceTypeList { get; set; }
     }
 }
