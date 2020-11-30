@@ -27,6 +27,7 @@ namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
             //id này là id của Phòng
             SensorHomeVM sensorHomeVM = new SensorHomeVM();
             sensorHomeVM.Sensors = _unitOfWork.Sensor.GetAll(x => x.ProjectId == id, includeProperties: "Project");
+            sensorHomeVM.Project = _unitOfWork.Project.Get(id);
             ProId = id;
             return View(sensorHomeVM);
         }
@@ -40,7 +41,7 @@ namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
             Sensor sensor = new Sensor();
 
             sensor.ProjectId = ProId;
-           // sensor.Project.ApplicationUser = _unitOfWork.ApplicationUser.Get(claim.Value);
+            // sensor.Project.ApplicationUser = _unitOfWork.ApplicationUser.Get(claim.Value);
 
             if (id == null)
             {
@@ -87,9 +88,10 @@ namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
             _unitOfWork.Save();
             SensorHomeVM sensorHomeVM = new SensorHomeVM()
             {
-                Sensors = _unitOfWork.Sensor.GetAll(includeProperties: "Project")
+                Sensors = _unitOfWork.Sensor.GetAll(includeProperties: "Project"),
+                Project = _unitOfWork.Project.Get(sensor.ProjectId)
             };
-            return RedirectToAction("Index", new { id = sensor.ProjectId }); 
+            return RedirectToAction("Index", new { id = sensor.ProjectId });
         }
 
         [HttpDelete]
@@ -97,13 +99,13 @@ namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
         {
             var obj = _unitOfWork.Sensor.Get(id);
             obj.Project = _unitOfWork.Project.Get(ProId);
-            obj.Devices = _unitOfWork.Device.GetAll(x=>x.SensorBoardId == id,
+            obj.Devices = _unitOfWork.Device.GetAll(x => x.SensorBoardId == id,
                                         includeProperties: "DeviceType");
             if (obj == null)
             {
                 return Json(new { success = false, message = "Error When Delete!" });
             }
-            foreach(var device in obj.Devices)
+            foreach (var device in obj.Devices)
             {
                 _unitOfWork.Device.Remove(device);
             }

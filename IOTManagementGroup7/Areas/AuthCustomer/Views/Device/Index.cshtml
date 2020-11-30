@@ -13,7 +13,6 @@
 <hr />
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-
         <h3 class="m-0 font-weight-bold text-dark">
             <i class="fas fa-chess-board"></i>
             BẢNG ĐIỀU KHIỂN @Model.Sensor.Name
@@ -22,7 +21,7 @@
     <div class="row">
         @foreach (var device in Model.Devices)
         {
-            <div class="col-xl-3 col-lg-5">
+            <div id="@device.Id" class="col-xl-3 col-lg-5">
                 <div class="card shadow mb-4">
                     <!-- Card Header - Dropdown -->
                     <div class="card-header py-2">
@@ -51,9 +50,11 @@
                     <!-- Card Body -->
                     <div class="card-body">
                         <div class="row float-right">
-                            <a asp-area="AuthCustomer" asp-controller="Device" asp-action="GetDeviceAPI" 
+                            <a onclick='Delete("/AuthCustomer/Device/Delete/@device.Id","@device.Id")'
+                               class="mr-2 text-danger"><i class="fas fa-trash fa-2x"></i></a>
+                            <a asp-area="AuthCustomer" asp-controller="Device" asp-action="GetDeviceAPI"
                                asp-route-idDevice="@device.Id" asp-route-userName="@UserManager.GetUserName(User)" asp-route-idProject="@device.Sensor.ProjectId"
-                               asp-route-idSensor="@device.Sensor.Id" 
+                               asp-route-idSensor="@device.Sensor.Id"
                                class="mr-2 text-warning"><i class="fas fa-code fa-2x"></i></a>
                             <a asp-area="AuthCustomer" asp-controller="Device"
                                asp-action="Upsert" asp-route-id="@device.Id" asp-route-idSensor="@device.SensorBoardId"
@@ -79,6 +80,7 @@
                         }
                         else
                         {
+                            <br /><br /> 
                             <div class="row">
                                 <label class="col-12 text-gray-900">Power: 100% </label>
                             </div>

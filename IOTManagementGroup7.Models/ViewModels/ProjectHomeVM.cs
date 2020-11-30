@@ -6,6 +6,6 @@ namespace IOTManagementGroup7.Models.ViewModels
 {
     public class ProjectHomeVM
     {
-        public IEnumerable<Project> Projects;
+        public IEnumerable<Project> Projects { get; set; }
     }
 }

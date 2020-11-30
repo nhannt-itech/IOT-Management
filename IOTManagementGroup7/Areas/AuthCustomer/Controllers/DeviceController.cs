@@ -87,7 +87,7 @@ namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
             _unitOfWork.Save();
 
             string idPro = _unitOfWork.Sensor.Get(device.SensorBoardId).ProjectId;
-            return RedirectToAction("Index", "Sensor", new { id = idPro });
+            return RedirectToAction("Index", "Device", new { id = device.SensorBoardId });
         }
         [HttpPost]
         public IActionResult TurnOnOff(string? id)
@@ -136,5 +136,19 @@ namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
             string result = idDevice + ',' + userName + ',' + idProject + ',' + idSensor + ',' + deviceStatus[0] + '-' + deviceStatus[1] + '-' + deviceStatus[2] + '-' + deviceStatus[3];
             return Json(result);
         }
+
+        [HttpDelete]
+        public IActionResult Delete(string? id)
+        {
+            var obj = _unitOfWork.Device.Get(id);
+            if (obj == null)
+            {
+                return Json(new { success = false, message = "Error When Delete!" });
+            }
+            _unitOfWork.Device.Remove(obj);
+            _unitOfWork.Save();
+            return Json(new { success = true, message = "Delete successful!" });
+        }
     }
+
 }

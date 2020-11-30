@@ -9,8 +9,9 @@
     <a asp-controller="Project" asp-action="Index">Danh sách phòng</a>
 </h3>
 <hr />
-<h3 class="font-italic">
-    Hiện bạn đang ở phòng 
+<h3 class="m-0 font-weight-bold text-dark">
+    <i class="fas fa-home"></i>
+    PHÒNG: @Model.Project.Name
 </h3>
 <div class="row">
     @foreach (var sensor in Model.Sensors)
@@ -18,8 +19,7 @@
         <div id="@sensor.Id" class="col-xl-3 col-lg-5">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
-                <div class="card-header py-3">
-                    <code style="font-weight:bold; text-align:center;">@sensor.Name</code>
+                <div class="card-header py-2">
                     <div class="row float-right">
                         <a class="btn btn-primary text-light mr-1" asp-area="AuthCustomer" asp-controller="Sensor" asp-action="Upsert" asp-route-id="@sensor.Id">
                             <i class="fas fa-edit"></i>
@@ -34,6 +34,8 @@
                     <a asp-area="AuthCustomer" asp-controller="Device" asp-action="Index" asp-route-id="@sensor.Id">
                         <img src="\images\sensor\sensor.png" class="chart-pie pt-4" />
                     </a>
+                    <hr>
+                    Bảng điều khiển: <code>@sensor.Name</code><br />
                 </div>
             </div>
         </div>
@@ -43,15 +45,10 @@
             <!-- Card Header - Dropdown -->
 
             <div class="card-header py-3">
-                <code style="font-weight:bold; text-align:center;">Thêm bảng điều khiển</code>
-                <div class="row float-right">
-                    <a class="btn btn-primary text-light mr-1" asp-area="AuthCustomer" asp-controller="Sensor" asp-action="Upsert">
-                        <i class="fas fa-edit"></i>
-                    </a>
-                    <a class="btn btn-danger text-light">
-                        <i class="fas fa-trash"></i>
-                    </a>
-                </div>
+                <h5 class="m-0 font-weight-bold text-primary">
+                    <i class="fas fa-wrench"></i>
+                    THÊM BẢNG ĐIỀU KHIỂN
+                </h5>
             </div>
             <!-- Card Body -->
             <div class="card-body">

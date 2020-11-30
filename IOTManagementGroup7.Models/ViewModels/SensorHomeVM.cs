@@ -6,6 +6,7 @@ namespace IOTManagementGroup7.Models.ViewModels
 {
     public class SensorHomeVM
     {
-        public IEnumerable<Sensor> Sensors;
+        public IEnumerable<Sensor> Sensors { get; set; }
+        public Project Project { get; set; }
     }
 }
