@@ -34,16 +34,6 @@
 
             <div class="form-group row">
                 <div class="col-4">
-                    <label asp-for="MaxDevice">Số thiết bị tối đa: </label>
-                </div>
-                <div class="col-8">
-                    <input asp-for="MaxDevice" class="form-control" />
-                    <span asp-validation-for="MaxDevice" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <div class="col-4">
                     <label asp-for="SourceCode">SourceCode: </label>
                 </div>
                 <div class="col-8">
@@ -52,6 +42,18 @@
                 </div>
             </div>
 
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="MaxDevice">Số thiết bị tối đa: </label>
+                    <label id="demo"></label>
+                </div>
+                <div class="col-8">
+                    <input type="range" min="1" max="4"
+                           id="myRange" class="col-8 form-control"
+                           asp-for="MaxDevice" />
+                    <span asp-validation-for="MaxDevice" class="text-danger"></span>
+                </div>
+            </div>
 
             <div class="form-group row">
                 <div class="col-8 offset-2">
@@ -82,3 +84,4 @@
         </div>
     </div>
 </form>
+<script src="~/js/rangeslider.js"></script>
