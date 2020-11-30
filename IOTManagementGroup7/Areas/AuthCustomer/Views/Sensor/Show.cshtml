@@ -1,0 +1,52 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model IOTManagementGroup7.Models.ViewModels.SensorHomeVM
+@{
+    ViewData["Title"] = "Show";
+}
+<div class="row">
+    <div class="col-6">
+        <h3 class="text-primary">Danh sách trạm</h3>
+    </div>
+    <div class="col-6 text-right">
+        <a class="btn btn-success text-light" id="upsert" asp-area="AuthCustomer" asp-controller="Sensor" asp-action="Upsert">
+            <i class="fas fa-plus"></i> &nbsp; Tạo trạm mới
+        </a>
+    </div>
+</div>
+<hr />
+<div class="row">
+    @foreach (var sensor in Model.Sensors)
+    {
+        <div id="@sensor.Id" class="col-xl-3 col-lg-5" style=" margin-right: 10px;">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+              
+                <div class="card-header py-3">
+                    <code style="font-weight:bold; text-align:center;">@sensor.Name</code>
+                    <div class="row float-right">
+                        <a class="btn btn-primary text-light mr-1" asp-area="AuthCustomer" asp-controller="Sensor" asp-action="Upsert" asp-route-id="@sensor.Id">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a class="btn btn-danger text-light" onclick='Delete("/AuthCustomer/Sensor/Delete/@sensor.Id","@sensor.Id")'>
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+
+                    <a asp-area="AuthCustomer" asp-controller="Device" asp-action="Index" asp-route-id="@sensor.Id ">
+                        <img src="\images\sensor\sensor.png" class="chart-pie pt-4" />
+                    </a>
+                    
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts{
+    <script src="~/js/sensor.js"></script>
+}

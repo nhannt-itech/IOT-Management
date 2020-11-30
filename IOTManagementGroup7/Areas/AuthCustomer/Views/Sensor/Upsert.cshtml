@@ -1,0 +1,84 @@
+﻿@model IOTManagementGroup7.Models.Sensor
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@{
+    ViewData["Title"] = "Upsert";
+    var title = "Tạo Trạm Chính";
+}
+
+<form method="post" enctype="multipart/form-data">
+    <div class="row p-3 border col-6 offset-md-3">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="ProjectId" />
+        @if (Model.Id != null)
+        {
+            title = "Chỉnh Sửa Trạm Chính";
+            <input type="hidden" asp-for="Id" />
+
+        }
+        <div class="col-12 border-bottom">
+            <h2 class="text-primary">@title</h2>
+        </div>
+
+        <div class="col-12 pt-4">
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Name">Tên trạm: </label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="MaxDevice">Số thiết bị tối đa: </label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="MaxDevice" class="form-control" />
+                    <span asp-validation-for="MaxDevice" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="SourceCode">SourceCode: </label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="SourceCode" class="form-control" />
+                    <span asp-validation-for="SourceCode" class="text-danger"></span>
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <div class="col-8 offset-2">
+                    @if (Model.Id != null)
+                    {
+                        <div class="row">
+                            <div class="col">
+                                <button type="submit" class="btn btn-primary form-control" asp-route-id="@Model.Id">Cập nhật</button>
+                            </div>
+                            <div class="col">
+                                <a asp-action="Show" asp-route-id="@Model.ProjectId" class="btn btn-success form-control">Trở lại</a>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <div class="col">
+                                <button type="submit" class="btn btn-primary form-control">Tạo</button>
+                            </div>
+                            <div class="col">
+                                <a asp-action="Show" asp-route-id="@ViewBag.projectId" class="btn btn-success form-control">Trở lại</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
