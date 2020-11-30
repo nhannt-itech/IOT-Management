@@ -16,7 +16,6 @@ namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _hostEnvironment;
-
         public DeviceController(IUnitOfWork unitOfWork, IWebHostEnvironment hostEnvironment)
         {
             _unitOfWork = unitOfWork;
@@ -34,7 +33,6 @@ namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
             deviceHomeVM.Sensor.Project = _unitOfWork.Project.Get(deviceHomeVM.Sensor.ProjectId);
             return View(deviceHomeVM);
         }
-
         [HttpGet]
         public IActionResult Upsert(string? id, string? idSensor)
         {
@@ -59,7 +57,6 @@ namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
             });
             return View(device);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Upsert(Device device)
@@ -92,7 +89,6 @@ namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
             string idPro = _unitOfWork.Sensor.Get(device.SensorBoardId).ProjectId;
             return RedirectToAction("Index", "Sensor", new { id = idPro });
         }
-
         [HttpPost]
         public IActionResult TurnOnOff(string? id)
         {
@@ -109,7 +105,6 @@ namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
             _unitOfWork.Save();
             return Json(new { success = true, message = obj.Name + " đã kích hoạt." });
         }
-
         [HttpPost]
         public IActionResult ChangeRangeSlider(string? id, int value)
         {
@@ -119,6 +114,27 @@ namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
             _unitOfWork.Save();
             return Json(new { success = true, maxvalue = obj.SliderMaxRange });
         }
+        [HttpGet]
+        public IActionResult GetDeviceAPI(string? idDevice, string userName, string idProject, string idSensor)
+        {
+            List<Device> obj = _unitOfWork.Device.GetAll(x => x.SensorBoardId == idSensor).ToList();
 
+            if (String.IsNullOrEmpty(userName))
+                userName =  String.Empty;
+
+            using (var sha = new System.Security.Cryptography.SHA256Managed())
+            {
+                byte[] textData = System.Text.Encoding.UTF8.GetBytes(userName);
+                byte[] hash = sha.ComputeHash(textData);
+                userName =  BitConverter.ToString(hash).Replace("-", String.Empty);
+            }
+            string[] deviceStatus = { "0", "0", "0", "0" };
+            for(int i = 0; i < obj.Count(); i++)
+            {
+                deviceStatus[i] = obj[i].PowerStatus.ToString();
+            }
+            string result = idDevice + ',' + userName + ',' + idProject + ',' + idSensor + ',' + deviceStatus[0] + '-' + deviceStatus[1] + '-' + deviceStatus[2] + '-' + deviceStatus[3];
+            return Json(result);
+        }
     }
 }
