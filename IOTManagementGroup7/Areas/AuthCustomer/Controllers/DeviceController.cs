@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using IOTManagementGroup7.DataAccess.Repository.IRepository;
 using IOTManagementGroup7.Models;
+using IOTManagementGroup7.Models.ViewModels;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -13,13 +15,18 @@ namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
     public class DeviceController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public DeviceController(IUnitOfWork unitOfWork)
+        private readonly IWebHostEnvironment _hostEnvironment;
+
+        public DeviceController(IUnitOfWork unitOfWork, IWebHostEnvironment hostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _hostEnvironment = hostEnvironment;
         }
-        public IActionResult Index()
+        public IActionResult Index(string? id, DeviceHomeVM deviceHomeVM)
         {
-            return View();
+            deviceHomeVM.Devices = _unitOfWork.Device.GetAll(x => x.SensorBoardId == id, includeProperties: "Sensor,DeviceType");
+
+            return View(deviceHomeVM);
         }
 
         [HttpGet]
