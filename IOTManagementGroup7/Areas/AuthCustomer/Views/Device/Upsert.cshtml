@@ -14,11 +14,14 @@
         {
             title = "Chỉnh công cụ";
             <input type="hidden" asp-for="Id" />
+            <div class="col-12 border-bottom">
+                <h4 class="text-dark">
+                    Công cụ: <b style="color:red">@Model.Name </b>
+                    - Bảng: <b style="color:red">@Model.Sensor.Name</b>
+                </h4>
+            </div>
         }
-        <div class="col-12 border-bottom">
-            <h4 class="text-dark">Công cụ: <b style="color:red">@Model.Name </b>
-            - Bảng: <b style="color:red">@Model.Sensor.Name</b> </h4>
-        </div>
+
         <div class="col-12 pt-4">
             <div class="form-group row">
                 <div class="col-4">
