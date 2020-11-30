@@ -5,160 +5,113 @@
 @{
     ViewData["Title"] = "Index";
 }
+<h3 class="font-italic font-weight-lighter">
+    <a asp-controller="Project" asp-action="Index">Danh sách phòng</a> >
+    <a asp-controller="Sensor" asp-action="Index" asp-route-id="@Model.Sensor.ProjectId">Phòng @Model.Sensor.Project.Name</a>
+</h3>
 
 <hr />
-
-
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h3 class="m-0 font-weight-bold text-dark">
-                <i class="fas fa-chess-board"></i>
-                BẢNG ĐIỀU KHIỂN @*@sensor.Name*@
-            </h3>
-        </div>
-        <div class="row">
-            @foreach (var device in Model.Devices)
-            {
-                <div class="col-xl-3 col-lg-5">
-                    <div class="card shadow mb-4">
-                        Card Header - Dropdown
-                        <div class="card-header py-2">
-                            @if (device.PowerButton == true)
-                            {
-                                <div class="float-right">
-                                    <input id="@device.Id" class="PowerButton" type="checkbox" data-on="On" data-off="Off" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" />
-                                    BẬT TẮT CÔNG CỤ Ở ĐÂY
-                                </div>
-                            }
-                            <div>
-                                <h5 class="mt-1 font-weight-bold text-primary">
-                                    <i class="fas fa-wrench"></i>
-                                    CÔNG CỤ @device.Name
-                                </h5>
-                            </div>
-                        </div>
-                        Card Body
-                        <div class="card-body">
-                            <div class="chart-pie pt-4">
-                                <canvas id="myPieChart"></canvas>
-                            </div>
-                            <hr />
-                            <div class="row">
-                                <label class="col-4">Dim: </label>
-                                <input type="range" min="1" max="100" class="col-8" id="myRange" />
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            }
-            @if (Model.Devices.Count() < 4)
-            {
-                <div class="col-xl-3 col-lg-5">
-                    <div class="card shadow mb-4">
-                        Card Header - Dropdown
-                        <div class="card-header py-3">
-                            <h5 class="m-0 font-weight-bold text-primary">
-                                <i class="fas fa-wrench"></i>
-                                THÊM CÔNG CỤ MỚI
-                            </h5>
-                        </div>
-                        Card Body
-                        <div class="card-body">
-                            <a href="#">
-                                THÊM CÔNG CỤ MỚI Ở ĐÂY
-                                <img class="chart-pie pt-4" src="~/images/sensor/basic/add.png" alt="Alternate Text" />
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    </div>
-
-
-
-
 <div class="card shadow mb-4">
     <div class="card-header py-3">
+
         <h3 class="m-0 font-weight-bold text-dark">
             <i class="fas fa-chess-board"></i>
-            BẢNG ĐIỀU KHIỂN
+            BẢNG ĐIỀU KHIỂN @Model.Sensor.Name
         </h3>
     </div>
     <div class="row">
-        <div class="col-xl-3 col-lg-5">
-            <div class="card shadow mb-4">
-                Card Header - Dropdown
-                <div class="card-header py-3">
-                    <h5 class="m-0 font-weight-bold text-primary">
-                        <i class="fas fa-wrench"></i>
-                        CÔNG CỤ
-                    </h5>
-                </div>
-                Card Body
-                <div class="card-body">
-                    <div class="chart-pie pt-4">
-                        <canvas id="myPieChart"></canvas>
+        @foreach (var device in Model.Devices)
+        {
+            <div class="col-xl-3 col-lg-5">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-2">
+                        @if (device.PowerButton == true)
+                        {
+                            @if (device.PowerStatus == 1)
+                            {
+                                <div class="float-right">
+                                    <input id="@device.Id" class="PowerButton" value="@device.PowerStatus" type="checkbox" onchange="TurnOnOff('@device.Id','@device.DeviceType.OnImage.Replace(@"\",@"\\")','@device.DeviceType.OffImage.Replace(@"\",@"\\")') " data-on="On" data-off="Off" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" checked />
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="float-right">
+                                    <input id="@device.Id" class="PowerButton" value="@device.PowerStatus" type="checkbox" onchange="TurnOnOff('@device.Id','@device.DeviceType.OnImage.Replace(@"\",@"\\")','@device.DeviceType.OffImage.Replace(@"\",@"\\")') " data-on="On" data-off="Off" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" />
+                                </div>
+                            }
+                        }
+                        <div>
+                            <h5 class="mt-1 font-weight-bold text-dark">
+                                <i class="fas fa-wrench"></i>
+                                @device.Name
+                            </h5>
+                        </div>
+                    </div>
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <div class="row float-right">
+                            <a class="mr-2 text-warning"><i class="fas fa-code fa-2x"></i></a>
+                            <a asp-area="AuthCustomer" asp-controller="Device"
+                               asp-action="Upsert" asp-route-id="@device.Id" asp-route-idSensor="@device.SensorBoardId"
+                               class="mr-2"><i class="fas fa-edit fa-2x"></i></a>
+                        </div>
+                        @if (device.PowerStatus == 1)
+                        {
+                            <img id="@device.Id" class="image chart-pie" src="@device.DeviceType.OnImage" />
+                        }
+                        else
+                        {
+                            <img id="@device.Id" class="image chart-pie" src="@device.DeviceType.OffImage" />
+                        }
+                        @if (device.SliderButton == true)
+                        {
+                            <div class="row">
+                                <input type="text" id="@device.Id" class="form-control col-5 m-2 text-gray-900 myRangeOutput" value="Pwr: @device.SliderRange/@device.SliderMaxRange" readonly />
+                                <input type="range" oninput="ChangeRangeSlider('@device.Id')"
+                                       min="0" max="@device.SliderMaxRange"
+                                       id="@device.Id" class="col-6 myRangeInput"
+                                       value="@device.SliderRange" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="row">
+                                <label class="col-12 text-gray-900">Power: 100% </label>
+                            </div>
+                        }
+                        <hr />
+
+
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-xl-3 col-lg-5">
-            <div class="card shadow mb-4">
-                Card Header - Dropdown
-                <div class="card-header py-3">
-                    <h5 class="m-0 font-weight-bold text-primary">
-                        <i class="fas fa-wrench"></i>
-                        CÔNG CỤ
-                    </h5>
-                </div>
-                Card Body
-                <div class="card-body">
-                    <a href="#">
-                        THÊM CÔNG CỤ MỚI Ở ĐÂY
-                        <img class="chart-pie pt-4" src="~/images/sensor/basic/FanOn.gif" alt="Alternate Text" />
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-lg-5">
-            <div class="card shadow mb-4">
-                Card Header - Dropdown
-                <div class="card-header py-3">
-                    <h5 class="m-0 font-weight-bold text-primary">
-                        <i class="fas fa-wrench"></i>
-                        CÔNG CỤ
-                    </h5>
-                </div>
-                Card Body
-                <div class="card-body">
-                    <div class="chart-pie pt-4">
-                        <canvas id="myPieChart"></canvas>
+        }
+        @if (Model.Devices.Count() < Model.Sensor.MaxDevice)
+        {
+            <div class="col-xl-3 col-lg-5">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3">
+                        <h5 class="m-0 font-weight-bold text-primary">
+                            <i class="fas fa-wrench"></i>
+                            THÊM CÔNG CỤ MỚI
+                        </h5>
+                    </div>
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <a asp-area="AuthCustomer" asp-controller="Device" asp-action="Upsert" asp-route-id="" asp-route-idSensor="@Model.Sensor.Id">
+                            @*THÊM CÔNG CỤ MỚI Ở ĐÂY*@
+                            <img class="chart-pie pt-4" src="~/images/sensor/basic/add.png" alt="Alternate Text" />
+                        </a>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-xl-3 col-lg-5">
-            <div class="card shadow mb-4">
-                Card Header - Dropdown
-                <div class="card-header py-3">
-                    <h5 class="m-0 font-weight-bold text-primary">
-                        <i class="fas fa-wrench"></i>
-                        CÔNG CỤ
-                    </h5>
-                </div>
-                Card Body
-                <div class="card-body">
-                    <div class="chart-pie pt-4">
-                        <canvas id="myPieChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
+        }
     </div>
 </div>
 
 @section Scripts{
     <script src="~/js/rangeslider.js"></script>
+    <script src="~/js/device.js"></script>
 }

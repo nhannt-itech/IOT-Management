@@ -22,10 +22,16 @@ namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
             _unitOfWork = unitOfWork;
             _hostEnvironment = hostEnvironment;
         }
-        public IActionResult Index(string? id, DeviceHomeVM deviceHomeVM)
+        public IActionResult Index(string? id)
         {
-            deviceHomeVM.Devices = _unitOfWork.Device.GetAll(x => x.SensorBoardId == id, includeProperties: "Sensor,DeviceType");
-
+            //id này của Sensor
+            DeviceHomeVM deviceHomeVM = new DeviceHomeVM()
+            {
+                Devices = _unitOfWork.Device.GetAll(x => x.SensorBoardId == id,
+                                            includeProperties: "Sensor,DeviceType"),
+                Sensor = _unitOfWork.Sensor.Get(id)
+            };
+            deviceHomeVM.Sensor.Project = _unitOfWork.Project.Get(deviceHomeVM.Sensor.ProjectId);
             return View(deviceHomeVM);
         }
 

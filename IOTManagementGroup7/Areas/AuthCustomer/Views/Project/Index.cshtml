@@ -34,7 +34,7 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    <a asp-area="AuthCustomer" asp-controller="Sensor" asp-action="Show" asp-route-id="@project.Id ">
+                    <a asp-area="AuthCustomer" asp-controller="Sensor" asp-action="Index" asp-route-id="@project.Id">
                         <img src="@project.Image" class="chart-pie pt-4" />
                     </a>
                     <hr>
@@ -44,6 +44,33 @@
             </div>
         </div>
     }
+    <div id="" class="col-xl-3 col-lg-5">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3">
+                <div class="row float-right">
+                    <div class="row float-right">
+                        <a class="btn btn-primary text-light mr-1" asp-area="AuthCustomer" asp-controller="Project" asp-action="Upsert" >
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a class="btn btn-danger text-light">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <a asp-area="AuthCustomer" asp-area="AuthCustomer" asp-controller="Project" asp-action="Upsert">
+                    @*THÊM CÔNG CỤ MỚI Ở ĐÂY*@
+                    <img class="chart-pie pt-4" src="~/images/sensor/basic/add.png" alt="Alternate Text" />
+                </a>
+                <hr>
+                Người dùng: <code></code><br />
+                Tên phòng: <code></code>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts{

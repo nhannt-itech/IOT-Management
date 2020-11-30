@@ -22,26 +22,14 @@ namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
             _unitOfWork = unitOfWork;
             _hostEnvironment = hostEnvironment;
         }
-        //public IActionResult Index(string? id)
-        //{
-        //    //id này là id của Phòng
-        //    SensorHomeVM sensorHomeVM = new SensorHomeVM();
-        //    sensorHomeVM.Sensors = _unitOfWork.Sensor.GetAll(x=>x.ProjectId == id); //Bằng với id của phòng
-        //    foreach(var item in sensorHomeVM.Sensors)
-        //    {
-        //        item.Devices = _unitOfWork.Device.GetAll(x => x.SensorBoardId == item.Id);
-        //    }
-        //    return View(sensorHomeVM);
-        //}
-        public IActionResult Show(SensorHomeVM sensorHomeVM, string? id)
+        public IActionResult Index(string? id)
         {
-
+            //id này là id của Phòng
+            SensorHomeVM sensorHomeVM = new SensorHomeVM();
             sensorHomeVM.Sensors = _unitOfWork.Sensor.GetAll(x => x.ProjectId == id, includeProperties: "Project");
             ProId = id;
-
             return View(sensorHomeVM);
         }
-
 
         public IActionResult Upsert(string? id)
         {
@@ -96,13 +84,12 @@ namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
                 _unitOfWork.Sensor.Update(sensor);
             }
 
-
             _unitOfWork.Save();
             SensorHomeVM sensorHomeVM = new SensorHomeVM()
             {
                 Sensors = _unitOfWork.Sensor.GetAll(includeProperties: "Project")
             };
-            return RedirectToAction("Show", new { id = ProId });
+            return RedirectToAction("Index", new { id = sensor.ProjectId }); 
         }
 
         [HttpDelete]
@@ -110,7 +97,8 @@ namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
         {
             var obj = _unitOfWork.Sensor.Get(id);
             obj.Project = _unitOfWork.Project.Get(ProId);
-            obj.Devices = _unitOfWork.Device.GetAll(includeProperties: "DeviceType");
+            obj.Devices = _unitOfWork.Device.GetAll(x=>x.SensorBoardId == id,
+                                        includeProperties: "DeviceType");
             if (obj == null)
             {
                 return Json(new { success = false, message = "Error When Delete!" });

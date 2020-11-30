@@ -1,125 +1,68 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿ @using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 @model IOTManagementGroup7.Models.ViewModels.SensorHomeVM
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Show";
 }
-
+<h3 class="font-italic font-weight-lighter">
+    <a asp-controller="Project" asp-action="Index">Danh sách phòng</a>
+</h3>
+<hr />
+<h3 class="font-italic">
+    Hiện bạn đang ở phòng 
+</h3>
 <div class="row">
-    <div class="col-8">
-        <h3 class="text-primary">Danh sách bảng điều khiển <b class="text-danger">Phòng: </b> của <b class="text-danger">@UserManager.GetUserName(User)</b> </h3>
-    </div>
-    <div class="col-4 text-right">
-        <a class="btn btn-success text-light" id="upsert" asp-area="AuthCustomer" asp-controller="Sensor" asp-action="Upsert">
-            <i class="fas fa-plus"></i> &nbsp; Tạo bảng điều khiển
-        </a>
+    @foreach (var sensor in Model.Sensors)
+    {
+        <div id="@sensor.Id" class="col-xl-3 col-lg-5">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3">
+                    <code style="font-weight:bold; text-align:center;">@sensor.Name</code>
+                    <div class="row float-right">
+                        <a class="btn btn-primary text-light mr-1" asp-area="AuthCustomer" asp-controller="Sensor" asp-action="Upsert" asp-route-id="@sensor.Id">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a class="btn btn-danger text-light" onclick='Delete("/AuthCustomer/Sensor/Delete/@sensor.Id","@sensor.Id")'>
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <a asp-area="AuthCustomer" asp-controller="Device" asp-action="Index" asp-route-id="@sensor.Id">
+                        <img src="\images\sensor\sensor.png" class="chart-pie pt-4" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+    <div id="" class="col-xl-3 col-lg-5" style=" margin-right: 10px;">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+
+            <div class="card-header py-3">
+                <code style="font-weight:bold; text-align:center;">Thêm bảng điều khiển</code>
+                <div class="row float-right">
+                    <a class="btn btn-primary text-light mr-1" asp-area="AuthCustomer" asp-controller="Sensor" asp-action="Upsert">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a class="btn btn-danger text-light">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </div>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <a asp-area="AuthCustomer" asp-controller="Sensor" asp-action="Upsert">
+                    <img class="chart-pie pt-4" src="~/images/sensor/basic/add.png" alt="Alternate Text" />
+                </a>
+            </div>
+        </div>
     </div>
 </div>
-<hr />
-@foreach (var sensor in Model.Sensors)
-{
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h3 class="m-0 font-weight-bold text-dark">
-                <i class="fas fa-chess-board"></i>
-                BẢNG ĐIỀU KHIỂN @sensor.Name
-            </h3>
-        </div>
-        <div class="row">
-            @foreach (var device in sensor.Devices)
-            {
-                <div class="col-xl-3 col-lg-5">
-                    <div class="card shadow mb-4">
-                        <!-- Card Header - Dropdown -->
-                        <div class="card-header py-2">
-                            @if (device.PowerButton == true)
-                            {
-                                @if (device.PowerStatus == 1)
-                                {
-                                    <div class="float-right">
-                                        <input id="@device.Id" class="PowerButton" value="@device.PowerStatus" type="checkbox" onchange="TurnOnOff('@device.Id','@device.DeviceType.OnImage.Replace(@"\",@"\\")','@device.DeviceType.OffImage.Replace(@"\",@"\\")') " data-on="On" data-off="Off" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" checked />
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="float-right">
-                                        <input id="@device.Id" class="PowerButton" value="@device.PowerStatus" type="checkbox" onchange="TurnOnOff('@device.Id','@device.DeviceType.OnImage.Replace(@"\",@"\\")','@device.DeviceType.OffImage.Replace(@"\",@"\\")') " data-on="On" data-off="Off" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" />
-                                    </div>
-                                }
-                            }
-                            <div>
-                                <h5 class="mt-1 font-weight-bold text-dark">
-                                    <i class="fas fa-wrench"></i>
-                                    @device.Name
-                                </h5>
-                            </div>
-                        </div>
-                        <!-- Card Body -->
-                        <div class="card-body">
-                            <div class="row float-right">
-                                <a class="mr-2 text-warning"><i class="fas fa-code fa-2x"></i></a>
-                                <a asp-area="AuthCustomer" asp-controller="Device"
-                                   asp-action="Upsert" asp-route-id="@device.Id" asp-route-idSensor="@device.SensorBoardId"
-                                   class="mr-2"><i class="fas fa-edit fa-2x"></i></a>
-                            </div>
-                            @if (device.PowerStatus == 1)
-                            {
-                                <img id="@device.Id" class="image chart-pie" src="@device.DeviceType.OnImage" />
-                            }
-                            else
-                            {
-                                <img id="@device.Id" class="image chart-pie" src="@device.DeviceType.OffImage" />
-                            }
-                            @if (device.SliderButton == true)
-                            {
-                                <div class="row">
-                                    <input type="text" id="@device.Id" class="form-control col-5 m-2 text-gray-900 myRangeOutput" value="Pwr: @device.SliderRange/@device.SliderMaxRange" readonly />
-                                    <input type="range" oninput="ChangeRangeSlider('@device.Id')"
-                                           min="0" max="@device.SliderMaxRange"
-                                           id="@device.Id" class="col-6 myRangeInput"
-                                           value="@device.SliderRange" />
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="row">
-                                    <label class="col-12 text-gray-900">Power: 100% </label>
-                                </div>
-                            }
-                            <hr />
-
-
-                        </div>
-                    </div>
-                </div>
-            }
-            @if (sensor.Devices.Count() < sensor.MaxDevice)
-            {
-                <div class="col-xl-3 col-lg-5">
-                    <div class="card shadow mb-4">
-                        <!-- Card Header - Dropdown -->
-                        <div class="card-header py-3">
-                            <h5 class="m-0 font-weight-bold text-primary">
-                                <i class="fas fa-wrench"></i>
-                                THÊM CÔNG CỤ MỚI
-                            </h5>
-                        </div>
-                        <!-- Card Body -->
-                        <div class="card-body">
-                            <a asp-area="AuthCustomer" asp-controller="Device" asp-action="Upsert" asp-route-id="" asp-route-idSensor="@sensor.Id">
-                                @*THÊM CÔNG CỤ MỚI Ở ĐÂY*@
-                                <img class="chart-pie pt-4" src="~/images/sensor/basic/add.png" alt="Alternate Text" />
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    </div>
-}
 
 @section Scripts{
-    <script src="~/js/rangeslider.js"></script>
-    <script src="~/js/device.js"></script>
+    <script src="~/js/sensor.js"></script>
 }
