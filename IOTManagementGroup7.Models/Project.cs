@@ -23,8 +23,5 @@ namespace IOTManagementGroup7.Models
         [ForeignKey("CustomerUserId")]
         public ApplicationUser CustomerUser { get; set; }
 
-        [NotMapped]
-
-
     }
 }
