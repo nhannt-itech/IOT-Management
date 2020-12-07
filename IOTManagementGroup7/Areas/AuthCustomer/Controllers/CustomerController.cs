@@ -4,20 +4,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using IOTManagementGroup7.DataAccess.Data;
 using IOTManagementGroup7.DataAccess.Repository.IRepository;
+using IOTManagementGroup7.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using IOTManagementGroup7.Models;
 
-namespace IOTManagementGroup7.Areas.Admin.Controllers
+namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
 {
-    [Area("Admin")]
-    public class ApplicationUserController : Controller
+    [Area("AuthCustomer")]
+    public class CustomerController : Controller
     {
         private readonly ApplicationDbContext _db;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _hostEvironment;
 
-        public ApplicationUserController(ApplicationDbContext db, IUnitOfWork unitOfWork, IWebHostEnvironment hostEnvironment)
+        public CustomerController(ApplicationDbContext db, IUnitOfWork unitOfWork, IWebHostEnvironment hostEnvironment)
         {
             _db = db;
             _unitOfWork = unitOfWork;
@@ -45,7 +45,7 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
             var showList = new List<ApplicationUser>();
             foreach (var x in userList)
             {
-                if(x.Role == "Admin" || x.Role =="AuthCustomer")
+                if (x.Role == "Customer")
                 {
                     showList.Add(x);
                 }

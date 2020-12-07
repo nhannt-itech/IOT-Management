@@ -92,7 +92,7 @@ namespace IOTManagementGroup7.Areas.Identity.Pages.Account
             public IEnumerable<SelectListItem> RoleList { get; set; }
 
         }
-        
+
 
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -110,14 +110,30 @@ namespace IOTManagementGroup7.Areas.Identity.Pages.Account
                 await _roleManager.CreateAsync(new IdentityRole(SD.Role_Auth_Customer));
             }
             ReturnUrl = returnUrl;
-            Input = new InputModel()
+            if (User.IsInRole(SD.Role_Admin))
             {
-                RoleList = _roleManager.Roles.Select(i => i.Name).Select(x => new SelectListItem
+                Input = new InputModel()
                 {
-                    Text = x,
-                    Value = x
-                })
-            };
+                    RoleList = _roleManager.Roles.Where(x => x.Name == "Admin" || x.Name == "AuthCustomer").Select(i => i.Name).Select(x => new SelectListItem
+                    {
+                        Text = x,
+                        Value = x
+                    })
+                };
+            }
+            else
+            {
+                Input = new InputModel()
+                {
+                    RoleList = _roleManager.Roles.Where(x => x.Name == "Customer").Select(i => i.Name).Select(x => new SelectListItem
+                    {
+                        Text = x,
+                        Value = x
+                    })
+                };
+
+            }
+            
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
@@ -204,7 +220,7 @@ namespace IOTManagementGroup7.Areas.Identity.Pages.Account
                         else
                         {
                             // admin is registering a new user
-                            return RedirectToAction("Index", "ApplicationUser", new { Area = "Admin" });
+                            return RedirectToAction(nameof(Index));
                         }
                     }
                 }

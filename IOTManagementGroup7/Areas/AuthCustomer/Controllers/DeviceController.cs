@@ -133,7 +133,7 @@ namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
             {
                 deviceStatus[i] = obj[i].PowerStatus.ToString();
             }
-            string result = idDevice + ',' + userName + ',' + idProject + ',' + idSensor + ',' + deviceStatus[0] + '-' + deviceStatus[1] + '-' + deviceStatus[2] + '-' + deviceStatus[3];
+            string result = "1" + ',' + userName + ',' + idProject + ',' + idSensor + ',' + deviceStatus[0] + '-' + deviceStatus[1] + '-' + deviceStatus[2] + '-' + deviceStatus[3];
             return Json(result);
         }
 
