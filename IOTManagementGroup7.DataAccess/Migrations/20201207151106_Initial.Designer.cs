@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IOTManagementGroup7.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201126075712_Initial")]
+    [Migration("20201207151106_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -91,6 +91,9 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("CustomerUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
@@ -101,6 +104,8 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("CustomerUserId");
 
                     b.ToTable("Project");
                 });
@@ -340,11 +345,19 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CreaterUserId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(100)");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
@@ -371,6 +384,10 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                         .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("IOTManagementGroup7.Models.ApplicationUser", "CustomerUser")
+                        .WithMany()
+                        .HasForeignKey("CustomerUserId");
                 });
 
             modelBuilder.Entity("IOTManagementGroup7.Models.Sensor", b =>
@@ -431,6 +448,13 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("IOTManagementGroup7.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("IOTManagementGroup7.Models.ApplicationUser", "CreaterUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
                 });
 #pragma warning restore 612, 618
         }

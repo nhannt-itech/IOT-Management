@@ -123,26 +123,6 @@ namespace IOTManagementGroup7.Areas.Customer.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-
-        [HttpGet]
-        public async Task<ActionResult> Register(string returnUrl = null)
-        {
-            if (!await _roleManager.RoleExistsAsync(SD.Role_Admin))
-            {
-                await _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin));
-            }
-            if (!await _roleManager.RoleExistsAsync(SD.Role_Customer))
-            {
-                await _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer));
-            }
-            if (!await _roleManager.RoleExistsAsync(SD.Role_Auth_Customer))
-            {
-                await _roleManager.CreateAsync(new IdentityRole(SD.Role_Auth_Customer));
-            }
-            ReturnUrl = returnUrl;
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            return PartialView("_Register", RegisterPopup);
-        }
         [HttpPost]
         public async Task<ActionResult> Register(RegisterPopupModel registerPopup, string returnUrl = null)
         {
@@ -163,24 +143,11 @@ namespace IOTManagementGroup7.Areas.Customer.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-
-                    if (!await _roleManager.RoleExistsAsync(SD.Role_Admin))
+                    if (!await _roleManager.RoleExistsAsync(SD.Role_Auth_Customer))
                     {
-                        await _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin));
+                        await _roleManager.CreateAsync(new IdentityRole(SD.Role_Auth_Customer));
                     }
-                    if (!await _roleManager.RoleExistsAsync(SD.Role_Customer))
-                    {
-                        await _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer));
-                    }
-
-                    if (user.Role == null)
-                    {
-                        await _userManager.AddToRoleAsync(user, SD.Role_Customer);
-                    }
-                    else
-                    {
-                        await _userManager.AddToRoleAsync(user, user.Role);
-                    }
+                    await _userManager.AddToRoleAsync(user, SD.Role_Auth_Customer);
                     //------------------------------Send Email-----------------------------------
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -193,47 +160,16 @@ namespace IOTManagementGroup7.Areas.Customer.Controllers
                     await _emailSender.SendEmailAsync(registerPopup.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
                     //-------------------------------Send Email End-------------------------------
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        return RedirectToPage("RegisterConfirmation", new { email = registerPopup.Email, returnUrl = returnUrl });
-                    }
-                    else
-                    {
-                        if (user.Role == null)
-                        {
-                            await _signInManager.SignInAsync(user, isPersistent: false);
-                            return LocalRedirect(returnUrl);
-                        }
-                        else
-                        {
-                            // admin is registering a new user
-                            return RedirectToAction("Index", "User", new { Area = "Admin" });
-                        }
-                    }
+
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-
-            // If we got this far, something failed, redisplay form
-            return PartialView("_Register", registerPopup);
-        }
-
-        [HttpGet]
-        public async Task<ActionResult> Login(string returnUrl = null)
-        {
-            if (!string.IsNullOrEmpty(ErrorMessage))
-            {
-                ModelState.AddModelError(string.Empty, ErrorMessage);
-            }
-            returnUrl = returnUrl ?? Url.Content("~/");
-            // Clear the existing external cookie to ensure a clean login process
-            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            ReturnUrl = returnUrl;
-            return PartialView("_Login", LoginPopup);
+            return NotFound();
         }
         [HttpPost]
         public async Task<ActionResult> Login(LoginPopupModel loginPopup, string returnUrl = null)
@@ -245,22 +181,14 @@ namespace IOTManagementGroup7.Areas.Customer.Controllers
                 var result = await _signInManager.PasswordSignInAsync(loginPopup.Email, loginPopup.Password, loginPopup.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
-                    if (result.IsLockedOut)
-                    {
-                        _logger.LogWarning("User account locked out.");
-                        return Redirect("~/Identity/Account/Lockout");
-                    }
                     return LocalRedirect(returnUrl);
                 }
-                else
+                else if (result.IsLockedOut)
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    //return Redirect("~/Identity/Account/Login");
-                    return PartialView("_Login", LoginPopup);
+                    return Redirect("~/Identity/Account/Lockout");
                 }
             }
-            return PartialView("_Login", LoginPopup);
+            return NotFound();
         }
 
         #region API_Calls

@@ -9,7 +9,7 @@ namespace IOTManagementGroup7.Models
     public class Project
     {
         [Key]
-        public string Id { get; set; } //Pr
+        public string Id { get; set; }
         [Required]
         public string Name { get; set; }
         public string Image { get; set; }
@@ -18,5 +18,13 @@ namespace IOTManagementGroup7.Models
         public string ApplicationUserId { get; set; }
         [ForeignKey("ApplicationUserId")]
         public ApplicationUser ApplicationUser { get; set; }
+
+        public string CustomerUserId { get; set; }
+        [ForeignKey("CustomerUserId")]
+        public ApplicationUser CustomerUser { get; set; }
+
+        [NotMapped]
+
+
     }
 }

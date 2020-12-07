@@ -43,11 +43,19 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                     Discriminator = table.Column<string>(nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", nullable: true),
                     Address = table.Column<string>(nullable: true),
-                    ImageUrl = table.Column<string>(nullable: true)
+                    ImageUrl = table.Column<string>(nullable: true),
+                    CreaterUserId = table.Column<string>(nullable: true),
+                    ApplicationUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -177,7 +185,8 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                     Id = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: false),
                     Image = table.Column<string>(nullable: true),
-                    ApplicationUserId = table.Column<string>(nullable: false)
+                    ApplicationUserId = table.Column<string>(nullable: false),
+                    CustomerUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -188,6 +197,12 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Project_AspNetUsers_CustomerUserId",
+                        column: x => x.CustomerUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -270,6 +285,11 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_ApplicationUserId",
+                table: "AspNetUsers",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "EmailIndex",
                 table: "AspNetUsers",
                 column: "NormalizedEmail");
@@ -295,6 +315,11 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                 name: "IX_Project_ApplicationUserId",
                 table: "Project",
                 column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Project_CustomerUserId",
+                table: "Project",
+                column: "CustomerUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sensor_ProjectId",

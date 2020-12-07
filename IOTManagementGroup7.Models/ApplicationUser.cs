@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
@@ -16,5 +17,9 @@ namespace IOTManagementGroup7.Models
         public string ImageUrl { get; set; }
         [NotMapped]
         public string Role { get; set; }
+
+        public string CreaterUserId { get; set; }
+        [ForeignKey("ApplicationUserId")]
+        public ApplicationUser CreaterUser { get; set; }
     }
 }
