@@ -3,111 +3,102 @@
 @using IOTManagementGroup7.Utility
 @{
     ViewData["Title"] = "Register";
-    Layout = "~/Areas/Identity/Pages/_AuthLayout.cshtml";
+    //Layout = "~/Areas/Identity/Pages/_AuthLayout.cshtml";
 }
-<div class="col-md-10 offset-md-1">
-    <form asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
+
+
+<form asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
+    <div class="row p-3 border col-6 offset-md-3">
+        <div class="col-12 border-bottom">
+            <h2 class="text-primary">Tạo tài khoản</h2>
+        </div>
         <div asp-validation-summary="All" class="text-danger"></div>
-        <div class="form-group">
-            <label asp-for="Input.Name"></label>
-            <input asp-for="Input.Name" class="form-control" />
-            <span asp-validation-for="Input.Name" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Input.Email"></label>
-            <input asp-for="Input.Email" class="form-control" />
-            <span asp-validation-for="Input.Email" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Input.Address"></label>
-            <input asp-for="Input.Address" class="form-control" />
-            <span asp-validation-for="Input.Address" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Input.PhoneNumber"></label>
-            <input asp-for="Input.PhoneNumber" class="form-control" />
-            <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label asp-for="Input.Password"></label>
+        <div class="col-12 pt-4">
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Input.Name">Tên: </label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Input.Name" class="form-control" />
+                    <span asp-validation-for="Input.Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Input.Email">Email: </label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Input.Email" class="form-control" />
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Input.Address">Địa chỉ: </label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Input.Address" class="form-control" />
+                    <span asp-validation-for="Input.Address" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Input.PhoneNumber">Số điện thoại: </label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Input.PhoneNumber" class="form-control" />
+                    <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Input.Password">Mật khẩu: </label>
+                </div>
+                <div class="col-8">
                     <input asp-for="Input.Password" class="form-control" />
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label asp-for="Input.ConfirmPassword"></label>
-                    <input asp-for="Input.ConfirmPassword" class="form-control" />
-                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Input.Password">Nhập lại mật khẩu: </label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Input.Password" class="form-control" />
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
             </div>
-        </div>
-
-        <div class="form-group row">
-            <div class="col-4">
-                Image
-            </div>
-            <div class="col-8">
-                <input type="file" name="files" id="uploadBox" multiple class="form-control" />
-            </div>
-        </div>
-
-        @{
-            if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Auth_Customer))
-            {
-                <div class="form-group">
-                    <label asp-for="Input.Role"></label>
-                    @Html.DropDownListFor(m => m.Input.Role, Model.Input.RoleList, "-Please select a role", new { @class = "form-control" })
+            <div class="form-group row">
+                <div class="col-4">
+                    <label>Ảnh: </label>
                 </div>
-            }
-            else
-            {
-                <div class="form-group">
-                    <label asp-for="Input.Role"></label>
-                    @Html.DropDownListFor(m => m.Input.Role, Model.Input.RoleList, "-Please select a role", new { @class = "form-control" })
+                <div class="col-8">
+                    <input type="file" name="files" id="uploadBox" multiple class="form-control" />
                 </div>
-            }
-        }
-
-
-        <button type="submit" onclick="return validateInput()" class="btn btn-primary">Register</button>
-    </form>
-</div>
-
-@*<div class="col-md-10 offset-md-1">
-        <section>
-            <h4>Use another service to register.</h4>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
-                            for details on setting up this ASP.NET application to support logging in via external services.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Input.Role">Quyền tài khoản: </label>
+                </div>
+                <div class="col-8">
+                    @Html.DropDownListFor(m => m.Input.Role, Model.Input.RoleList, "-Chọn",
+                   new { @class = "form-control" })
+                    <span asp-validation-for="Input.Role" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-8 offset-2">
+                    <div class="row">
+                        <div class="col">
+                            <button type="submit" onclick="return validateInput()" class="btn btn-primary form-control">Register</button>
                         </div>
-                    </form>
-                }
-            }
-        </section>
-    </div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
