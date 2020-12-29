@@ -7,10 +7,13 @@ using IOTManagementGroup7.DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using IOTManagementGroup7.Models;
+using Microsoft.AspNetCore.Authorization;
+using IOTManagementGroup7.Utility;
 
 namespace IOTManagementGroup7.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class ApplicationUserController : Controller
     {
         private readonly ApplicationDbContext _db;

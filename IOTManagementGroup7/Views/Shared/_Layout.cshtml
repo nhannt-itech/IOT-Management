@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using IOTManagementGroup7.Utility
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -48,70 +50,80 @@
                 </a>
             </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
+            @if (User.IsInRole(SD.Role_Admin))
+            {
+                <!-- Divider -->
+                <hr class="sidebar-divider">
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Admin Panel
-            </div>
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Admin Panel
+                </div>
 
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link" asp-area="Admin" asp-controller="ApplicationUser" asp-action="Index">
-                    <i class="fas fa-user-cog"></i>
-                    <span>User Management</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" asp-area="Admin" asp-controller="DeviceType" asp-action="Index">
-                    <i class="fas fa-toolbox"></i>
-                    <span>DeviceType Management</span>
-                </a>
-            </li>
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="Admin" asp-controller="ApplicationUser" asp-action="Index">
+                        <i class="fas fa-user-cog"></i>
+                        <span>User Management</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="Admin" asp-controller="DeviceType" asp-action="Index">
+                        <i class="fas fa-toolbox"></i>
+                        <span>DeviceType Management</span>
+                    </a>
+                </li>
+            }
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
+            @if (User.IsInRole(SD.Role_Auth_Customer))
+            {
+                <!-- Divider -->
+                <hr class="sidebar-divider">
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Auth Customer Panel
-            </div>
-            <li class="nav-item">
-                <a class="nav-link" asp-area="AuthCustomer" asp-controller="Customer" asp-action="Index">
-                    <i class="fas fa-user-cog"></i>
-                    <span>User Management</span>
-                </a>
-            </li>
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Auth Customer Panel
+                </div>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="AuthCustomer" asp-controller="Customer" asp-action="Index">
+                        <i class="fas fa-user-cog"></i>
+                        <span>User Management</span>
+                    </a>
+                </li>
 
-            <li class="nav-item">
-                <a class="nav-link" asp-area="AuthCustomer" asp-controller="Project" asp-action="Index">
-                    <i class="fas fa-home"></i>
-                    <span>Room Management</span>
-                </a>
-            </li>
-            <!-- Divider -->
-            <hr class="sidebar-divider">
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="AuthCustomer" asp-controller="Project" asp-action="Index">
+                        <i class="fas fa-home"></i>
+                        <span>Room Management</span>
+                    </a>
+                </li>
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Customer Panel
-            </div>
-            <li class="nav-item">
-                <a class="nav-link" asp-area="" asp-controller="Project" asp-action="Index">
-                    <i class="fas fa-home"></i>
-                    <span>Room Management</span>
-                </a>
-            </li>
+            }
+            @if (User.IsInRole(SD.Role_Auth_Customer) || User.IsInRole(SD.Role_Customer))
+            {
 
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
+                <!-- Divider -->
+                <hr class="sidebar-divider">
 
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Customer Panel
+                </div>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-controller="Project" asp-action="Index">
+                        <i class="fas fa-home"></i>
+                        <span>Room Management</span>
+                    </a>
+                </li>
 
+                <!-- Divider -->
+                <hr class="sidebar-divider d-none d-md-block">
+
+                <!-- Sidebar Toggler (Sidebar) -->
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
+            }
         </ul>
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">

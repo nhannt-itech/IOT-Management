@@ -4,12 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using IOTManagementGroup7.DataAccess.Repository.IRepository;
 using IOTManagementGroup7.Models.ViewModels;
+using IOTManagementGroup7.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IOTManagementGroup7.Areas.Customer.Controllers
 {
     [Area("Customer")]
+    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Auth_Customer + "," + SD.Role_Customer)]
     public class SensorController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

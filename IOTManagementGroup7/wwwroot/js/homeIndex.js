@@ -3,6 +3,8 @@ Chart.defaults.global.defaultFontColor = '#858796';
 var barChart = document.getElementById("myBarChart");
 var pieChart = document.getElementById("myPieChart");
 
+
+
 $(document).ready(function () {
     loadCard();  
     loadChart();
