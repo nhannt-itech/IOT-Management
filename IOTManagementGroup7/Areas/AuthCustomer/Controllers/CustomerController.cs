@@ -6,6 +6,7 @@ using IOTManagementGroup7.DataAccess.Data;
 using IOTManagementGroup7.DataAccess.Repository.IRepository;
 using IOTManagementGroup7.Models;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
@@ -16,12 +17,14 @@ namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
         private readonly ApplicationDbContext _db;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _hostEvironment;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public CustomerController(ApplicationDbContext db, IUnitOfWork unitOfWork, IWebHostEnvironment hostEnvironment)
+        public CustomerController(ApplicationDbContext db, IUnitOfWork unitOfWork, IWebHostEnvironment hostEnvironment, UserManager<IdentityUser> userManager)
         {
             _db = db;
             _unitOfWork = unitOfWork;
             _hostEvironment = hostEnvironment;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -45,7 +48,7 @@ namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
             var showList = new List<ApplicationUser>();
             foreach (var x in userList)
             {
-                if (x.Role == "Customer")
+                if (x.Role == "Customer" && x.CreaterUserId == _userManager.GetUserId(User)) 
                 {
                     showList.Add(x);
                 }

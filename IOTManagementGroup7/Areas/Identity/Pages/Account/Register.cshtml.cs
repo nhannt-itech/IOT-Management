@@ -153,6 +153,12 @@ namespace IOTManagementGroup7.Areas.Identity.Pages.Account
                     ImageUrl = Input.ImageUrl,
                     Role = Input.Role
                 };
+
+                if (User.IsInRole(SD.Role_Auth_Customer))
+                {
+                    user.CreaterUserId = _userManager.GetUserId(User);
+                }
+
                 string webRootPath = _hostEnvironment.WebRootPath;
                 var files = HttpContext.Request.Form.Files;
                 if (files.Count > 0)
@@ -168,6 +174,7 @@ namespace IOTManagementGroup7.Areas.Identity.Pages.Account
                     }
                     user.ImageUrl = @"\asset\img\users\" + fileName + extenstion;
                 }
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
@@ -215,12 +222,14 @@ namespace IOTManagementGroup7.Areas.Identity.Pages.Account
                         if (user.Role == null)
                         {
                             await _signInManager.SignInAsync(user, isPersistent: false);
-                            //return LocalRedirect(returnUrl);
                         }
                         else
                         {
-                            // admin is registering a new user
-                            return RedirectToAction(nameof(Index));
+                            if (User.IsInRole(SD.Role_Admin))
+                            {
+                                return LocalRedirect("/Admin/ApplicationUser/Index");
+                            }
+                            return LocalRedirect("/AuthCustomer/Customer/Index");
                         }
                     }
                 }
