@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -22,6 +23,9 @@ namespace IOTManagementGroup7.Models
         public string CustomerUserId { get; set; }
         [ForeignKey("CustomerUserId")]
         public ApplicationUser CustomerUser { get; set; }
+
+        [NotMapped]
+        public IEnumerable<SelectListItem> CustomerList { get; set; }
 
     }
 }
