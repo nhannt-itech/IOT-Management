@@ -143,7 +143,7 @@ namespace IOTManagementGroup7.Areas.Customer.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-                    if (_unitOfWork.ApplicationUser.GetAll().Count() == 0)
+                    if (_unitOfWork.ApplicationUser.GetAll().Count() == 1)
                     {
                         if (!await _roleManager.RoleExistsAsync(SD.Role_Admin))
                         {

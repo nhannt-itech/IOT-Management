@@ -22,7 +22,8 @@ using System.IO;
 
 namespace IOTManagementGroup7.Areas.Identity.Pages.Account
 {
-    [AllowAnonymous]
+    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Auth_Customer)]
+    //[AllowAnonymous]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
