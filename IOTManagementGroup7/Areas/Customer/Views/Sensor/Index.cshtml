@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model IOTManagementGroup7.Models.ViewModels.SensorHomeVM
+@{
+    ViewData["Title"] = "Show";
+}
+<h3 class="font-italic font-weight-lighter">
+    <a asp-controller="Project" asp-action="Index">Danh sách phòng</a>
+</h3>
+<hr />
+<h3 class="m-0 font-weight-bold text-dark">
+    <i class="fas fa-home"></i>
+    PHÒNG: @Model.Project.Name
+</h3>
+<br />
+<div class="row">
+    @foreach (var sensor in Model.Sensors)
+    {
+        <div id="@sensor.Id" class="col-xl-3 col-lg-5">
+            <div class="card shadow mb-4">
+
+                <div class="card-body">
+                    <a asp-area="Customer" asp-controller="Device" asp-action="Index" asp-route-id="@sensor.Id">
+                        <img src="\images\sensor\sensor.png" class="chart-pie pt-4" />
+                    </a>
+                    <hr>
+                    Bảng điều khiển: <code>@sensor.Name</code><br />
+                    Thiết bị tối đa: <code>@sensor.MaxDevice</code><br />
+                </div>
+            </div>
+        </div>
+    }
+</div>

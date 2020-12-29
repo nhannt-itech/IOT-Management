@@ -1,0 +1,95 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model IOTManagementGroup7.Models.ViewModels.DeviceHomeVM
+@{
+    ViewData["Title"] = "Index";
+}
+<h3 class="font-italic font-weight-lighter">
+    <a asp-controller="Project" asp-action="Index">Danh sách phòng</a> >
+    <a asp-controller="Sensor" asp-action="Index" asp-route-id="@Model.Sensor.ProjectId">Phòng @Model.Sensor.Project.Name</a>
+</h3>
+
+<hr />
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h3 class="m-0 font-weight-bold text-dark">
+            <i class="fas fa-chess-board"></i>
+            BẢNG ĐIỀU KHIỂN @Model.Sensor.Name
+        </h3>
+    </div>
+    <div class="row">
+        @foreach (var device in Model.Devices)
+        {
+            <div id="@device.Id" class="col-xl-3 col-lg-5">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-2">
+                        @if (device.PowerButton == true)
+                        {
+                            @if (device.PowerStatus == 1)
+                            {
+                                <div class="float-right">
+                                    <input id="@device.Id" class="PowerButton" value="@device.PowerStatus" type="checkbox" onchange="TurnOnOff('@device.Id','@device.DeviceType.OnImage.Replace(@"\",@"\\")','@device.DeviceType.OffImage.Replace(@"\",@"\\")') " data-on="On" data-off="Off" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" checked />
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="float-right">
+                                    <input id="@device.Id" class="PowerButton" value="@device.PowerStatus" type="checkbox" onchange="TurnOnOff('@device.Id','@device.DeviceType.OnImage.Replace(@"\",@"\\")','@device.DeviceType.OffImage.Replace(@"\",@"\\")') " data-on="On" data-off="Off" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" />
+                                </div>
+                            }
+                        }
+                        <div>
+                            <h5 class="mt-1 font-weight-bold text-dark">
+                                <i class="fas fa-wrench"></i>
+                                @device.Name
+                            </h5>
+                        </div>
+                    </div>
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <div class="row float-right">
+                            <a asp-area="AuthCustomer" asp-controller="Device" asp-action="GetDeviceAPI"
+                               asp-route-idDevice="@device.Id" asp-route-userName="@UserManager.GetUserName(User)" asp-route-idProject="@device.Sensor.ProjectId"
+                               asp-route-idSensor="@device.Sensor.Id"
+                               class="mr-2 text-warning"><i class="fas fa-code fa-2x"></i></a>
+                        </div>
+                        @if (device.PowerStatus == 1)
+                        {
+                            <img id="@device.Id" class="image chart-pie" src="@device.DeviceType.OnImage" />
+                        }
+                        else
+                        {
+                            <img id="@device.Id" class="image chart-pie" src="@device.DeviceType.OffImage" />
+                        }
+                        @if (device.SliderButton == true)
+                        {
+                            <div class="row">
+                                <input type="text" id="@device.Id" class="form-control col-5 m-2 text-gray-900 myRangeOutput" value="Pwr: @device.SliderRange/@device.SliderMaxRange" readonly />
+                                <input type="range" oninput="ChangeRangeSlider('@device.Id')"
+                                       min="0" max="@device.SliderMaxRange"
+                                       id="@device.Id" class="col-6 myRangeInput"
+                                       value="@device.SliderRange" />
+                            </div>
+                        }
+                        else
+                        {
+                            <br /><br />
+                            <div class="row">
+                                <label class="col-12 text-gray-900">Power: 100% </label>
+                            </div>
+                        }
+                        <hr />
+
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/rangeslider.js"></script>
+    <script src="~/js/deviceCustomer.js"></script>
+}

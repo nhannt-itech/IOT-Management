@@ -1,0 +1,30 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model IOTManagementGroup7.Models.ViewModels.ProjectHomeVM
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="row">
+    <div class="col-12">
+        <h3 class="text-primary">Danh sách phòng <b class="text-danger">@UserManager.GetUserName(User)</b> sử dụng </h3>
+    </div>
+</div>
+<hr />
+<div class="row">
+    @foreach (var project in Model.Projects)
+    {
+        <div id="@project.Id" class="col-xl-3 col-lg-5">
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <a asp-area="Customer" asp-controller="Sensor" asp-action="Index" asp-route-id="@project.Id">
+                        <img src="@project.Image" class="chart-pie pt-4" />
+                    </a>
+                    <hr>
+                    Người dùng: <code>@project.CustomerUser.Email</code><br />
+                    Tên phòng: <code>@project.Name</code>
+                </div>
+            </div>
+        </div>
+    }
+</div>
