@@ -39,14 +39,14 @@ namespace IOTManagementGroup7.Areas.Customer.Controllers
         public IActionResult TurnOnOff(string? id)
         {
             var obj = _unitOfWork.Device.GetFirstOrDefault(x => x.Id == id);
-            if (obj.PowerStatus == 1)
+            if (obj.PowerStatus == 0)
             {
-                obj.PowerStatus = 0;
+                obj.PowerStatus = 1;
                 _unitOfWork.Device.Update(obj);
                 _unitOfWork.Save();
                 return Json(new { success = false, message = obj.Name + " đã tắt." });
             }
-            obj.PowerStatus = 1;
+            obj.PowerStatus = 0;
             _unitOfWork.Device.Update(obj);
             _unitOfWork.Save();
             return Json(new { success = true, message = obj.Name + " đã kích hoạt." });
@@ -74,7 +74,7 @@ namespace IOTManagementGroup7.Areas.Customer.Controllers
                 byte[] hash = sha.ComputeHash(textData);
                 userName = BitConverter.ToString(hash).Replace("-", String.Empty);
             }
-            string[] deviceStatus = { "0", "0", "0", "0" };
+            string[] deviceStatus = { "1", "1", "1", "1" };
             for (int i = 0; i < obj.Count(); i++)
             {
                 deviceStatus[i] = obj[i].PowerStatus.ToString();

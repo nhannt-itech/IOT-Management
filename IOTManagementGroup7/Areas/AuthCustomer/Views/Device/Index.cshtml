@@ -27,7 +27,7 @@
                     <div class="card-header py-2">
                         @if (device.PowerButton == true)
                         {
-                            @if (device.PowerStatus == 1)
+                            @if (device.PowerStatus == 0)
                             {
                                 <div class="float-right">
                                     <input id="@device.Id" class="PowerButton" value="@device.PowerStatus" type="checkbox" onchange="TurnOnOff('@device.Id','@device.DeviceType.OnImage.Replace(@"\",@"\\")','@device.DeviceType.OffImage.Replace(@"\",@"\\")') " data-on="On" data-off="Off" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" checked />
@@ -60,7 +60,7 @@
                                asp-action="Upsert" asp-route-id="@device.Id" asp-route-idSensor="@device.SensorBoardId"
                                class="mr-2"><i class="fas fa-edit fa-2x"></i></a>
                         </div>
-                        @if (device.PowerStatus == 1)
+                        @if (device.PowerStatus == 0)
                         {
                             <img id="@device.Id" class="image chart-pie" src="@device.DeviceType.OnImage" />
                         }
