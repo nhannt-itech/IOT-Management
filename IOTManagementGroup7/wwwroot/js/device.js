@@ -1,18 +1,29 @@
-﻿
+﻿function TurnOnOff(id, on, off) {
+    var sensorId = document.getElementById("sensorId").value;
 
-
-function TurnOnOff(id, on, off) {
     $.ajax({
         type: "POST",
-        url: "/AuthCustomer/Device/TurnOnOff/" + id,
+        url: "/Customer/Device/TurnOnOff/" + id,
         success: function (data) {
             if (data.success) {
-                toastr.success(data.message);
+                if (data.sensorId == sensorId) {
+                    toastr.success(data.message);
+                }
                 $('#' + id + '.image').attr('src', on);
+                $('#' + id + '.PowerButton').change(function (event) {
+                    event.preventDefault();
+                    $('#' + id + '.PowerButton').prop("checked", false);
+                });
             }
             else {
-                toastr.error(data.message);
+                if (data.sensorId == sensorId) {
+                    toastr.error(data.message);
+                }
                 $('#' + id + '.image').attr('src', off);
+                $('#' + id + '.PowerButton').change(function (event) {
+                    event.preventDefault();
+                    $('#' + id + '.PowerButton').prop("checked", true);
+                });
             }
         }
     });
@@ -24,7 +35,7 @@ function ChangeRangeSlider(id) {
 
     $.ajax({
         type: "POST",
-        url: "/AuthCustomer/Device/ChangeRangeSlider/?id=" + id + "&value=" + value,
+        url: "/Customer/Device/ChangeRangeSlider/?id=" + id + "&value=" + value,
         success: function (data) {
             if (data.success) {
                 $('#' + id + '.myRangeOutput').attr('value', "Pwr: " + value + "/" + data.maxvalue);

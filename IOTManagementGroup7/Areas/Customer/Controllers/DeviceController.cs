@@ -44,12 +44,12 @@ namespace IOTManagementGroup7.Areas.Customer.Controllers
                 obj.PowerStatus = 1;
                 _unitOfWork.Device.Update(obj);
                 _unitOfWork.Save();
-                return Json(new { success = false, message = obj.Name + " đã tắt." });
+                return Json(new { success = false, message = obj.Name + " đã tắt.", sensorId = obj.SensorBoardId });
             }
             obj.PowerStatus = 0;
             _unitOfWork.Device.Update(obj);
             _unitOfWork.Save();
-            return Json(new { success = true, message = obj.Name + " đã kích hoạt." });
+            return Json(new { success = true, message = obj.Name + " đã kích hoạt.", sensorId = obj.SensorBoardId });
         }
         [HttpPost]
         public IActionResult ChangeRangeSlider(string? id, int value)

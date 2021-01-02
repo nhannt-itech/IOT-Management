@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30523.141
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IOTManagementGroup7", "IOTManagementGroup7\IOTManagementGroup7.csproj", "{76AAA7A4-A029-4720-B51F-0FFF3DB6905F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IOTManagementGroup7", "IOTManagementGroup7\IOTManagementGroup7.csproj", "{76AAA7A4-A029-4720-B51F-0FFF3DB6905F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IOTManagementGroup7.DataAccess", "IOTManagementGroup7.DataAccess\IOTManagementGroup7.DataAccess.csproj", "{8E10104C-D50E-4C5F-8275-6E984F387EEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IOTManagementGroup7.DataAccess", "IOTManagementGroup7.DataAccess\IOTManagementGroup7.DataAccess.csproj", "{8E10104C-D50E-4C5F-8275-6E984F387EEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IOTManagementGroup7.Models", "IOTManagementGroup7.Models\IOTManagementGroup7.Models.csproj", "{49C2EEE4-D1FF-4BED-BE86-291E4AA75121}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IOTManagementGroup7.Models", "IOTManagementGroup7.Models\IOTManagementGroup7.Models.csproj", "{49C2EEE4-D1FF-4BED-BE86-291E4AA75121}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IOTManagementGroup7.Utility", "IOTManagementGroup7.Utility\IOTManagementGroup7.Utility.csproj", "{A4DC8124-E22E-48F0-B7AD-28AC06CEE387}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IOTManagementGroup7.Utility", "IOTManagementGroup7.Utility\IOTManagementGroup7.Utility.csproj", "{A4DC8124-E22E-48F0-B7AD-28AC06CEE387}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

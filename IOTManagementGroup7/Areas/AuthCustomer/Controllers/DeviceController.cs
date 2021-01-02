@@ -24,18 +24,18 @@ namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
             _unitOfWork = unitOfWork;
             _hostEnvironment = hostEnvironment;
         }
-        public IActionResult Index(string? id)
-        {
-            //id này của Sensor
-            DeviceHomeVM deviceHomeVM = new DeviceHomeVM()
-            {
-                Devices = _unitOfWork.Device.GetAll(x => x.SensorBoardId == id,
-                                            includeProperties: "Sensor,DeviceType"),
-                Sensor = _unitOfWork.Sensor.Get(id)
-            };
-            deviceHomeVM.Sensor.Project = _unitOfWork.Project.Get(deviceHomeVM.Sensor.ProjectId);
-            return View(deviceHomeVM);
-        }
+        //public IActionResult Index(string? id)
+        //{
+        //    id này của Sensor
+        //    DeviceHomeVM deviceHomeVM = new DeviceHomeVM()
+        //    {
+        //        Devices = _unitOfWork.Device.GetAll(x => x.SensorBoardId == id,
+        //                                    includeProperties: "Sensor,DeviceType"),
+        //        Sensor = _unitOfWork.Sensor.Get(id)
+        //    };
+        //    deviceHomeVM.Sensor.Project = _unitOfWork.Project.Get(deviceHomeVM.Sensor.ProjectId);
+        //    return View("AuthCustomer/Device/Index", deviceHomeVM);
+        //}
         [HttpGet]
         public IActionResult Upsert(string? id, string? idSensor)
         {
@@ -102,12 +102,12 @@ namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
                 obj.PowerStatus = 1;
                 _unitOfWork.Device.Update(obj);
                 _unitOfWork.Save();
-                return Json(new { success = false, message = obj.Name + " đã tắt." });
+                return Json(new { success = false, message = obj.Name + " đã tắt.", sensorId = obj.SensorBoardId });
             }
             obj.PowerStatus = 0;
             _unitOfWork.Device.Update(obj);
             _unitOfWork.Save();
-            return Json(new { success = true, message = obj.Name + " đã kích hoạt." });
+            return Json(new { success = true, message = obj.Name + " đã kích hoạt.", sensorId = obj.SensorBoardId });
         }
         [HttpPost]
         public IActionResult ChangeRangeSlider(string? id, int value)

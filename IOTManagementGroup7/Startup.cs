@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using IOTManagementGroup7.DataAccess.Data;
 using IOTManagementGroup7.DataAccess.Repository;
 using IOTManagementGroup7.DataAccess.Repository.IRepository;
+using IOTManagementGroup7.Hubs;
 using IOTManagementGroup7.Utility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -54,6 +55,7 @@ namespace IOTManagementGroup7
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -83,6 +85,7 @@ namespace IOTManagementGroup7
                     name: "default",
                     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+                endpoints.MapHub<DeviceHub>("/devicehub");
             });
         }
     }

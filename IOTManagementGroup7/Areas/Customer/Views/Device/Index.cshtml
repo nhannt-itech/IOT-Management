@@ -10,6 +10,10 @@
     <a asp-controller="Sensor" asp-action="Index" asp-route-id="@Model.Sensor.ProjectId">Phòng @Model.Sensor.Project.Name</a>
 </h3>
 
+<input id="sensorId" value="@Model.Sensor.Id" hidden />
+<input type="button" id="sendButton" value="kích hoạt" />
+
+
 <hr />
 <div class="card shadow mb-4">
     <div class="card-header py-3">
@@ -23,22 +27,8 @@
         {
             <div id="@device.Id" class="col-xl-3 col-lg-5">
                 <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
                     <div class="card-header py-2">
-                        @if (device.PowerButton == true)
-                        {
-                            @if (device.PowerStatus == 0)
-                            {
-                                <div class="float-right">
-                                    <input id="@device.Id" class="PowerButton" value="@device.PowerStatus" type="checkbox" onchange="TurnOnOff('@device.Id','@device.DeviceType.OnImage.Replace(@"\",@"\\")','@device.DeviceType.OffImage.Replace(@"\",@"\\")') " data-on="On" data-off="Off" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" checked />
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="float-right">
-                                    <input id="@device.Id" class="PowerButton" value="@device.PowerStatus" type="checkbox" onchange="TurnOnOff('@device.Id','@device.DeviceType.OnImage.Replace(@"\",@"\\")','@device.DeviceType.OffImage.Replace(@"\",@"\\")') " data-on="On" data-off="Off" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" />
-                                </div>
-                            }
-                        }
                         <div>
                             <h5 class="mt-1 font-weight-bold text-dark">
                                 <i class="fas fa-wrench"></i>
@@ -49,19 +39,44 @@
                     <!-- Card Body -->
                     <div class="card-body">
                         <div class="row float-right">
+                            <a onclick='Delete("/AuthCustomer/Device/Delete/@device.Id","@device.Id")'
+                               class="mr-2 text-danger"><i class="fas fa-trash fa-2x"></i></a>
                             <a asp-area="AuthCustomer" asp-controller="Device" asp-action="GetDeviceAPI"
                                asp-route-idDevice="@device.Id" asp-route-userName="@UserManager.GetUserName(User)" asp-route-idProject="@device.Sensor.ProjectId"
                                asp-route-idSensor="@device.Sensor.Id"
                                class="mr-2 text-warning"><i class="fas fa-code fa-2x"></i></a>
+                            <a asp-area="Customer" asp-controller="Device"
+                               asp-action="Upsert" asp-route-id="@device.Id" asp-route-idSensor="@device.SensorBoardId"
+                               class="mr-2"><i class="fas fa-edit fa-2x"></i></a>
                         </div>
-                        @if (device.PowerStatus == 0)
+
+                        @if (device.PowerButton == true)
                         {
-                            <img id="@device.Id" class="image chart-pie" src="@device.DeviceType.OnImage" />
+                            @if (device.PowerStatus == 0)
+                            {
+                                <a id="@device.Id" class="PowerButton" onclick="TurnOnOffSignalR('@device.Id')">
+                                    <img id="@device.Id" class="image chart-pie" src="@device.DeviceType.OnImage" />
+                                </a>
+                            }
+                            else
+                            {
+                                <a id="@device.Id" class="PowerButton" onclick="TurnOnOffSignalR('@device.Id')">
+                                    <img id="@device.Id" class="image chart-pie" src="@device.DeviceType.OffImage" />
+                                </a>
+                            }
                         }
                         else
                         {
-                            <img id="@device.Id" class="image chart-pie" src="@device.DeviceType.OffImage" />
+                            @if (device.PowerStatus == 0)
+                            {
+                                <img id="@device.Id" class="image chart-pie" src="@device.DeviceType.OnImage" />
+                            }
+                            else
+                            {
+                                <img id="@device.Id" class="image chart-pie" src="@device.DeviceType.OffImage" />
+                            }
                         }
+
                         @if (device.SliderButton == true)
                         {
                             <div class="row">
@@ -86,10 +101,33 @@
                 </div>
             </div>
         }
+        @if (Model.Devices.Count() < Model.Sensor.MaxDevice)
+        {
+            <div class="col-xl-3 col-lg-5">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div class="card-header py-3">
+                        <h5 class="m-0 font-weight-bold text-primary">
+                            <i class="fas fa-wrench"></i>
+                            THÊM CÔNG CỤ MỚI
+                        </h5>
+                    </div>
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <a asp-area="AuthCustomer" asp-controller="Device" asp-action="Upsert" asp-route-id="" asp-route-idSensor="@Model.Sensor.Id">
+                            @*THÊM CÔNG CỤ MỚI Ở ĐÂY*@
+                            <img class="chart-pie pt-4" src="~/images/sensor/basic/add.png" alt="Alternate Text" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 </div>
 
 @section Scripts{
     <script src="~/js/rangeslider.js"></script>
-    <script src="~/js/deviceCustomer.js"></script>
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/deviceHub.js"></script>
+    <script src="~/js/device.js"></script>
 }
