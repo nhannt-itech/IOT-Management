@@ -2,6 +2,9 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 @model IOTManagementGroup7.Models.ViewModels.DeviceHomeVM
+@using IOTManagementGroup7.Utility
+
+
 @{
     ViewData["Title"] = "Index";
 }
@@ -11,8 +14,6 @@
 </h3>
 
 <input id="sensorId" value="@Model.Sensor.Id" hidden />
-<input type="button" id="sendButton" value="kích hoạt" />
-
 
 <hr />
 <div class="card shadow mb-4">
@@ -39,15 +40,19 @@
                     <!-- Card Body -->
                     <div class="card-body">
                         <div class="row float-right">
-                            <a onclick='Delete("/AuthCustomer/Device/Delete/@device.Id","@device.Id")'
-                               class="mr-2 text-danger"><i class="fas fa-trash fa-2x"></i></a>
-                            <a asp-area="AuthCustomer" asp-controller="Device" asp-action="GetDeviceAPI"
+                            @if (User.IsInRole(SD.Role_Auth_Customer))
+                            {
+                                <a onclick='Delete("/AuthCustomer/Device/Delete/@device.Id","@device.Id")'
+                                   class="mr-2 text-danger"><i class="fas fa-trash fa-2x"></i></a>
+                                <a asp-area="AuthCustomer" asp-controller="Device"
+                                   asp-action="Upsert" asp-route-id="@device.Id" asp-route-idSensor="@device.SensorBoardId"
+                                   class="mr-2"><i class="fas fa-edit fa-2x"></i></a>
+                            }
+                            <a asp-area="Customer" asp-controller="Device" asp-action="GetDeviceAPI"
                                asp-route-idDevice="@device.Id" asp-route-userName="@UserManager.GetUserName(User)" asp-route-idProject="@device.Sensor.ProjectId"
                                asp-route-idSensor="@device.Sensor.Id"
                                class="mr-2 text-warning"><i class="fas fa-code fa-2x"></i></a>
-                            <a asp-area="Customer" asp-controller="Device"
-                               asp-action="Upsert" asp-route-id="@device.Id" asp-route-idSensor="@device.SensorBoardId"
-                               class="mr-2"><i class="fas fa-edit fa-2x"></i></a>
+
                         </div>
 
                         @if (device.PowerButton == true)

@@ -1,8 +1,6 @@
 ﻿"use strict";
 var connection = new signalR.HubConnectionBuilder().withUrl("/deviceHub").build();
 
-document.getElementById("sendButton").disabled = true;
-
 connection.on("ReceiveSignalDevice", function (obj) {
     TurnOnOff(obj.id.toString(), obj.deviceType.onImage.toString(), obj.deviceType.offImage.toString());
 });

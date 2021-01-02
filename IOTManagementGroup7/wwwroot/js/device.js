@@ -10,20 +10,12 @@
                     toastr.success(data.message);
                 }
                 $('#' + id + '.image').attr('src', on);
-                $('#' + id + '.PowerButton').change(function (event) {
-                    event.preventDefault();
-                    $('#' + id + '.PowerButton').prop("checked", false);
-                });
             }
             else {
                 if (data.sensorId == sensorId) {
                     toastr.error(data.message);
                 }
                 $('#' + id + '.image').attr('src', off);
-                $('#' + id + '.PowerButton').change(function (event) {
-                    event.preventDefault();
-                    $('#' + id + '.PowerButton').prop("checked", true);
-                });
             }
         }
     });
