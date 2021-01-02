@@ -86,7 +86,7 @@
                         {
                             <div class="row">
                                 <input type="text" id="@device.Id" class="form-control col-5 m-2 text-gray-900 myRangeOutput" value="Pwr: @device.SliderRange/@device.SliderMaxRange" readonly />
-                                <input type="range" oninput="ChangeRangeSlider('@device.Id')"
+                                <input type="range" oninput="ChangeRangeSliderSignalR('@device.Id')"
                                        min="0" max="@device.SliderMaxRange"
                                        id="@device.Id" class="col-6 myRangeInput"
                                        value="@device.SliderRange" />

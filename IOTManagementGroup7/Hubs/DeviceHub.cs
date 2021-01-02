@@ -22,5 +22,10 @@ namespace IOTManagementGroup7.Hubs
                                             includeProperties: "Sensor,DeviceType");
             await Clients.All.SendAsync("ReceiveSignalDevice", obj);
         }
+
+        public async Task SendSignalRangeDevice(string deviceId, string value)
+        {
+            await Clients.All.SendAsync("ReceiveSignalRangeDevice", deviceId, value);
+        }
     }
 }

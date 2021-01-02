@@ -22,9 +22,7 @@
 }
 
 
-function ChangeRangeSlider(id) {
-    var value = $('#' + id + '.myRangeInput').val();
-
+function ChangeRangeSlider(id,value) {
     $.ajax({
         type: "POST",
         url: "/Customer/Device/ChangeRangeSlider/?id=" + id + "&value=" + value,
