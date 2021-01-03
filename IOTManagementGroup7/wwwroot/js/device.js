@@ -28,6 +28,7 @@ function ChangeRangeSlider(id,value) {
         url: "/Customer/Device/ChangeRangeSlider/?id=" + id + "&value=" + value,
         success: function (data) {
             if (data.success) {
+                $('#' + id + '.myRangeInput').val(value);
                 $('#' + id + '.myRangeOutput').attr('value', "Pwr: " + value + "/" + data.maxvalue);
             }
         }

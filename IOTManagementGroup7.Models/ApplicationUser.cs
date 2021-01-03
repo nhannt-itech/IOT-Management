@@ -19,7 +19,7 @@ namespace IOTManagementGroup7.Models
         public string Role { get; set; }
 
         public string CreaterUserId { get; set; }
-        [ForeignKey("ApplicationUserId")]
+        [ForeignKey("CreaterUserId")]
         public ApplicationUser CreaterUser { get; set; }
     }
 }

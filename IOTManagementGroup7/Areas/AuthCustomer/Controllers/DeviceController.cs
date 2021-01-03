@@ -91,7 +91,7 @@ namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
             _unitOfWork.Save();
 
             string idPro = _unitOfWork.Sensor.Get(device.SensorBoardId).ProjectId;
-            return RedirectToAction("Index", "Device", new { id = device.SensorBoardId });
+            return RedirectToAction("Index", "Device", new { id = device.SensorBoardId, area="Customer" });
         }
         [HttpPost]
         public IActionResult TurnOnOff(string? id)
