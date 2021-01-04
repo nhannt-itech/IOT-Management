@@ -281,6 +281,17 @@ namespace IOTManagementGroup7.Areas.Customer.Controllers
             var result = await _signInManager.UserManager.CheckPasswordAsync(user, Password);
             return Json(result);
         }
+
+        [AcceptVerbs("Get", "Post")]
+        public JsonResult checkEmailIsValid([Bind(Prefix = "Input.Email")] string Email)
+        {
+            int count = _unitOfWork.ApplicationUser.GetAll(x => x.Email == Email).Count();
+            if (count == 1)
+            {
+                return Json(false);
+            }
+            return Json(true);
+        }
         #endregion
     }
 }
