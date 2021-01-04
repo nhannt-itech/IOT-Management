@@ -64,7 +64,7 @@
                                 <button type="submit" class="btn btn-primary form-control" asp-route-id="@Model.Id">Cập nhật</button>
                             </div>
                             <div class="col">
-                                <a asp-action="Show" asp-route-id="@Model.ProjectId" class="btn btn-success form-control">Trở lại</a>
+                                <a asp-action="Index" asp-route-id="@Model.ProjectId" class="btn btn-success form-control">Trở lại</a>
                             </div>
                         </div>
                     }
@@ -75,7 +75,7 @@
                                 <button type="submit" class="btn btn-primary form-control">Tạo</button>
                             </div>
                             <div class="col">
-                                <a asp-action="Show" asp-route-id="@ViewBag.projectId" class="btn btn-success form-control">Trở lại</a>
+                                <a asp-action="Index" asp-route-id="@ViewBag.projectId" class="btn btn-success form-control">Trở lại</a>
                             </div>
                         </div>
                     }
