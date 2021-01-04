@@ -79,7 +79,6 @@ namespace IOTManagementGroup7.Areas.Customer.Controllers
             [Display(Name = "Name")]
             public string Name { get; set; }
 
-            [Required(ErrorMessage = "Bạn phải nhập số điện thoại.")]
             [Display(Name = "Phone")]
             public string PhoneNumber { get; set; }
 
