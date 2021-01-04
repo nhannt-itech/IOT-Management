@@ -1,4 +1,6 @@
-﻿
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 
@@ -6,10 +8,10 @@
 
 <br />
 <div class="row">
-    <div class="col-6">
-        <h2 class="text-primary">Customers Manager </h2>
+    <div class="col-8">
+        <h2 class="text-primary">Tài khoản mà <b class="text-danger">@UserManager.GetUserName(User)</b> quản lý</h2>
     </div>
-    <div class="col-6 text-right">
+    <div class="col-4 text-right">
         <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">
             <i class="fas fa-plus"></i> &nbsp; Add User
         </a>

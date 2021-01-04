@@ -4,6 +4,8 @@ $(document).ready(function () {
 });
 
 function loadDataTable() {
+    var defaultImg = "~/asset/img/defaultuser.png";
+
     dataTable = $('#tblData').DataTable({
         "ajax": {
             "url": "/Admin/ApplicationUser/GetAll"
@@ -12,7 +14,18 @@ function loadDataTable() {
             {
                 "data": { id: "id", imageUrl: "imageUrl" },
                 "render": function (data) {
-                    return `<img src="${data.imageUrl}" style="border-radius:50%" width="60" height="60" />`
+                    if (data.imageUrl != null) {
+                        return `
+                        <div class="text-center">              
+                            <img src="${data.imageUrl}" style="border-radius:50%" width="60" height="60" />
+                        </div>`         
+                    }
+                    else {
+                        return `
+                        <div class="text-center">              
+                            <img src="https://blog.cpanel.com/wp-content/uploads/2019/08/user-01.png" style="border-radius:50%" width="60" height="60" />
+                        </div>`  
+                    }
                 }
             },
             { "data": "name" },
@@ -28,16 +41,18 @@ function loadDataTable() {
                     var lockout = new Date(data.lockoutEnd).getTime();
                     if (lockout > today) {
                         return `
+                        <div class="text-center">  
                             <a  onclick=LockUnlock('${data.id}') class="btn btn-danger text-white" style="cursor:pointer; width:100px;">
-                                <i class="fas fa-lock-open"></i>  Unlock
+                                <i class="fas fa-lock-open"></i> &nbsp; Mở
                             </a>
                         </div>
                     `;
                     }
                     else {
                         return `
+                        <div class="text-center">  
                             <a  onclick=LockUnlock('${data.id}') class="btn btn-success text-white" style="cursor:pointer; width:100px;">
-                                <i class="fas fa-lock"></i>  Lock
+                                <i class="fas fa-lock"></i> &nbsp; Khóa
                             </a>
                         </div>
                     `;
@@ -58,10 +73,11 @@ function LockUnlock(id) {
         success: function (data) {
             if (data.success) {
                 toastr.success(data.message);
-                $('#tblData').DataTable().ajax.reload();
+                dataTable.ajax.reload();
             }
             else {
                 toastr.error(data.message);
+                dataTable.ajax.reload();
             }
         }
     });

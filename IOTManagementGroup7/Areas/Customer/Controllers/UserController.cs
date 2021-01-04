@@ -58,12 +58,12 @@ namespace IOTManagementGroup7.Areas.Customer.Controllers
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
         public class RegisterPopupModel
         {
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage ="Bạn phải nhập Email.")]
+            [EmailAddress(ErrorMessage = "Email không hợp lệ")]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Bạn phải nhập mật khẩu.")]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [Remote("checkPassword", "User", HttpMethod = "POST", ErrorMessage = "Must contains at least one digit and at least one lower case or upper case")]
             [DataType(DataType.Password)]
@@ -75,10 +75,11 @@ namespace IOTManagementGroup7.Areas.Customer.Controllers
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Bạn phải nhập tên.")]
             [Display(Name = "Name")]
             public string Name { get; set; }
 
+            [Required(ErrorMessage = "Bạn phải nhập số điện thoại.")]
             [Display(Name = "Phone")]
             public string PhoneNumber { get; set; }
 
@@ -88,11 +89,11 @@ namespace IOTManagementGroup7.Areas.Customer.Controllers
         }
         public class LoginPopupModel
         {
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Bạn phải nhập Email")]
+            [EmailAddress(ErrorMessage = "Email không hợp lệ")]
             public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Bạn phải nhập mật khẩu")]
             [DataType(DataType.Password)]
             [Remote("loginUser", "User", HttpMethod = "POST", ErrorMessage = "Your Email or Password is Incorrect", AdditionalFields = "Email")]
             public string Password { get; set; }
@@ -221,21 +222,23 @@ namespace IOTManagementGroup7.Areas.Customer.Controllers
         [HttpPost]
         public IActionResult LockUnlock([FromBody] string id) //Take notice this [FromBody]
         {
-            var obj = _db.ApplicationUsers.FirstOrDefault(x => x.Id == id);
-            if (obj == null)
+            var objFromDb = _db.ApplicationUsers.FirstOrDefault(u => u.Id == id);
+            if (objFromDb == null)
             {
-                return Json(new { success = false, message = "Error while Lock/Unlock user!" });
+                return Json(new { success = false, message = "Error while Locking/Unclocking" });
             }
-            if (obj.LockoutEnd != null && obj.LockoutEnd > DateTime.Now)
+            if (objFromDb.LockoutEnd != null && objFromDb.LockoutEnd > DateTime.Now)
             {
-                obj.LockoutEnd = DateTime.Now;
+                objFromDb.LockoutEnd = DateTime.Now;
+                _db.SaveChanges();
+                return Json(new { success = true, message = "Mở khóa " + objFromDb.Email });
             }
             else
             {
-                obj.LockoutEnd = DateTime.Now.AddYears(1000);
+                objFromDb.LockoutEnd = DateTime.Now.AddYears(1000);
+                _db.SaveChanges();
+                return Json(new { success = false, message = "Khóa " + objFromDb.Email });
             }
-            _db.SaveChanges();
-            return Json(new { success = true, message = "Lock/Unlock user successfully!" });
         }
 
         [HttpDelete]

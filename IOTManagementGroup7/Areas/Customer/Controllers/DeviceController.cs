@@ -39,14 +39,14 @@ namespace IOTManagementGroup7.Areas.Customer.Controllers
         public IActionResult TurnOnOff(string? id)
         {
             var obj = _unitOfWork.Device.GetFirstOrDefault(x => x.Id == id);
-            if (obj.PowerStatus == 0)
+            if (obj.PowerStatus == 1)
             {
-                obj.PowerStatus = 1;
+                obj.PowerStatus = 0;
                 _unitOfWork.Device.Update(obj);
                 _unitOfWork.Save();
                 return Json(new { success = false, message = obj.Name + " đã tắt.", sensorId = obj.SensorBoardId });
             }
-            obj.PowerStatus = 0;
+            obj.PowerStatus = 1;
             _unitOfWork.Device.Update(obj);
             _unitOfWork.Save();
             return Json(new { success = true, message = obj.Name + " đã kích hoạt.", sensorId = obj.SensorBoardId });

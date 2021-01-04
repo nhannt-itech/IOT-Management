@@ -11,7 +11,7 @@ namespace IOTManagementGroup7.Models
     {
         [Key]
         public string Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Bạn cần nhập tên.")]
         public string Name { get; set; }
         public string Image { get; set; }
 

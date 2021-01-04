@@ -9,7 +9,7 @@ namespace IOTManagementGroup7.Models
     {
         [Key]
         public string Id { get; set; } //DvT
-        [Required]
+        [Required(ErrorMessage = "Bạn cần nhập tên.")]
         public string Name { get; set; }
         public string OffImage { get; set; }
         public string OnImage { get; set; }

@@ -10,11 +10,10 @@ namespace IOTManagementGroup7.Models
     {
         [Key]
         public string Id { get; set; } // Ss
-        [Required]
+        [Required(ErrorMessage = "Bạn cần nhập tên.")]
         public string Name { get; set; }
         public int MaxDevice { get; set; }
         public string SourceCode { get; set; }
-
         [Required]
         public string ProjectId { get; set; }
         [ForeignKey("ProjectId")]

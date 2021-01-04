@@ -67,13 +67,15 @@ namespace IOTManagementGroup7.Areas.Admin.Controllers
             if (objFromDb.LockoutEnd != null && objFromDb.LockoutEnd > DateTime.Now)
             {
                 objFromDb.LockoutEnd = DateTime.Now;
+                _db.SaveChanges();
+                return Json(new { success = true, message = "Mở khóa " + objFromDb.Email });
             }
             else
             {
                 objFromDb.LockoutEnd = DateTime.Now.AddYears(1000);
+                _db.SaveChanges();
+                return Json(new { success = false, message = "Khóa " + objFromDb.Email });
             }
-            _db.SaveChanges();
-            return Json(new { success = true, message = "Operation Successful." });
         }
         #endregion
     }

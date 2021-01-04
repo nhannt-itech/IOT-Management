@@ -19,23 +19,13 @@ namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _hostEnvironment;
+
         public DeviceController(IUnitOfWork unitOfWork, IWebHostEnvironment hostEnvironment)
         {
             _unitOfWork = unitOfWork;
             _hostEnvironment = hostEnvironment;
         }
-        //public IActionResult Index(string? id)
-        //{
-        //    id này của Sensor
-        //    DeviceHomeVM deviceHomeVM = new DeviceHomeVM()
-        //    {
-        //        Devices = _unitOfWork.Device.GetAll(x => x.SensorBoardId == id,
-        //                                    includeProperties: "Sensor,DeviceType"),
-        //        Sensor = _unitOfWork.Sensor.Get(id)
-        //    };
-        //    deviceHomeVM.Sensor.Project = _unitOfWork.Project.Get(deviceHomeVM.Sensor.ProjectId);
-        //    return View("AuthCustomer/Device/Index", deviceHomeVM);
-        //}
+
         [HttpGet]
         public IActionResult Upsert(string? id, string? idSensor)
         {
@@ -97,14 +87,14 @@ namespace IOTManagementGroup7.Areas.AuthCustomer.Controllers
         public IActionResult TurnOnOff(string? id)
         {
             var obj = _unitOfWork.Device.GetFirstOrDefault(x => x.Id == id);
-            if (obj.PowerStatus == 0)
+            if (obj.PowerStatus == 1)
             {
-                obj.PowerStatus = 1;
+                obj.PowerStatus = 0;
                 _unitOfWork.Device.Update(obj);
                 _unitOfWork.Save();
                 return Json(new { success = false, message = obj.Name + " đã tắt.", sensorId = obj.SensorBoardId });
             }
-            obj.PowerStatus = 0;
+            obj.PowerStatus = 1;
             _unitOfWork.Device.Update(obj);
             _unitOfWork.Save();
             return Json(new { success = true, message = obj.Name + " đã kích hoạt.", sensorId = obj.SensorBoardId });

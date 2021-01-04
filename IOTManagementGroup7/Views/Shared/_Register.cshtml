@@ -5,37 +5,37 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="RegisterModalLabel" style="margin: 0 auto;">REGISTER ACCOUNT</h5>
+                <h5 class="modal-title" id="RegisterModalLabel" style="margin: 0 auto;">ĐĂNG KÝ</h5>
             </div>
             <div class="modal-body">
                 <form id="form_signup" asp-area="Customer" asp-controller="User" asp-action="Register" method="post" enctype="multipart/form-data">
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                     <div class="form-group row">
                         @*https://stackoverflow.com/questions/23521427/validation-remote-validation-with-knockout-js-in-vb-net-mvc*@
-                        <label asp-for="Name" class="col-3"></label>
+                        <label asp-for="Name" class="col-3">Tên</label>
                         <input asp-for="Name" class="form-control col-8" />
                         <span asp-validation-for="Name" class="text-danger offset-1"></span>
-                    </div> <br />
+                    </div>
                     <div class="form-group row">
-                        <label asp-for="Email" class="col-3"></label>
-                        <input asp-for="Email" class="form-control col-8" type="text" data-val="true" data-val-remote="Email is already exists."
+                        <label asp-for="Email" class="col-3">Email</label>
+                        <input asp-for="Email" class="form-control col-8" type="text" data-val="true" data-val-remote="Email đã tồn tại."
                                data-val-remote-additionalfields="*.Email" data-val-remote-url="/Customer/User/isEmailExists"
                                id="Email" name="Email" value="">
                         <span asp-validation-for="Email" class="text-danger offset-1"></span>
-                    </div> <br />
+                    </div>
                     <div class="form-group row">
-                        <label asp-for="Password" class="col-3"></label>
-                        <input asp-for="Password" class="form-control col-8" type="password" data-val="true" data-val-remote="Must contains at least one digit and at least one lower case or upper case."
+                        <label asp-for="Password" class="col-3">Mật khẩu</label>
+                        <input asp-for="Password" class="form-control col-8" type="password" data-val="true" data-val-remote="Phải bao gồm ký tự đặc biệt, chữ in hoa và in thường."
                                data-val-remote-additionalfields="*.Password" data-val-remote-url="/Customer/User/isPasswordFine"
                                id="Password" name="Password" value="">
                         <span asp-validation-for="Password" class="text-danger offset-1"></span>
-                    </div> <br />
+                    </div>
                     <div class="form-group row">
-                        <label asp-for="ConfirmPassword" class="col-3"></label>
+                        <label asp-for="ConfirmPassword" class="col-3">Nhập lại mật khẩu</label>
                         <input asp-for="ConfirmPassword" class="form-control col-8" />
                         <span asp-validation-for="ConfirmPassword" class="text-danger offset-1"></span>
-                    </div> <br />
-                    <button type="submit" onclick="form_submit_signup()" class="btn btn-primary col-6 offset-md-3">Sign Up</button>
+                    </div>
+                    <button type="submit" onclick="form_submit_signup()" class="btn btn-primary col-6 offset-md-3">Dăng ký</button>
                 </form>
             </div>
         </div>

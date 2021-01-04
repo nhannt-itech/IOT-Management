@@ -10,7 +10,14 @@
 }
 <h3 class="font-italic font-weight-lighter">
     <a asp-controller="Project" asp-action="Index">Danh sách phòng</a> >
-    <a asp-controller="Sensor" asp-action="Index" asp-route-id="@Model.Sensor.ProjectId">Phòng @Model.Sensor.Project.Name</a>
+    @if (User.IsInRole(SD.Role_Auth_Customer))
+    {
+        <a asp-area="AuthCustomer" asp-controller="Sensor" asp-action="Index" asp-route-id="@Model.Sensor.ProjectId">Phòng @Model.Sensor.Project.Name</a>
+    }
+    else
+    {
+        <a asp-area="Customer" asp-controller="Sensor" asp-action="Index" asp-route-id="@Model.Sensor.ProjectId">Phòng @Model.Sensor.Project.Name</a>
+    }
 </h3>
 
 <input id="sensorId" value="@Model.Sensor.Id" hidden />
@@ -57,7 +64,7 @@
 
                         @if (device.PowerButton == true)
                         {
-                            @if (device.PowerStatus == 0)
+                            @if (device.PowerStatus == 1)
                             {
                                 <a id="@device.Id" class="PowerButton" onclick="TurnOnOffSignalR('@device.Id')">
                                     <img id="@device.Id" class="image chart-pie" src="@device.DeviceType.OnImage" />
@@ -72,7 +79,7 @@
                         }
                         else
                         {
-                            @if (device.PowerStatus == 0)
+                            @if (device.PowerStatus == 1)
                             {
                                 <img id="@device.Id" class="image chart-pie" src="@device.DeviceType.OnImage" />
                             }
