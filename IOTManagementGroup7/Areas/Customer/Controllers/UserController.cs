@@ -79,7 +79,6 @@ namespace IOTManagementGroup7.Areas.Customer.Controllers
             [Display(Name = "Name")]
             public string Name { get; set; }
 
-            [Required(ErrorMessage = "Bạn phải nhập số điện thoại.")]
             [Display(Name = "Phone")]
             public string PhoneNumber { get; set; }
 
@@ -281,6 +280,17 @@ namespace IOTManagementGroup7.Areas.Customer.Controllers
             var user = _unitOfWork.ApplicationUser.GetFirstOrDefault(x => x.Email == Email);
             var result = await _signInManager.UserManager.CheckPasswordAsync(user, Password);
             return Json(result);
+        }
+
+        [AcceptVerbs("Get", "Post")]
+        public JsonResult checkEmailIsValid([Bind(Prefix = "Input.Email")] string Email)
+        {
+            int count = _unitOfWork.ApplicationUser.GetAll(x => x.Email == Email).Count();
+            if (count == 1)
+            {
+                return Json(false);
+            }
+            return Json(true);
         }
         #endregion
     }

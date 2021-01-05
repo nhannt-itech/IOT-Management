@@ -44,15 +44,14 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                     Name = table.Column<string>(type: "nvarchar(100)", nullable: true),
                     Address = table.Column<string>(nullable: true),
                     ImageUrl = table.Column<string>(nullable: true),
-                    CreaterUserId = table.Column<string>(nullable: true),
-                    ApplicationUserId = table.Column<string>(nullable: true)
+                    CreaterUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetUsers_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
+                        name: "FK_AspNetUsers_AspNetUsers_CreaterUserId",
+                        column: x => x.CreaterUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -285,9 +284,9 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_ApplicationUserId",
+                name: "IX_AspNetUsers_CreaterUserId",
                 table: "AspNetUsers",
-                column: "ApplicationUserId");
+                column: "CreaterUserId");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",

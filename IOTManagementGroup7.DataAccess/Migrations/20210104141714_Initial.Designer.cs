@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IOTManagementGroup7.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201207151106_Initial")]
+    [Migration("20210104141714_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -345,11 +345,8 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("CreaterUserId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
@@ -357,7 +354,7 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(100)");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("CreaterUserId");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
@@ -454,7 +451,7 @@ namespace IOTManagementGroup7.DataAccess.Migrations
                 {
                     b.HasOne("IOTManagementGroup7.Models.ApplicationUser", "CreaterUser")
                         .WithMany()
-                        .HasForeignKey("ApplicationUserId");
+                        .HasForeignKey("CreaterUserId");
                 });
 #pragma warning restore 612, 618
         }

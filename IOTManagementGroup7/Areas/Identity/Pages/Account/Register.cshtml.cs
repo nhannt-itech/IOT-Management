@@ -65,6 +65,7 @@ namespace IOTManagementGroup7.Areas.Identity.Pages.Account
         {
             [Required(ErrorMessage = "Bạn cần nhập Email.")]
             [EmailAddress(ErrorMessage = "Email không hợp lệ.")]
+            [Remote(areaName: "Customer", action: "checkEmailIsValid", controller: "User", ErrorMessage = "Email đã tồn tại.")]
             [Display(Name = "Email")]
             public string Email { get; set; }
 

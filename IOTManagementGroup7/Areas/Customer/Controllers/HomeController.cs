@@ -7,19 +7,25 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using IOTManagementGroup7.Models;
 using IOTManagementGroup7.DataAccess.Repository.IRepository;
+using IOTManagementGroup7.Utility;
+using Microsoft.AspNetCore.Identity;
 
 namespace IOTManagementGroup7.Controllers
 {
     [Area("Customer")]
     public class HomeController : Controller
     {
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<HomeController> _logger;
         private readonly IUnitOfWork _unitOfWork;
 
-        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork)
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public IActionResult Index()
